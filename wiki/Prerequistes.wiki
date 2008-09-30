@@ -1,0 +1,12 @@
+#summary What you need to use these tools.
+
+= Prerequistes =
+
+The GMFTools are based on the following frameworks
+
+ * Eclipse Ganymede 3.4
+ * GMF 2.1.0
+ * openArchitectureWare 4.3
+
+You can download a large bundle containing all of these in the download section of
+http://oaw.itemis.de/

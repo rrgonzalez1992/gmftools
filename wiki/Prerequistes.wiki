@@ -4,9 +4,9 @@
 
 The GMFTools are based on the following frameworks
 
- * Eclipse Ganymede 3.4
- * GMF 2.1.0
- * openArchitectureWare 4.3
+ * Eclipse Ganymede 3.4 http://www.eclipse.org/downloads/
+ * GMF 2.1.0 http://www.eclipse.org/modeling/gmf/
+ * openArchitectureWare 4.3 http://wiki.eclipse.org/OAW
 
 You can download a large bundle containing all of these in the download section of
 http://oaw.itemis.de/

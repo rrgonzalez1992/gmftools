@@ -1,0 +1,26 @@
+#summary GMF Generator Model Transformation
+
+= GMF Generator Model Transformation =
+
+GMF has an extra step between the definition of the semantic-2-graphical mapping and the code generation. You have to create a gmfgen model from the map file, which serves as the input of the code generator. In most scenarios, the developer as to apply changes to the gmfgen model to customize the generated plug-in. Unfortunately, GMF uses a transparent transformation from the map model to the gmfgen model. This transformation also involves a reconciling step, trying to merge manual changes to the gmfgen model with the newly generated version. This reconciliation step does not always succeed such that manual changes might be lost. 
+
+Our solution is to define a m2m-transformation to change the gmfgen model rather than directly editing it. Code-generation is then started form the transformed version. That way, the reconciler is bypassed and the gmfgen model becomes an interim artifact that does not have to be version controlled, as it can be reconstructed from the map model at any time. 
+
+Note that we follow the "Never mix manually written code with generated code" best practice.
+
+=== Considerations ===
+
+We use an oAW Xtend file to actually perform the transformation. Unfortunately, GMF ships with its own stripped down version of Xtend that is not suitable for M2M trafosas it  lacks the following features
+ * Code completion in the editor, which is enormously useful when writing transformations.
+ * An API for EMF model manipulation, e.g. setters don't work.
+ * A generic reflective API in the typesystem, e.g. eAllContents is unavailable. 
+
+The backside of using oAW's Xtend are
+ * Imported metamodels must reside on the classpath of the project holding the GMF models.
+ * Your GMF models and the transformation have to reside on the classpath, e.g. be in a source folder. 
+ * Imports statements work different. You don't specify the nsURI of a metamodel, but its nsPrefix. 
+  * We have to disable GMF's oAW builder on the project holding the GMF models, as it creates error markers for the import statements. 
+  * You cannot have GMF Xtend files in the same project.
+  * If you use dynamic templates and rely on syntax error feedback from the IDE, the templates have to be in another project
+
+Alternatively, we could define the transformation in Java. But Java is really crap for that purpose.

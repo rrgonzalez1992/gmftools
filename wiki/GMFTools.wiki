@@ -1,4 +1,4 @@
-#summary GMFTools
+#summary A set of UI extensions for the Eclipse workbench to facilitate working with GMF.
 
 = GMFTools =
 

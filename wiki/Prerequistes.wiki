@@ -1,4 +1,4 @@
-#summary What you need to use these tools.
+#summary What you need to use GMFTools.
 
 = Prerequistes =
 

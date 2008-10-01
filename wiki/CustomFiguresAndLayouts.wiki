@@ -1,11 +1,11 @@
 #summary A set of customized figures and layout.
 
 = Custom Figures =
-All figures described here are meant to be referenced in the graph model by means of {{{CustomFigure}} nodes in the figure gallery.
+All figures described here are meant to be referenced in the graph model by means of {{{CustomFigure}}} nodes in the figure gallery.
 
 = Custom Layouts =
 
-All layouts described here are meant to be referenced in the graph model by means of {{{CustomLayout}} nodes  in the figure gallery.
+All layouts described here are meant to be referenced in the graph model by means of {{{CustomLayout}}} nodes  in the figure gallery.
 
 == de.itemis.gmf.runtime.layout.ResizableFlowLayout == 
 

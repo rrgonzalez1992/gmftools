@@ -11,3 +11,10 @@ The GMFTools are based on the following frameworks
 
 You can download a large bundle containing all of these in the download section of
 http://oaw.itemis.de/
+
+= Setup = 
+
+ * Download the sources. This can also be done form within Eclipse using an appropriate SVN plugin.
+ * Start eclipse and import the plugin sources
+ * Export {{{de.itemis.gmf.tools}}} into as a deployable plug-in into your Eclipse installation.
+ * Restart Eclipse

@@ -11,12 +11,8 @@
           xsi:type="gmfgraph:Rectangle"
           name="EntityFigure">
         <layout
-            xsi:type="gmfgraph:FlowLayout"
-            vertical="true"
-            matchMinorSize="true"
-            forceSingleLine="true"
-            majorAlignment="FILL"
-            minorAlignment="CENTER"/>
+            xsi:type="gmfgraph:CustomLayout"
+            qualifiedClassName="de.itemis.gmf.runtime.layout.ResizableFlowLayout"/>
         <children
             xsi:type="gmfgraph:Label"
             name="EntityNameFigure"
@@ -36,7 +32,8 @@
           xsi:type="gmfgraph:Rectangle"
           name="DatatypeFigure">
         <layout
-            xsi:type="gmfgraph:FlowLayout"/>
+            xsi:type="gmfgraph:CustomLayout"
+            qualifiedClassName="de.itemis.gmf.runtime.layout.ResizableFlowLayout"/>
         <children
             xsi:type="gmfgraph:Label"
             name="DatatypeNameFigure"

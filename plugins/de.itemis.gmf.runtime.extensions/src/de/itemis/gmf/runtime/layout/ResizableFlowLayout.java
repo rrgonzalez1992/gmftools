@@ -10,14 +10,13 @@ package de.itemis.gmf.runtime.layout;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
 
-public class CustomLayout extends ConstrainedToolbarLayout {
+public class ResizableFlowLayout extends ConstrainedToolbarLayout {
 
-	public CustomLayout() {
+	public ResizableFlowLayout() {
 		setStretchMinorAxis(true);
 		setStretchMajorAxis(true);
 		setMinorAlignment(ToolbarLayout.ALIGN_TOPLEFT);
 		setSpacing(3);
 		setVertical(true);
 	}
-
 }

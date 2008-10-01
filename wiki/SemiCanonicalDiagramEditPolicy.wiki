@@ -1,17 +1,17 @@
 #summary How to make a diagram "semi-canonical"
 
 = What is a Semi-Canonical Diagram Edit Policy =
-A canonical container in GMF is a View that is reflecting all of the semantic children in the diagram.  The CanonicalEditPolicy is responsible for implementing this behavior.
+A canonical container in GMF is a {{{View}}} that is reflecting all of the semantic children in the diagram.  The {{{XXXCanonicalEditPolicy}}} is responsible for implementing this behavior.
 
 For many applications, we want to reflect only a selected subset of these children. Consider an UML diagram showing only some of the classifiers in a package. Nevertheless, we don't want to show views for deleted semantic elements or want to automatically delete connections with one or two deleted endpoints. We call this behavior semi-canonical.
 
 Unfortunately, semi-canonical containers are not available in GMF by default. The following is a description of the manual changes necessary to implement semi-canonical diagrams.
 
 == Delete from Diagram vs Delete from Model ==
-The two different acions are provided only, if a diagram does not register an EditPolicy as the canonical role. An easy way to enable both is to register the generated DiagramCanonicalEditPolicy with as another role in the generated DiagramEditPart.
+The two different acions are provided only, if a diagram does not register an {{{EditPolicy}}} as the canonical role. An easy way to enable both is to register the generated {{{DiagramCanonicalEditPolicy}}} with as another role in the generated {{{DiagramEditPart}}}.
 
 == Adapt generated DiagramCanonicalEditPolicy ==
- * Modify the method getSemanticChildrenList() to filter all semantic children which don't have a view, e.g. by calling 		
+ * Modify the method {{{getSemanticChildrenList()}}} to filter all semantic children which don't have a view, e.g. by calling 		
 
 {{{
 ElementViewFilter.filterElementsWithoutViewInParent(result, viewObject);
@@ -21,11 +21,11 @@ ElementViewFilter.filterElementsWithoutViewInParent(result, viewObject);
 
  * Change superclass to de.itemis.gmf.runtime.edit.policy.SemiCanonicalDiagramEditPolicy 
 
- * Make {{{collectAllLinks()}}} and createConnections() protected.
+ * Make {{{collectAllLinks()}}} and {{{createConnections()}}} protected.
 
-Comment out the last line in refreshConnections() and return an empty list instead, to avoid automatically adding of links. This makes the second half of the loop body above obsolete.
+ * Comment out the last line in {{{refreshConnections()}}} and return an empty list instead, to avoid automatically adding of links. This makes the second half of the loop body above obsolete.
 
-Implement the missing abstract methods 
+ *Implement the missing abstract methods 
 
 == Enable Dropping of semantic elements on the diagram ==
 

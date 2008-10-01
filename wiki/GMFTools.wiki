@@ -4,11 +4,11 @@
 
 We have written an action that can be executed via a toolbar button. You must select a GMF model file the first time you trigger it. All subsequent executions will use the selected file or the last one, if the selection is not a suitable GMF file. The following subactions are executed in the given order
 
- # Delete existing gmfgen model to avoid reconciliation
+ # Delete existing gmfgen model to avoid reconciliation (see GenModelTransformation)
  # Generate a new gmfgen model from the mapping model
- # Create a new gmfgen transformation if it does not already exist
- # Transform the generated gmfgen model into a customized version
- # Harmonize type registrations in all active customized gmfgen models. This list is automatically filled when the action is called on a new GMF model. It can be maintined/changed in the properties section.
+ # Create a new gmfgen transformation if it does not already exist (see GenModelTransformation)
+ # Transform the generated gmfgen model into a customized version (see GenModelTransformation)
+ # Harmonize type registrations in all active customized gmfgen models. This list is automatically filled when the action is called on a new GMF model. It can be maintined/changed in the properties section. (see SharedEditingDomain)
  # Delete the existing diagram editor plug-in
  # Generate the diagram code.
 

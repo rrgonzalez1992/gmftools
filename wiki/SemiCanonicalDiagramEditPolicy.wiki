@@ -11,15 +11,17 @@ Unfortunately, semi-canonical containers are not available in GMF by default. Th
 The two different acions are provided only, if a diagram does not register an EditPolicy as the canonical role. An easy way to enable both is to register the generated DiagramCanonicalEditPolicy with as another role in the generated DiagramEditPart.
 
 == Adapt generated DiagramCanonicalEditPolicy ==
-Modify the method getSemanticChildrenList() to filter all semantic children which don't have a view, e.g. by calling 		
+ * Modify the method getSemanticChildrenList() to filter all semantic children which don't have a view, e.g. by calling 		
 
- ElementViewFilter.filterElementsWithoutViewInParent(result, viewObject);
+{{{
+ElementViewFilter.filterElementsWithoutViewInParent(result, viewObject);
+}}}
 
-before returning the list of semantic children.
+ before returning the list of semantic children.
 
-Change superclass to de.itemis.gmf.runtime.edit.policy.SemiCanonicalDiagramEditPolicy 
+ * Change superclass to de.itemis.gmf.runtime.edit.policy.SemiCanonicalDiagramEditPolicy 
 
-Make collectAllLinks() and createConnections() protected.
+ * Make {{{collectAllLinks()}}} and createConnections() protected.
 
 Comment out the last line in refreshConnections() and return an empty list instead, to avoid automatically adding of links. This makes the second half of the loop body above obsolete.
 

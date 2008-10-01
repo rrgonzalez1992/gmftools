@@ -1,0 +1,39 @@
+/*******************************************************************************
+ * Copyright (c) 2008 itemis AG (http://www.itemis.eu) and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+import gmfgen;
+import ecore;
+
+// transforms the given GMFGenModel
+List[emf::EObject] transform(List[emf::EObject] gmfGenModelContents) :
+   let contents = gmfGenModelContents.eAllContents.addAll(gmfGenModelContents) :
+   	contents.internalTransform() ->
+   gmfGenModelContents;
+
+internalTransform(GenEditorGenerator this) :
+	setDynamicTemplates(true) ->
+	setTemplateDirectory("/de.itemis.gmf.runtime.extensions/templates/sharedEditingDomain");
+	
+internalTransform(GenPlugin this) :
+	setPrintingEnabled(true);
+	
+internalTransform(OpenDiagramBehaviour this) :
+	setEditPolicyClassName(((GenCommonBase) eContainer).editPartClassName.trim(8) + "OpenDiagramEditPolicy");
+
+internalTransform(GenCompartment this) :
+	(title=="EntityAttributeCompartment") ? setListLayout(true) : {};
+
+internalTransform(GenDiagram this) :
+/*	setContainsShortcutsTo({"Entity"}) ->
+	setShortcutsProvidedFor({"Entity"}) ->*/
+	setEditingDomainID("de.itemis.gmf.example.sharedEditingDomainID");
+	
+internalTransform(emf::EObject o) :
+	{};
+	
+String trim(String this, int numChars) :
+	subString(0, this.length - numChars);

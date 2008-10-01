@@ -1,5 +1,7 @@
 #summary How to make a diagram "semi-canonical"
 
+This page describes what has to be done. The necessary changes will be cast into templates shortly.
+
 = What is a Semi-Canonical Diagram Edit Policy =
 A canonical container in GMF is a {{{View}}} that is reflecting all of the semantic children in the diagram.  The {{{XXXCanonicalEditPolicy}}} is responsible for implementing this behavior.
 

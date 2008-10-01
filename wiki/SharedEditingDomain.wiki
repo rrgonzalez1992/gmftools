@@ -2,12 +2,17 @@
 
 = Shared Editing Domain =
 
-Why do we need it 
+The editing domain of an GMF editor holds all model resources, manages transactions, etc. In the normal case, the GMF generated code creates a new editing domain for each diagram editor that is opened. This can lead to a couple of problems
 
- * Several GMF editors show different metamodel partitions of the same model
- * Several GMF editors show different partitions of the same model 
+ * Multiple instanciations of the same model elements are held in memory at the same time, resulting in large memory overhead.
+ * Editors synchronize their contents only on file changes. Conflicting changes result in information loss.
 
-Consequences 
+Typical usecases for sharing an editing domain are: 
+
+ * Several GMF editors show different metamodel partitions of the same model.
+ * Several GMF editors show different partitions of the same model.
+
+These are the consequences of sharing an editing domain:
 
  * Editors share command stack. Undo/Redo might affect other editors than the active one.
  * Editors sharing the same EditingDomain are either all dirty or all clean.
@@ -20,20 +25,20 @@ This section describe how to share an editing domain using GMFTools.
 
 === Eclipse ===
 
-Install the GMF tools. 
+ * Install the [Prerequistes GMFTools] and its prerequisites.
 
 === Workspace ===
 
 The following changes are necessary in the workspace containing the GMF models
- * Import the de.itemis.gmf.runtime.extensions plug-in
+ * Import the {{{de.itemis.gmf.runtime.extensions}}} plug-in
  * Create a plug-in with a model folder. The latter will contain all models.
  * Create your domain model and its genmodel and generate the model and edit plug-ins.
  * Create your GMF models.
  * If you want to use GMF Tools make sure
-  * The gmfgen.ecore is on the classpath of the model plug-in
-  * All models relating to one diagram type are called the same (apart from the extension). If you use the same domain model for different diagram editors, you need a copy of the genmodel for each diagram type.
-  * Enable the openArchitectureWare nature to have code completion etc.
-  * Disable GMF's oAW nature as it will report errors in your transformation file! 
+  * The {{{gmfgen.ecore}}} is on the classpath of the model plug-in
+  * All models relating to one diagram type are called the same (apart from the extension). If you use the same domain model for different diagram editors, you need a copy of the dnmain genmodel for each diagram type.
+  * Enable the {{{openArchitectureWare Nature}}} on the project holding the models to have code completion etc.
+  * Disable GMF's oAW nature as it will report errors in your transformation file! You have to do that using a text editor in the hidden file {{{.project}}} in the root directory of your model plug-in.
 
 === GMF Generator Model ===
 
@@ -41,35 +46,39 @@ You should apply some changes to the GMF generator model. I recommend to use the
 
 ==== GenEditorGenerator ====
 
-Use distinct model IDs Use distinct diagram file extensions Set dynamic templates to true Set template directory to de.itemis.gmf.runtime.extensions/templates/sharedEditingDomain It's nice to use distinct package name prefixes, too
+ * Use distinct model IDs 
+ * Use distinct diagram file extensions 
+ * Set dynamic templates to true 
+ * Set template directory to {{{de.itemis.gmf.runtime.extensions/templates/sharedEditingDomain}}} 
+ * It's nice to use distinct package name prefixes, too.
 
 ==== GenPlugin ====
 
-Use distinct IDs
+ * Use distinct IDs
 
 ==== GenDiagram ====
 
-Manually set distinct visual IDs
+ * Manually set distinct visual IDs
 
 ==== GenNodes/GenLinks ====
 
-Manually set distinct visual IDs or use org.eclipse.gmf.bridge.trace plug-in
+ * Manually set distinct {{{visualIDs}}} or use {{{org.eclipse.gmf.bridge.trace}}} plug-in
 
 ==== MetamodelTypes ====
 
-Only one ElementType per EClass is allowed in the ElementTypeRegistry. If you have multiple representations of the same EClass, you must use one metamodelType and replace the others with specializationTypes referring to the first. You can do that manually in the GMF genmodels or use the 'Harmonize type registrations' action from the de.itemis.gmf.tools plug-in.
+Only one ElementType per EClass is allowed in the ElementTypeRegistry. If you have multiple representations of the same EClass, you must use one metamodelType and replace the others with specializationTypes referring to the first. You can do that manually in the GMF genmodels or use the 'Harmonize type registrations' action from the de.itemis.gmf.tools plug-in or use the big GMF button GMFTools.
 
 === Which changes are made in the templates ===
 
 The following list describes the changes to the templates, applied using Xpand's aspects:
 
- * Added a dependency to the plugin de.itemis.gmf.runtime.extensions
- * All relevant instantiations of an editing domain refer to de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain(sharedEditingDomainID)
- * All calls to EditingDomain.dispose() have been eliminated
- * DocumentProvider.handleElementChange() method body is commented out
- * The WorkspaceSynchronizer no longer reacts on file changes
- * The ResourceInfo.dispose() calls de.itemis.gmf.runtime.editingdomain.ResourceUnloadingTool to selectively unload unneeded resources.
- * The ResourceInfo is set dirty on creation if the resource set is dirty.
- * All occurrences of Resource.unload() have been revised.
- * An extension to de.itemis.gmf.runtime.extensions.diagramEditorInfo is registered for each diagram editor, describing the file extension the editor uses for diagrams. It is needed to distinguish between diagram and semantic resources in the ResourceUnloadingTool.
- * In the plugin.xml, the types are registered for the singleton editing domain ID and a common client context. 
+ * Added a dependency to the plug-in d{{{e.itemis.gmf.runtime.extensions}}}
+ * All relevant instantiations of an editing domain refer to {{{de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain(sharedEditingDomainID)}}}
+ * All calls to {{{EditingDomain.dispose()}}} have been eliminated
+ * {{{DocumentProvider.handleElementChange()}}} method body is commented out
+ * The {{{WorkspaceSynchronizer}}} no longer reacts on file changes
+ * The {{{ResourceInfo.dispose()}}} calls {{{de.itemis.gmf.runtime.editingdomain.ResourceUnloadingTool}}} to selectively unload unneeded resources.
+ * The {{{ResourceInfo}}} is set dirty on creation if the resource set is dirty.
+ * All occurrences of {{{Resource.unload()}}} have been revised.
+ * An extension to {{{de.itemis.gmf.runtime.extensions.diagramEditorInfo}}} is registered for each diagram editor, describing the file extension the editor uses for diagrams. It is needed to distinguish between diagram and semantic resources in the {{{ResourceUnloadingTool}}}.
+ * In the {{{plugin.xml}}}, the types are registered for the shared editing domain ID and a common client context. 

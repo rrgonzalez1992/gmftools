@@ -2,7 +2,7 @@
 
 = Prerequistes =
 
-The GMFTools are based on the following frameworks
+The GMFTools are currently based on the following frameworks
 
  * Eclipse Ganymede 3.4 http://www.eclipse.org/downloads/
  * GMF 2.1.0 http://www.eclipse.org/modeling/gmf/

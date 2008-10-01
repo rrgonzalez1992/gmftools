@@ -76,6 +76,13 @@
   <links>
     <domainMetaElement
         href="Entity.ecore#//Reference"/>
+    <labelMappings
+        xsi:type="gmfmap:FeatureLabelMapping">
+      <diagramLabel
+          href="Entity.gmfgraph#ReferenceName"/>
+      <features
+          href="Entity.ecore#//NamedElement/name"/>
+    </labelMappings>
     <containmentFeature
         href="Entity.ecore#//Entity/references"/>
     <tool

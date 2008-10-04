@@ -29,11 +29,16 @@
     <descriptors
         name="DatatypeFigure">
       <actualFigure
-          xsi:type="gmfgraph:Rectangle"
+          xsi:type="gmfgraph:RoundedRectangle"
           name="DatatypeFigure">
         <layout
             xsi:type="gmfgraph:CustomLayout"
             qualifiedClassName="de.itemis.gmf.runtime.layout.ResizableFlowLayout"/>
+        <insets
+            top="4"
+            left="4"
+            bottom="4"
+            right="4"/>
         <children
             xsi:type="gmfgraph:Label"
             name="DatatypeNameFigure"
@@ -94,10 +99,20 @@
   </figures>
   <nodes
       name="Entity"
-      figure="EntityFigure"/>
+      figure="EntityFigure">
+    <facets
+        xsi:type="gmfgraph:DefaultSizeFacet">
+      <defaultSize/>
+    </facets>
+  </nodes>
   <nodes
       name="Datatype"
-      figure="DatatypeFigure"/>
+      figure="DatatypeFigure">
+    <facets
+        xsi:type="gmfgraph:DefaultSizeFacet">
+      <defaultSize/>
+    </facets>
+  </nodes>
   <nodes
       name="Attribute"
       figure="AttributeFigure">

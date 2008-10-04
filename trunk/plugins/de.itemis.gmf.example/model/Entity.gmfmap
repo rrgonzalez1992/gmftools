@@ -73,6 +73,27 @@
           href="Entity.gmfgraph#Namespace"/>
     </ownedChild>
   </nodes>
+  <nodes>
+    <containmentFeature
+        href="Entity.ecore#//Namespace/types"/>
+    <ownedChild>
+      <domainMetaElement
+          href="Entity.ecore#//Datatype"/>
+      <labelMappings
+          xsi:type="gmfmap:FeatureLabelMapping"
+          viewPattern="">
+        <diagramLabel
+            href="Entity.gmfgraph#DatatypeName"/>
+        <features
+            href="Entity.ecore#//NamedElement/name"/>
+      </labelMappings>
+      <tool
+          xsi:type="gmftool:CreationTool"
+          href="Entity.gmftool#//@palette/@tools.1"/>
+      <diagramNode
+          href="Entity.gmfgraph#Datatype"/>
+    </ownedChild>
+  </nodes>
   <links>
     <domainMetaElement
         href="Entity.ecore#//Reference"/>

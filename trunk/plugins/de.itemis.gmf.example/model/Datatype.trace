@@ -9,4 +9,11 @@
         visualID="15001"
         queryText="true"/>
   </nodeTraces>
+  <nodeTraces
+      visualID="15002"
+      queryText="(let _eClass_:ecore::EClass = modelFacet.metaClass.ecoreClass in _eClass_.ePackage.nsURI = 'http://www.itemis.de/gmf/example/entity' and _eClass_.name = 'Namespace') and (let _containmentMF_:ecore::EStructuralFeature = modelFacet.containmentMetaFeature.ecoreFeature in (let _eClass_:ecore::EClass = _containmentMF_.eContainingClass in _eClass_.ePackage.nsURI = 'http://www.itemis.de/gmf/example/entity' and _eClass_.name = 'Namespace') and _containmentMF_.name = 'nested')">
+    <nodeLabelTraces
+        visualID="15003"
+        queryText="true"/>
+  </nodeTraces>
 </trace:TraceModel>

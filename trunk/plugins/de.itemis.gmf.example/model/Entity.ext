@@ -37,3 +37,4 @@ internalTransform(emf::EObject o) :
 	
 String trim(String this, int numChars) :
 	subString(0, this.length - numChars);
+

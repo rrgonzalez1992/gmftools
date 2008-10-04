@@ -15,6 +15,16 @@ Our solution is to define a m2m-transformation to change the gmfgen model rather
 
 Note that we follow the "Never mix manually written code with generated code" best practice, which causes some people to call us "purists". 
 
+The transformation must reside in a file with the same name as the mapping model but {{{.ext}}} as the extension. It must define an extension function
+
+{{{
+List[emf::EObject] transform(List[emf::EObject] gmfGenModelContents)
+}}}
+
+that is called by GMFTools UI actions. The example shows how to delegate from that extension to other type specific ones. You can also create an example transformation by choosing {{{GMF Tools->Create GMF genmodel transformation}}} from the context menu of an existing gmfgen file. You can apply that transformation choosing {{{GMF Tools->Transform GMF genmodel}}}. This will result in a new gmfgen model from which you can generate the diagram code as usual. 
+
+The new generation workflow (and more stuff) is wrapped in a single UI action, that can be triggered by clicking on the GMF button in the action bar. See GMFTools for details
+
 === Considerations ===
 
 We use openArchitectureWare's Xtend to actually perform the transformation. 

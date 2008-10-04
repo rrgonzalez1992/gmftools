@@ -11,7 +11,12 @@ The GMFTools are currently based on the following frameworks
 You can download a large bundle containing all of these in the download section of
 http://oaw.itemis.de/
 
-Furthermore, if you plan to use shared editing domains, we recommend to install the GMF Bridge Trace Plugin to persist the {{{visualIDs}}} of element types between generator runs.
+Furthermore, if you plan to use shared editing domains, we recommend to install the GMF Bridge Trace Plugin to persist the {{{visualIDs}}} of element types between generator runs. It is part of GMF's experimental SDK. You can also check it out at
+
+{{{
+:pserver:dev.eclipse.org/cvsroot/modeling
+org.eclipse.gmf/plugins/org.eclipse.gmf.bridge.trace
+}}}
 
 = Setup = 
 

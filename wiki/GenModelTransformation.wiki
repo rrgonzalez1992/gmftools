@@ -2,18 +2,27 @@
 
 = GMF Generator Model Transformation =
 
-GMF has an extra step between the definition of the semantic-2-graphical mapping and the code generation. You have to create a gmfgen model from the map file, which serves as the input of the code generator. In most scenarios, the developer as to apply changes to the gmfgen model to customize the generated plug-in. Unfortunately, GMF uses a transparent transformation from the map model to the gmfgen model. This transformation also involves a reconciling step, trying to merge manual changes to the gmfgen model with the newly generated version. This reconciliation step does not always succeed such that manual changes might be lost. 
+== The GMF Generator Model Reconciler ==
+Having defined your mapping model, GMF requires generating an intermediate gmfgen model, which serves as the input of the code generator. In most scenarios, the developer has to apply changes to the gmfgen model to customize the generated plug-in, e.g. enable printing. 
 
-Our solution is to define a m2m-transformation to change the gmfgen model rather than directly editing it. Code-generation is then started form the transformed version. That way, the reconciler is bypassed and the gmfgen model becomes an interim artifact that does not have to be version controlled, as it can be reconstructed from the map model at any time. 
+GMF uses an internal, transparent transformation from the map model to the gmfgen model. This transformation ends with a reconciling step, trying to merge manual changes to the gmfgen model with the newly generated version. 
 
-Note that we follow the "Never mix manually written code with generated code" best practice.
+This reconciliation step does not always work as expected, so manual changes might be lost. Even though the transformation has been documented in the meantime ([http://wiki.eclipse.org/GMF_GenModel_Hints GMF Genmodel]), some customizations are simply always lost, i.e. changing the visual ID of the diagram or the name ID of the editing domain. Being forced to apply the same changes manually on every change of the mapping model is quite annoying, so we have started to look for a better solution. 
+
+== Our Solution: Use M2M-Trafo Instead of Reconciling ==
+
+Our solution is to define a m2m-transformation to change the gmfgen model rather than directly editing it. Code-generation is then started form the transformed version. That way, the reconciler is bypassed and the gmfgen model becomes an temporary artifact. It does not even have to be version controlled, as it can be reconstructed from the map model at any time. 
+
+Note that we follow the "Never mix manually written code with generated code" best practice, which causes some people to call us "purists". 
 
 === Considerations ===
 
-We use an oAW Xtend file to actually perform the transformation. Unfortunately, GMF ships with its own stripped down version of Xtend that is not suitable for M2M trafosas it  lacks the following features
- * Code completion in the editor, which is enormously useful when writing transformations.
+We use openArchitectureWare's Xtend to actually perform the transformation. 
+
+Unfortunately, GMF ships with its own stripped down version of Xtend that is not suitable for M2M trafos, because it  lacks the following features
+ * Code completion in the editor, which is enormously useful when writing transformations for a metamodel you know little about.
  * An API for EMF model manipulation, e.g. setters don't work.
- * A generic reflective API in the typesystem, e.g. eAllContents is unavailable. 
+ * The generic reflective API in the typesystem, e.g. {{{eAllContents}}} is unavailable. 
 
 The backside of using oAW's Xtend are
  * Imported metamodels must reside on the classpath of the project holding the GMF models.
@@ -22,5 +31,3 @@ The backside of using oAW's Xtend are
   * We have to disable GMF's oAW builder on the project holding the GMF models, as it creates error markers for the import statements. 
   * You cannot have GMF Xtend files in the same project.
   * If you use dynamic templates and rely on syntax error feedback from the IDE, the templates have to be in another project
-
-Alternatively, we could define the transformation in Java. But Java is really crap for that purpose.

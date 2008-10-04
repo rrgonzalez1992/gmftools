@@ -72,7 +72,11 @@ You should apply some changes to the GMF generator model. I recommend to use the
 
 ==== MetamodelTypes ====
 
-Only one ElementType per EClass is allowed in the ElementTypeRegistry. If you have multiple representations of the same EClass, you must use one metamodelType and replace the others with specializationTypes referring to the first. You can do that manually in the GMF genmodels or use the 'Harmonize type registrations' popup menu action or use the big GMF button [GMFTools].
+Only one ElementType per EClass is allowed in the ElementTypeRegistry. If you have multiple representations of the same EClass, you must use one metamodelType and replace the others with specializationTypes referring to the first. There are several ways to do that:
+ * Modify the GMF genmodels manually.
+ * Use the {{{GMF Tools->Harmonize type registrations}}} popup menu action from [GMFTools].
+ * Push the big GMF button from [GMFTools].
+Note there is a TODO item here: It would be much nicer if GMF's extensible type registry handled such cases better. Another maybe simpler alternative would be to generate unique metamodelTypes for all types in the metamodel and use only specializationTypes in the diagrams. 
 
 === Changes in the templates ===
 

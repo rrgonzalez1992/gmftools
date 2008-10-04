@@ -5,21 +5,27 @@
 The editing domain of an GMF editor holds all model resources, manages transactions, etc. In the normal case, the GMF generated code creates a new editing domain for each diagram editor that is opened. This can lead to a couple of problems
 
  * Multiple instanciations of the same model elements are held in memory at the same time, resulting in large memory overhead.
- * Editors synchronize their contents only on file changes. Conflicting changes result in information loss.
+ * Editors synchronize their contents only on file changes. If a file resource change triggers a reload in a dirty editor, the user has the choice to keep either the changed version in the editor or the currently saved one. This results in information loss and nasty synchroniztion loops.
 
 Typical usecases for sharing an editing domain are: 
 
  * Several GMF editors show different metamodel partitions of the same model.
  * Several GMF editors show different partitions of the same model.
 
-These are the consequences of sharing an editing domain:
+Sharing an editing domain between several editors has a number of consequences:
 
- * Editors share command stack. Undo/Redo might affect other editors than the active one.
+ * Editors also share their command stack. Undo/Redo might affect other editors than the active one.
  * Editors sharing the same EditingDomain are either all dirty or all clean.
  * When disabling the WorkspaceSynchronizer, diagrams are no longer updated when the model files are changed from the outside.
- * You need an unloading strategy. 
+ * You need an unloading strategy to get rid of unneded resources when changing the editor.
 
-== How to do it ==
+== Helpful Resources ==
+
+The GMF Wiki already offers a section on that topic ([http://wiki.eclipse.org/index.php/GMF_Tips#Sharing_single_EditingDomain_instance_across_several_diagrams GMF Tips]). Even though marked as new, it is a couple of months old and does not describe the whole story.
+
+Other useful resources on that topic are in the GMF newsgroup, especially [news://news.eclipse.org:119/ftvt82$os5$1@build.eclipse.org 1] and [news://news.eclipse.org:119/fpjnn4$2i5$1@build.eclipse.org 2].
+
+== Solution with GMFTools ==
 
 This section describe how to share an editing domain using GMFTools.
 
@@ -54,11 +60,11 @@ You should apply some changes to the GMF generator model. I recommend to use the
 
 ==== GenPlugin ====
 
- * Use distinct IDs
+ * Use distinct plug-in IDs
 
 ==== GenDiagram ====
 
- * Manually set distinct visual IDs
+ * Manually set distinct visual IDs. {{{org.eclipse.gmf.bridge.trace}}} unfortunately won't help you.
 
 ==== GenNodes/GenLinks ====
 
@@ -68,15 +74,15 @@ You should apply some changes to the GMF generator model. I recommend to use the
 
 Only one ElementType per EClass is allowed in the ElementTypeRegistry. If you have multiple representations of the same EClass, you must use one metamodelType and replace the others with specializationTypes referring to the first. You can do that manually in the GMF genmodels or use the 'Harmonize type registrations' popup menu action or use the big GMF button [GMFTools].
 
-=== Which changes are made in the templates ===
+=== Changes in the templates ===
 
-The following list describes the changes to the templates, applied using Xpand's aspects:
+The following list describes the changes to the templates, applied using Xpand's aspects. It might be useful when migrating to the next version of GMF:
 
- * Added a dependency to the plug-in d{{{e.itemis.gmf.runtime.extensions}}}
- * All relevant instantiations of an editing domain refer to {{{de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain(sharedEditingDomainID)}}}
- * All calls to {{{EditingDomain.dispose()}}} have been eliminated
- * {{{DocumentProvider.handleElementChange()}}} method body is commented out
- * The {{{WorkspaceSynchronizer}}} no longer reacts on file changes
+ * Added a dependency to the plug-in {{{de.itemis.gmf.runtime.extensions}}}
+ * All relevant instantiations of an editing domain refer to {{{de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain(sharedEditingDomainID)}}}.
+ * All calls to {{{EditingDomain.dispose()}}} have been eliminated.
+ * {{{DocumentProvider.handleElementChange()}}} method body is commented out.
+ * The {{{WorkspaceSynchronizer}}} no longer reacts on file changes.
  * The {{{ResourceInfo.dispose()}}} calls {{{de.itemis.gmf.runtime.editingdomain.ResourceUnloadingTool}}} to selectively unload unneeded resources.
  * The {{{ResourceInfo}}} is set dirty on creation if the resource set is dirty.
  * All occurrences of {{{Resource.unload()}}} have been revised.

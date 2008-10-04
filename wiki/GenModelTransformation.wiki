@@ -23,7 +23,7 @@ List[emf::EObject] transform(List[emf::EObject] gmfGenModelContents)
 
 that is called by GMFTools UI actions. The example shows how to delegate from that extension to other type specific ones. You can also create an example transformation by choosing {{{GMF Tools->Create GMF genmodel transformation}}} from the context menu of an existing gmfgen file. You can apply that transformation choosing {{{GMF Tools->Transform GMF genmodel}}}. This will result in a new gmfgen model from which you can generate the diagram code as usual. 
 
-The new generation workflow (and more stuff) is wrapped in a single UI action, that can be triggered by clicking on the GMF button in the action bar. See GMFTools for details
+The new generation workflow (and more stuff) is wrapped in a single UI action, that can be triggered by clicking on the GMF button in the action bar. See [GMFTools] for details
 
 === Considerations ===
 

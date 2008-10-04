@@ -15,6 +15,8 @@ Our solution is to define a m2m-transformation to change the gmfgen model rather
 
 Note that we follow the "Never mix manually written code with generated code" best practice, which causes some people to call us "purists". 
 
+We use openArchitectureWare's Xtend to actually perform the transformation. Note that the transformation is subject to version control as it describes your customizations.
+
 The transformation must reside in a file with the same name as the mapping model but {{{.ext}}} as the extension. It must define an extension function
 
 {{{
@@ -25,9 +27,7 @@ that is called by GMFTools UI actions. The example shows how to delegate from th
 
 The new generation workflow (and more stuff) is wrapped in a single UI action, that can be triggered by clicking on the GMF button in the action bar. See [GMFTools] for details
 
-=== Considerations ===
-
-We use openArchitectureWare's Xtend to actually perform the transformation. 
+=== Considerations Using Xtend ===
 
 Unfortunately, GMF ships with its own stripped down version of Xtend that is not suitable for M2M trafos, because it  lacks the following features
  * Code completion in the editor, which is enormously useful when writing transformations for a metamodel you know little about.
@@ -35,9 +35,8 @@ Unfortunately, GMF ships with its own stripped down version of Xtend that is not
  * The generic reflective API in the typesystem, e.g. {{{eAllContents}}} is unavailable. 
 
 The backside of using oAW's Xtend are
- * Imported metamodels must reside on the classpath of the project holding the GMF models.
- * Your GMF models and the transformation have to reside on the classpath, e.g. be in a source folder. 
- * Imports statements work different. You don't specify the nsURI of a metamodel, but its nsPrefix. 
+ * GMF models, imported metamodels and the transformation have to reside on the classpath of the model project, e.g. be in a source folder, be visible to the model plug-in. 
+ * Imports statements work different. You don't specify the {{{nsURI}}} of a metamodel, but its {{{nsPrefix}}}. 
   * We have to disable GMF's oAW builder on the project holding the GMF models, as it creates error markers for the import statements. 
   * You cannot have GMF Xtend files in the same project.
-  * If you use dynamic templates and rely on syntax error feedback from the IDE, the templates have to be in another project
+  * If you use dynamic templates and rely on syntax error feedback from the IDE, the templates have to be in another project.

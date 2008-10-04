@@ -20,9 +20,31 @@
       </labelMappings>
       <tool
           xsi:type="gmftool:CreationTool"
-          href="Entity.gmftool#//@palette/@tools.1"/>
+          href="Datatype.gmftool#//@palette/@tools.0"/>
       <diagramNode
           href="Entity.gmfgraph#Datatype"/>
+    </ownedChild>
+  </nodes>
+  <nodes>
+    <containmentFeature
+        href="Entity.ecore#//Namespace/nested"/>
+    <ownedChild>
+      <domainMetaElement
+          href="Entity.ecore#//Namespace"/>
+      <labelMappings
+          xsi:type="gmfmap:FeatureLabelMapping">
+        <diagramLabel
+            href="Entity.gmfgraph#NamespaceName"/>
+        <features
+            href="Entity.ecore#//NamedElement/name"/>
+      </labelMappings>
+      <relatedDiagrams
+          href="Datatype.gmfmap#//@diagram"/>
+      <tool
+          xsi:type="gmftool:CreationTool"
+          href="Datatype.gmftool#//@palette/@tools.1"/>
+      <diagramNode
+          href="Entity.gmfgraph#Namespace"/>
     </ownedChild>
   </nodes>
   <diagram>
@@ -33,6 +55,6 @@
     <domainMetaElement
         href="Entity.ecore#//Namespace"/>
     <palette
-        href="Entity.gmftool#//@palette"/>
+        href="Datatype.gmftool#//@palette"/>
   </diagram>
 </gmfmap:Mapping>

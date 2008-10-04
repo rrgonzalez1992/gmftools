@@ -8,7 +8,6 @@
 import gmfgen;
 import ecore;
 
-
 // transforms the given GMFGenModel
 List[emf::EObject] transform(List[emf::EObject] gmfGenModelContents) :
    let contents = gmfGenModelContents.eAllContents.addAll(gmfGenModelContents) :
@@ -26,6 +25,9 @@ internalTransform(GenPlugin this) :
 	setPrintingEnabled(true)->
 	setID("de.itemis.gmf.example.datatype.diagram");
 	
+internalTransform(OpenDiagramBehaviour this) :
+	setEditPolicyClassName(((GenCommonBase) eContainer).editPartClassName.trim(8) + "OpenDiagramEditPolicy");
+	
 internalTransform(GenDiagram this) :
 	setVisualID(10000) ->
 	setEditingDomainID("de.itemis.gmf.example.sharedEditingDomainID");
@@ -33,3 +35,5 @@ internalTransform(GenDiagram this) :
 internalTransform(emf::EObject o) :
 	{};
 
+String trim(String this, int numChars) :
+	subString(0, this.length - numChars);

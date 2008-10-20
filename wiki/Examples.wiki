@@ -17,8 +17,8 @@ The runtime extensions can be observed in the new Eclipse workbench:
  * Select the semantic model, i.e. the file with the extension ".entity" and choose "Initialize new datatype_diagram diagram file".
 
 The example demonstrates the following GMFTools features
- * Shared editing domain
+ * [SharedEditingDomain Shared editing domain]
   * If you add a {{{Namespace}}} in either of the diagrams, it should also appear in the other.
   * Diagrams are saved synchronously.
   * Resources are only unloaded if they are no longer referenced by any editor.
- * Custom layout for {{{Namespace}}} ellipse figures.
+ * [CustomFiguresAndLayouts Custom layout] for {{{Namespace}}} ellipse figures.

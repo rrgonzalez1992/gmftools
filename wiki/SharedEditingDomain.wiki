@@ -4,7 +4,7 @@
 
 The editing domain of an GMF editor holds all model resources, manages transactions, etc. In the normal case, the GMF generated code creates a new editing domain for each diagram editor that is opened. This can lead to a couple of problems
 
- * Multiple instanciations of the same model elements are held in memory at the same time, resulting in large memory overhead.
+ * Multiple instances of the same model elements are held in memory at the same time, resulting in large memory overhead.
  * Editors synchronize their contents only on file changes. If a file resource change triggers a reload in a dirty editor, the user has the choice to keep either the changed version in the editor or the currently saved one. This results in information loss and nasty synchroniztion loops.
 
 Typical usecases for sharing an editing domain are: 

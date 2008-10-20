@@ -3,7 +3,7 @@
 = Using the examples =
 
 Try out the GMFTools development extensions:
- * Follow [[wiki/Prerequisites setup steps]] above.
+ * Follow [Prerequisites setup steps] above.
  * Import the plug-in {{{de.itemis.gmf.example}}} into your workspace.
  * Open the file {{{model/Entity.genmodel}}} and choose "Generate Model Code" from the context menu of the root node.
  * Either import {{{de.itemis.gmf.example.entity.edit}}} or also generate its code by choosing "Generate Edit Code" from the context menu of the root node in the {{{model/Entity.genmodel}}}. In the first case, you'll get nicer icons snatched from the Ecore-UML project.

@@ -17,7 +17,7 @@ Sharing an editing domain between several editors has a number of consequences:
  * Editors also share their command stack. Undo/Redo might affect other editors than the active one.
  * Editors sharing the same EditingDomain are either all dirty or all clean.
  * When disabling the WorkspaceSynchronizer, diagrams are no longer updated when the model files are changed from the outside.
- * You need an unloading strategy to get rid of unneded resources when changing the editor.
+ * You no longer dispose the EditingDomain when you close an editor, so you need an unloading strategy to get rid of unneded resources to avoid a memory leak.
 
 == Helpful Resources ==
 
@@ -78,9 +78,9 @@ Only one ElementType per EClass is allowed in the ElementTypeRegistry. If you ha
  * Push the big GMF button from [GMFTools].
 Note there is a TODO item here: It would be much nicer if GMF's extensible type registry handled such cases better. Another maybe simpler alternative would be to generate unique metamodelTypes for all types in the metamodel and use only specializationTypes in the diagrams. 
 
-=== Changes in the templates ===
+== Changes in the templates ===
 
-The following list describes the changes to the templates, applied using Xpand's aspects. It might be useful when migrating to the next version of GMF:
+The following list describes the changes to the templates, applied using Xpand aspects. It might be useful when migrating to the next version of GMF:
 
  * Added a dependency to the plug-in {{{de.itemis.gmf.runtime.extensions}}}
  * All relevant instantiations of an editing domain refer to {{{de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain(sharedEditingDomainID)}}}.

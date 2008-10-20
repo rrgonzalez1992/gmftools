@@ -2,7 +2,7 @@
  
 = Using the examples =
 
-Try out the GMFTools development extensions:
+Try out the [GMFTools GMFTools] development extensions:
  * Follow [Prerequistes setup steps].
  * Import the plug-in {{{de.itemis.gmf.example}}} into your workspace.
  * Open the file {{{model/Entity.genmodel}}} and choose "Generate Model Code" from the context menu of the root node.

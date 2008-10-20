@@ -11,7 +11,7 @@ This reconciliation step does not always work as expected, so manual changes mig
 
 == Our Solution: Use M2M-Trafo Instead of Reconciling ==
 
-Our solution is to define a m2m-transformation to change the gmfgen model rather than directly editing it. Code-generation is then started form the transformed version. That way, the reconciler is bypassed and the gmfgen model becomes an temporary artifact. It does not even have to be version controlled, as it can be reconstructed from the map model at any time. The customized workflow is depicted in the following diagram
+Our solution is to define a m2m-transformation to change the gmfgen model rather than directly editing it. Code-generation is then started form the transformed version. That way, the reconciler is bypassed and the gmfgen model becomes an temporary artifact. It does not even have to be version controlled, as it can be reconstructed from the map model at any time. The customized workflow is sketched in the following diagram. Dashed arrows depict information flow, while solid arrows represent model references.
 [http://gmftools.googlecode.com/svn/wiki/images/GMF_Genmodel_Trafo.png] 
 
 Note that we follow the "Never mix manually written code with generated code" best practice, which causes some people to call us "purists". 

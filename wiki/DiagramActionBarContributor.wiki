@@ -3,7 +3,7 @@
 = Introduction =
 
 By default GMF declares standard ContributionItems within a DiagramContributionItemProvider. If you do not want some of them there is no way to do this declarative by declaring another DiagramContributionItemProvider with a higher priority. The problem is that GMF always takes the entry with the priority *lowest* and adds everything that is declared with higher priority.
-To solve the problem yu have to remove the unwanted entries programmatically.
+To solve the problem you have to remove the unwanted entries programmatically.
 
 
 = Details =

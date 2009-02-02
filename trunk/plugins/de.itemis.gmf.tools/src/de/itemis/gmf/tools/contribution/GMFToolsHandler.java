@@ -16,6 +16,8 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -24,6 +26,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import de.itemis.gmf.tools.Activator;
 import de.itemis.gmf.tools.FileUtil;
 import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
@@ -55,9 +58,7 @@ public class GMFToolsHandler extends AbstractHandler implements
 					}
 				}
 			} catch (Exception e) {
-
-				MessageDialog.openError(window.getShell(), "Error", e
-						.getMessage());
+				reportError(e);
 			}
 		} else {
 			MessageDialog.openInformation(window.getShell(),
@@ -125,10 +126,15 @@ public class GMFToolsHandler extends AbstractHandler implements
 						changedGmfGenModels, monitor);
 			}
 		} catch (Exception exc) {
-			MessageDialog.openError(window.getShell(), "Error", exc
-					.getMessage());
+			reportError(exc);
 			isOK = false;
 		}
+	}
+
+	private void reportError(Exception e) {
+		MessageDialog.openError(window.getShell(), "Error", e
+				.getMessage());
+		Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error executing GMF action", e));
 	}
 
 	private IFile getBaseFile() {

@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -33,10 +36,11 @@ public class PreferenceUtil {
 	public static void addGmfGenModel(IFile gmfGenModelFile) {
 		IPreferenceStore store = getPreferenceStore();
 		String gmfGenModelUris = getGmfGenModelUris(store);
-		List<String> names = Arrays.asList(gmfGenModelUris.split(":"));
+		List<String> names = pathElementsAsList(gmfGenModelUris);
 		String path = gmfGenModelFile.getFullPath().toString();
 		if (!names.contains(path)) {
-			String value = ((gmfGenModelUris != "") ? (gmfGenModelUris + ":") : "")
+			String value = ((gmfGenModelUris != "") ? (gmfGenModelUris + ":")
+					: "")
 					+ path;
 			store.putValue(PreferenceUtil.GMF_GEN_MODELS, value);
 		}
@@ -45,7 +49,7 @@ public class PreferenceUtil {
 	public static void removeGmfGenModel(IFile gmfGenModelFile) {
 		IPreferenceStore store = getPreferenceStore();
 		String gmfGenModelUris = getGmfGenModelUris(store);
-		List<String> names = Arrays.asList(gmfGenModelUris.split(":"));
+		List<String> names = pathElementsAsList(gmfGenModelUris);
 		String path = gmfGenModelFile.getFullPath().toString();
 		if (names.remove(path)) {
 			StringBuffer newGmfGenModelUris = new StringBuffer();
@@ -62,6 +66,13 @@ public class PreferenceUtil {
 		}
 	}
 
+	private static List<String> pathElementsAsList(String pathString) {
+		if (pathString == null || pathString.equals("")) {
+			return new ArrayList<String>();
+		}
+		return Arrays.asList(pathString.split(":"));
+	}
+
 	private static String getGmfGenModelUris(IPreferenceStore store) {
 		return store.getString(PreferenceUtil.GMF_GEN_MODELS);
 	}
@@ -73,11 +84,15 @@ public class PreferenceUtil {
 	public static List<URI> getGmfGenModels() {
 		IPreferenceStore store = getPreferenceStore();
 		String gmfGenModelFiles = getGmfGenModelUris(store);
-		List<String> names = Arrays.asList(gmfGenModelFiles.split(":"));
+		List<String> names = pathElementsAsList(gmfGenModelFiles);
 		List<URI> gmfGenModelURIs = new ArrayList<URI>(names.size());
+		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		for (String gmfGenModelFileName : names) {
-			gmfGenModelURIs.add(URI.createPlatformResourceURI(
-					gmfGenModelFileName, true));
+			if (workspaceRoot.exists(new Path(gmfGenModelFileName))) {
+				URI uri = URI.createPlatformResourceURI(gmfGenModelFileName,
+						true);
+				gmfGenModelURIs.add(uri);
+			}
 		}
 		return gmfGenModelURIs;
 	}

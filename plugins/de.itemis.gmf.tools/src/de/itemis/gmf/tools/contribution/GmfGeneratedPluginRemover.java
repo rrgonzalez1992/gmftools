@@ -7,13 +7,17 @@
  *******************************************************************************/
 package de.itemis.gmf.tools.contribution;
 
+import java.util.Arrays;
 import java.util.Collection;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -28,6 +32,9 @@ import de.itemis.gmf.tools.FileUtil;
 
 public class GmfGeneratedPluginRemover {
 
+	private static final Collection<String> EXCLUDE_DIR_NAMES = Arrays
+			.asList(new String[] { "CVS", ".svn" });
+
 	public static boolean deleteGeneratedPlugins(
 			Collection<IFile> gmfGenModels, IProgressMonitor monitor) {
 		try {
@@ -35,7 +42,7 @@ public class GmfGeneratedPluginRemover {
 			monitor.beginTask("Delete generated diagram plug-ins",
 					3 * gmfGenModels.size());
 			ResourceSet resourceSet = new ResourceSetImpl();
-			for (IFile gmfGenModel: gmfGenModels) {
+			for (IFile gmfGenModel : gmfGenModels) {
 				URI gmfGenModelURI = FileUtil.getURI(gmfGenModel);
 				Resource resource = resourceSet.getResource(gmfGenModelURI,
 						true);
@@ -50,7 +57,7 @@ public class GmfGeneratedPluginRemover {
 						project.open(monitor);
 						monitor.worked(1);
 					}
-					project.delete(true, monitor);
+					project.accept(new DeleteVisitor(monitor));
 					monitor.worked(1);
 					workspaceRoot.refreshLocal(IResource.DEPTH_ONE, monitor);
 					monitor.worked(1);
@@ -64,4 +71,24 @@ public class GmfGeneratedPluginRemover {
 		}
 		return false;
 	}
+
+	private static class DeleteVisitor implements IResourceVisitor {
+
+		private IProgressMonitor monitor;
+
+		public DeleteVisitor(IProgressMonitor monitor) {
+			this.monitor = monitor;
+		}
+
+		public boolean visit(IResource resource) throws CoreException {
+			if (resource instanceof IContainer) {
+				String name = resource.getName();
+				return !(EXCLUDE_DIR_NAMES.contains(name));
+			}
+			resource.delete(true, monitor);
+			return false;
+		}
+
+	}
+	
 }

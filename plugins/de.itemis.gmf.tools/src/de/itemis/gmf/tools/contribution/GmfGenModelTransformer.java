@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -23,10 +24,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.gmf.codegen.gmfgen.GMFGenPackage;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.m2t.type.emf.EmfRegistryMetaModel;
 import org.eclipse.swt.widgets.Display;
-import org.openarchitectureware.expression.ExecutionContextImpl;
-import org.openarchitectureware.xtend.XtendFacade;
+import org.eclipse.xtend.XtendFacade;
+import org.eclipse.xtend.expression.ExecutionContextImpl;
+import org.eclipse.xtend.typesystem.emf.EmfRegistryMetaModel;
 
 import de.itemis.gmf.tools.FileUtil;
 
@@ -80,7 +81,8 @@ public class GmfGenModelTransformer {
 				@Override
 				protected EPackage[] allPackages() {
 					return new EPackage[] { GMFGenPackage.eINSTANCE,
-							EcorePackage.eINSTANCE };
+							EcorePackage.eINSTANCE,
+							GenModelPackage.eINSTANCE};
 				}
 			};
 			ExecutionContextImpl executionContext = new ExecutionContextImpl();
@@ -88,7 +90,7 @@ public class GmfGenModelTransformer {
 			XtendFacade facade = XtendFacade.create(executionContext, FileUtil
 					.getLocationWithoutExtension(transformationFile));
 			List<EObject> transformedGenModel = (List<EObject>) facade.call(
-					"transform", genModelResource.getContents());
+					"transform", (Object)genModelResource.getContents());
 			
 			URI transformedGenModelURI = FileUtil
 					.getURI(transformedGmfGenModelFile);

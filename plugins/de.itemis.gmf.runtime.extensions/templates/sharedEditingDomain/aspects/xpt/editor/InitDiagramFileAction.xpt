@@ -2,14 +2,15 @@
 «IMPORT "http://www.eclipse.org/emf/2002/Ecore"»
 
 «EXTENSION xpt::editor::Utils»
+«EXTENSION xpt::StringOperations»
 
-«AROUND InitDiagramFileAction FOR gmfgen::GenDiagram-»
+«AROUND InitDiagramFileAction(editorGen : gmfgen::GenEditorGenerator) FOR gmfgen::InitDiagramAction-»
 «EXPAND xpt::Common::copyright FOR editorGen-»
-package «editorGen.editor.packageName»;
+«EXPAND xpt::Common::packageStatement FOR qualifiedClassName»
 
 «EXPAND xpt::Common::generatedClassComment»
-public class «EXPAND xpt::editor::InitDiagramFileAction::className»
-	«IF editorGen.application == null-»
+public class «qualifiedClassName.xpandSplit('\.')->last()»
+	«IF editorGen.application = null-»
 implements org.eclipse.ui.IObjectActionDelegate {
 
 	«EXPAND xpt::Common::generatedMemberComment»
@@ -46,7 +47,7 @@ implements org.eclipse.ui.IObjectActionDelegate {
 		// ITEMIS CHANGE: Use shared editing domain
 		//org.eclipse.emf.transaction.TransactionalEditingDomain editingDomain =
 		//	org.eclipse.gmf.runtime.emf.core.GMFEditingDomainFactory.INSTANCE.createEditingDomain();
-		org.eclipse.emf.transaction.TransactionalEditingDomain editingDomain = de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain("«editingDomainID»");
+		org.eclipse.emf.transaction.TransactionalEditingDomain editingDomain = de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain("«editorGen.diagram.editingDomainID»");
 		
 		«IF editorGen.sameFileForDiagramAndModel-»
 		org.eclipse.emf.ecore.resource.ResourceSet resourceSet = new org.eclipse.emf.ecore.resource.impl.ResourceSetImpl();
@@ -59,19 +60,19 @@ implements org.eclipse.ui.IObjectActionDelegate {
 			diagramRoot = (org.eclipse.emf.ecore.EObject) resource.getContents().get(0);
 		} catch (org.eclipse.emf.common.util.WrappedException ex) {
 			«editorGen.plugin.getActivatorQualifiedClassName()».getInstance().logError(
-				"Unable to load resource: " + domainModelURI, ex); «EXPAND xpt::Common::nonNLS»
+				"Unable to load resource: " + domainModelURI, ex);«EXPAND xpt::Common::nonNLS»
 		}
 		if (diagramRoot == null) {
 			org.eclipse.jface.dialogs.MessageDialog.openError(getShell(), 
-                «EXPAND xpt::Externalizer::accessorCall(i18nKeyForInitDiagramFileResourceErrorDialog().titleKey()) FOR editorGen»,
-                «EXPAND xpt::Externalizer::accessorCall(i18nKeyForInitDiagramFileResourceErrorDialog().messageKey()) FOR editorGen»);
+                «EXPAND xpt::Externalizer::accessorCall(titleKey(i18nKeyForInitDiagramFileResourceErrorDialog())) FOR editorGen»,
+                «EXPAND xpt::Externalizer::accessorCall(messageKey(i18nKeyForInitDiagramFileResourceErrorDialog())) FOR editorGen»);
 			return;
 		}
-		org.eclipse.jface.wizard.Wizard wizard = new «getNewDiagramFileWizardQualifiedClassName()»(domainModelURI, diagramRoot, editingDomain);
+		org.eclipse.jface.wizard.Wizard wizard = new «editorGen.diagram.getNewDiagramFileWizardQualifiedClassName()»(domainModelURI, diagramRoot, editingDomain);
 		wizard.setWindowTitle(org.eclipse.osgi.util.NLS.bind(
 				    «EXPAND xpt::Externalizer::accessorCall(i18nKeyForInitDiagramFileWizardTitle()) FOR editorGen»,
-				    «EXPAND xpt::editor::VisualIDRegistry::modelID»));
-		«getDiagramEditorUtilQualifiedClassName()».runWizard(getShell(), wizard, "InitDiagramFile"); «EXPAND xpt::Common::nonNLS»
+				    «EXPAND xpt::editor::VisualIDRegistry::modelID FOR editorGen.diagram»));
+		«editorGen.diagram.getDiagramEditorUtilQualifiedClassName()».runWizard(getShell(), wizard, "InitDiagramFile");«EXPAND xpt::Common::nonNLS»
 	}
 	«ELSE-»
 implements org.eclipse.ui.IWorkbenchWindowActionDelegate {
@@ -100,20 +101,23 @@ implements org.eclipse.ui.IWorkbenchWindowActionDelegate {
 
 	«EXPAND xpt::Common::generatedMemberComment»
 	public void run(org.eclipse.jface.action.IAction action) {
-		org.eclipse.emf.transaction.TransactionalEditingDomain editingDomain =
-			org.eclipse.gmf.runtime.emf.core.GMFEditingDomainFactory.INSTANCE.createEditingDomain();
+		// ITEMIS CHANGE: Use shared editing domain
+		//org.eclipse.emf.transaction.TransactionalEditingDomain editingDomain =
+		//	org.eclipse.gmf.runtime.emf.core.GMFEditingDomainFactory.INSTANCE.createEditingDomain();
+		org.eclipse.emf.transaction.TransactionalEditingDomain editingDomain = de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain("«editorGen.diagram.editingDomainID»");
+		
 		org.eclipse.emf.ecore.resource.Resource resource =
-				«getDiagramEditorUtilQualifiedClassName()».openModel(getShell(), 
+				«editorGen.diagram.getDiagramEditorUtilQualifiedClassName()».openModel(getShell(), 
 					«EXPAND xpt::Externalizer::accessorCall(i18nKeyForInitDiagramOpenFileDialogTitle()) FOR editorGen», editingDomain);
 		if (resource == null || resource.getContents().isEmpty()) {
 			return;
 		}
 		org.eclipse.emf.ecore.EObject diagramRoot = (org.eclipse.emf.ecore.EObject) resource.getContents().get(0);
-		org.eclipse.jface.wizard.Wizard wizard = new «getNewDiagramFileWizardQualifiedClassName()»(resource.getURI(), diagramRoot, editingDomain);
+		org.eclipse.jface.wizard.Wizard wizard = new «editorGen.diagram.getNewDiagramFileWizardQualifiedClassName()»(resource.getURI(), diagramRoot, editingDomain);
 		wizard.setWindowTitle(org.eclipse.osgi.util.NLS.bind(
 				    «EXPAND xpt::Externalizer::accessorCall(i18nKeyForInitDiagramFileWizardTitle()) FOR editorGen»,
-				    «EXPAND xpt::editor::VisualIDRegistry::modelID»));
-		«getDiagramEditorUtilQualifiedClassName()».runWizard(getShell(), wizard, "InitDiagramFile"); «EXPAND xpt::Common::nonNLS»
+				    «EXPAND xpt::editor::VisualIDRegistry::modelID FOR editorGen.diagram»));
+		«editorGen.diagram.getDiagramEditorUtilQualifiedClassName()».runWizard(getShell(), wizard, "InitDiagramFile");«EXPAND xpt::Common::nonNLS»
 	}
 	«ENDIF-»
 }

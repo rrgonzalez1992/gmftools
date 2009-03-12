@@ -54,7 +54,7 @@
 
    <extension point="org.eclipse.gmf.runtime.emf.type.core.elementTypes">
       «EXPAND xpt::Common::xmlGeneratedTag»
-«FOREACH getElements() AS e-»
+«FOREACH getElements(self) AS e-»
 «EXPAND xpt::providers::extensions::elementTypeSafe FOR e.elementType-»
 «ENDFOREACH-»
    </extension>
@@ -71,7 +71,7 @@
       </clientContext> 
       <!-- ITEMIS CHANGE: Singleton editing domain requires the use of the same ClientContext --> 
       <binding context="SharedClientContext">
-«FOREACH getElements() AS e-»
+«FOREACH getElements(self) AS e-»
          <elementType ref="«e.elementType.uniqueIdentifier»"/>
 «ENDFOREACH-»
          <advice ref="org.eclipse.gmf.runtime.diagram.core.advice.notationDepdendents"/>

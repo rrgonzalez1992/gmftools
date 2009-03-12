@@ -1,12 +1,12 @@
 «IMPORT "http://www.eclipse.org/gmf/2008/GenModel"»
 
-«AROUND constructor FOR gmfgen::GenDiagram-»
+«AROUND _constructor FOR gmfgen::GenDiagram-»
 	«EXPAND xpt::Common::generatedMemberComment»
 public ResourceSetInfo(org.eclipse.gmf.runtime.diagram.ui.resources.editor.document.IDiagramDocument document, org.eclipse.ui.IEditorInput editorInput) {
 	super(document);
 	myDocument = document;
 	myEditorInput = editorInput;
-	«IF null == editorGen.application-»
+	«IF null = editorGen.application-»
 	startResourceListening();
 	«ENDIF-»
 	myResourceSetListener = new ResourceSetModificationListener(this);
@@ -19,7 +19,7 @@ public ResourceSetInfo(org.eclipse.gmf.runtime.diagram.ui.resources.editor.docum
 «AROUND dispose FOR gmfgen::GenDiagram-»
 	«EXPAND xpt::Common::generatedMemberComment»
 public void dispose() {
-	«IF null == editorGen.application-»
+	«IF null = editorGen.application-»
 	stopResourceListening();
 	«ENDIF-»
 	getResourceSet().eAdapters().remove(myResourceSetListener);

@@ -10,7 +10,7 @@ protected org.eclipse.emf.transaction.TransactionalEditingDomain createEditingDo
 }
 
 	// ITEMIS CHANGE: React to drop requests even if shortcuts are disabled
-	«IF !editorGen.diagram.generateCreateShortcutAction()-»
+	«IF editorGen.diagram.generateCreateShortcutAction() = false -»
 	
 		«EXPAND xpt::editor::Editor::initializeGraphicalViewer-»
 		

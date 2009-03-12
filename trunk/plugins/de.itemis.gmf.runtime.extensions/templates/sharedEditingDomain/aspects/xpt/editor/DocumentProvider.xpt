@@ -6,10 +6,9 @@
 private org.eclipse.emf.transaction.TransactionalEditingDomain createEditingDomain() {
 	// ITEMIS CHANGE: Use shared editing domain
 	org.eclipse.emf.transaction.TransactionalEditingDomain editingDomain = de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain("«editingDomainID»");;
-
-/*
+	/*
 	org.eclipse.emf.transaction.TransactionalEditingDomain editingDomain = org.eclipse.gmf.runtime.diagram.core.DiagramEditingDomainFactory.getInstance().createEditingDomain();
-	editingDomain.setID("«editingDomainID»"); «EXPAND xpt::Common::nonNLS»
+	editingDomain.setID("«editingDomainID»");«EXPAND xpt::Common::nonNLS»
 	final org.eclipse.emf.transaction.NotificationFilter diagramResourceModifiedFilter = org.eclipse.emf.transaction.NotificationFilter.createNotifierFilter(editingDomain.getResourceSet()).and(org.eclipse.emf.transaction.NotificationFilter.createEventTypeFilter(org.eclipse.emf.common.notify.Notification.ADD)).and(org.eclipse.emf.transaction.NotificationFilter.createFeatureFilter(org.eclipse.emf.ecore.resource.ResourceSet.class, org.eclipse.emf.ecore.resource.ResourceSet.RESOURCE_SET__RESOURCES));
 	editingDomain.getResourceSet().eAdapters().add(new org.eclipse.emf.common.notify.Adapter() {
 
@@ -37,7 +36,7 @@ private org.eclipse.emf.transaction.TransactionalEditingDomain createEditingDoma
 		}
 			
 	});	
-*/	
+*/
 	return editingDomain;
 }
 «ENDAROUND»
@@ -47,13 +46,13 @@ private org.eclipse.emf.transaction.TransactionalEditingDomain createEditingDoma
 protected void handleElementChanged(ResourceSetInfo info, org.eclipse.emf.ecore.resource.Resource changedResource, org.eclipse.core.runtime.IProgressMonitor monitor) {
 	// ITEMIS CHANGE : Using the shared editing domain, we do not listen to document file changes any longer to avoid deadlocks
 	/*
-	«IF null == editorGen.application-»
+	«IF null = editorGen.application-»
 	org.eclipse.core.resources.IFile file = org.eclipse.emf.workspace.util.WorkspaceSynchronizer.getFile(changedResource);
 	if (file != null) {
 		try {
 			file.refreshLocal(org.eclipse.core.resources.IResource.DEPTH_INFINITE, monitor);
 		} catch (org.eclipse.core.runtime.CoreException ex) {
-			«editorGen.plugin.getActivatorQualifiedClassName()».getInstance().logError(«EXPAND xpt::Externalizer::accessorCall(i18nKeyForDocumentProviderHandleElementContentChanged()) FOR editorGen», ex);
+			«editorGen.plugin.getActivatorQualifiedClassName()».getInstance().logError(«EXPAND xpt::Externalizer::accessorCall(i18nKeyForDocumentProviderHandleElementContentChanged(self)) FOR editorGen», ex);
 			// Error message to log was initially taken from org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide.internal.l10n.EditorMessages.FileDocumentProvider_handleElementContentChanged
 		}
 	}

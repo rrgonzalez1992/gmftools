@@ -16,19 +16,18 @@ Export-Package: «editorGen.diagram.editPartsPackageName»,
  «editorGen.editor.packageName»,
  «editorGen.diagram.providersPackageName»
 Require-Bundle: org.eclipse.core.runtime,
-«IF editorGen.application == null-»
+«IF editorGen.application = null-»
  org.eclipse.core.resources,
 «ENDIF-»
-«IF editorGen.diagram.generateShortcutIcon() ||
-		(editorGen.navigator != null && editorGen.navigator.generateDomainModelNavigator)-»
+«IF editorGen.diagram.generateShortcutIcon() or (editorGen.navigator <> null and editorGen.navigator.generateDomainModelNavigator)-»
  org.eclipse.core.expressions,
 «ENDIF-»
  org.eclipse.jface,
-«IF editorGen.application == null-»
+«IF editorGen.application = null-»
  org.eclipse.ui.ide,
 «ENDIF-»
  org.eclipse.ui.views,
-«IF editorGen.navigator != null-»
+«IF editorGen.navigator <> null-»
  org.eclipse.ui.navigator,
  org.eclipse.ui.navigator.resources,
 «ENDIF-»
@@ -43,19 +42,19 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.gmf.runtime.diagram.ui.printing,
  org.eclipse.gmf.runtime.diagram.ui.printing.render,
 «ENDIF-»
-«IF editorGen.propertySheet != null-»
+«IF editorGen.propertySheet <> null-»
  org.eclipse.gmf.runtime.diagram.ui.properties,
 «ENDIF-»
  org.eclipse.gmf.runtime.diagram.ui.providers,
-«IF editorGen.application == null-»
+«IF editorGen.application = null-»
  org.eclipse.gmf.runtime.diagram.ui.providers.ide,
 «ENDIF-»
  org.eclipse.gmf.runtime.diagram.ui.render,
  org.eclipse.gmf.runtime.diagram.ui.resources.editor,
-«IF editorGen.application == null-»
+«IF editorGen.application = null-»
  org.eclipse.gmf.runtime.diagram.ui.resources.editor.ide,
 «ENDIF-»
-«FOREACH getAllRequiredPlugins() AS id-»
+«FOREACH getAllRequiredPlugins()->asSequence() AS id-»
  «id»;visibility:=reexport,
 «ENDFOREACH-»
  org.eclipse.gef;visibility:=reexport«REM»ITEMIS CHANGE: added dependency to ITEMIS runtime«ENDREM»,

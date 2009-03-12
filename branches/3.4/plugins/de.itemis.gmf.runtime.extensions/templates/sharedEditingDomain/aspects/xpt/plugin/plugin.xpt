@@ -1,0 +1,24 @@
+«IMPORT "http://www.eclipse.org/gmf/2008/GenModel"»
+«IMPORT "http://www.eclipse.org/emf/2002/Ecore"»
+«EXTENSION xpt::diagram::Utils»
+«EXTENSION xpt::GenEditorGenerator»
+
+«AROUND additions FOR gmfgen::GenPlugin»
+
+   <extension
+         point="de.itemis.gmf.runtime.extensions.diagramEditorInfo">
+       «EXPAND xpt::Common::xmlGeneratedTag»
+       <!-- ITEMIS CHANGE: register diagram file extension for resource unloading utility -->
+   	   <diagramEditorInfo fileExtension="«editorGen.diagramFileExtension»">
+       </diagramEditorInfo>
+   </extension>
+   
+    <extension
+         point="org.eclipse.emf.transaction.editingDomains">
+      <!-- ITEMIS CHANGE: register diagram editing domain factory --> 
+      <editingDomain
+            factory="org.eclipse.gmf.runtime.diagram.core.DiagramEditingDomainFactory"
+            id="«editorGen.diagram.editingDomainID»">
+      </editingDomain>
+   </extension>
+«ENDAROUND»

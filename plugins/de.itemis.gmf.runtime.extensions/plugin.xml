@@ -10,7 +10,6 @@
 -->
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="diagramEditorInfo" name="Diagram Editor Info" schema="schema/diagramEditorInfo.exsd"/>
    
       <extension
          point="org.eclipse.ui.popupMenus">

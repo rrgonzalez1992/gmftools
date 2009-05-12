@@ -3,7 +3,7 @@
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:gmfgen="http://www.eclipse.org/gmf/2008/GenModel" dynamicTemplates="true"
-    templateDirectory="/de.itemis.gmf.runtime.extensions/templates/sharedEditingDomain">
+    templateDirectory="/de.itemis.gmf.runtime.extensions/templates-3.4/sharedEditingDomain">
   <diagram
       visualID="1000"
       editPartClassName="NamespaceEditPart"

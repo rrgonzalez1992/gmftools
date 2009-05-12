@@ -16,7 +16,7 @@ List[emf::EObject] transform(List[emf::EObject] gmfGenModelContents) :
 
 internalTransform(GenEditorGenerator this) :
 	setDynamicTemplates(true) ->
-	setTemplateDirectory("/de.itemis.gmf.runtime.extensions/templates/sharedEditingDomain");
+	setTemplateDirectory("/de.itemis.gmf.runtime.extensions/templates-3.4/sharedEditingDomain");
 	
 internalTransform(GenPlugin this) :
 	setPrintingEnabled(true);

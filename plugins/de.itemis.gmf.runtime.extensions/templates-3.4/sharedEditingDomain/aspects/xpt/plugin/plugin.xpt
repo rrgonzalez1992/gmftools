@@ -4,14 +4,6 @@
 «EXTENSION xpt::GenEditorGenerator»
 
 «AROUND additions FOR gmfgen::GenPlugin»
-
-   <extension
-         point="de.itemis.gmf.runtime.extensions.diagramEditorInfo">
-       «EXPAND xpt::Common::xmlGeneratedTag»
-       <!-- ITEMIS CHANGE: register diagram file extension for resource unloading utility -->
-   	   <diagramEditorInfo fileExtension="«editorGen.diagramFileExtension»">
-       </diagramEditorInfo>
-   </extension>
    
     <extension
          point="org.eclipse.emf.transaction.editingDomains">

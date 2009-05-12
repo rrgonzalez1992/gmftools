@@ -28,8 +28,8 @@ internalTransform(GenCompartment this) :
 	(title=="EntityAttributeCompartment") ? setListLayout(true) : {};
 
 internalTransform(GenDiagram this) :
-/*	setContainsShortcutsTo({"Entity"}) ->
-	setShortcutsProvidedFor({"Entity"}) ->*/
+	setContainsShortcutsTo({"Entity"}) ->
+	setShortcutsProvidedFor({"Entity"}) ->
 	setEditingDomainID("de.itemis.gmf.example.sharedEditingDomainID");
 	
 internalTransform(emf::EObject o) :

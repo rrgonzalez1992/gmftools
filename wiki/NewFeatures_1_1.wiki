@@ -1,0 +1,14 @@
+#summary New and Noteworthy in 1.1
+
+= New Features in Version 1.1  =
+
+In version 1.1
+  * Added templates for sharing an editing domain in GMF 2.2 M5
+  * ResourceUnloadingStrategy now looks for open diagram editors before unloading unneeded resources. This is more consistent with combined semantic/graphical model files. It also eliminates the need for the extension point.
+  * You can now specify in the preferences where the model and transformation files for an editor are located, so models and transformation are no longer associated via naming conventions. This makes it easier to build GMF editors for genmodels in another plug-in.
+  * The transformation can now include other extensions on the project's classpath, the same way as it would work in oAW.
+
+= Migrating from 1.0 =
+
+ * Make sure you register the GMF gen models that share element types in the new preference section.
+ * Regenerate your editors to eliminate the contributions to the deleted extension point.

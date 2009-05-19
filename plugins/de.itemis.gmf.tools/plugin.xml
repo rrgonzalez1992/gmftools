@@ -110,7 +110,7 @@
                class="de.itemis.gmf.tools.popup.actions.HarmonizeTypeRegistrationAction"
                enablesFor="multiple"
                icon="icons/gmftools.png"
-               id="de.itemis.gmf.tools.action2"
+               id="de.itemis.gmf.tools.action3"
                label="Harmonize Type Registrations"
                menubarPath="de.itemis.gmf.tools.popupMenu/group"
                tooltip="Replaces duplicate type registrations by specialization types">

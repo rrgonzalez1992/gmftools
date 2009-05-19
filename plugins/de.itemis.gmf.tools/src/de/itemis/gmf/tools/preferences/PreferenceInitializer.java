@@ -25,7 +25,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	 */
 	public void initializeDefaultPreferences() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		store.setDefault(PreferenceUtil.GMF_GEN_MODELS, "");
+		store.setDefault(PreferenceUtil.GMF_MODELS, "");
 		store.setDefault(PreferenceUtil.GMF_DELETE_GMFGEN, true);
 		store.setDefault(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN, true);
 		store.setDefault(PreferenceUtil.GMF_TRANSFORM_GMFGEN, true);

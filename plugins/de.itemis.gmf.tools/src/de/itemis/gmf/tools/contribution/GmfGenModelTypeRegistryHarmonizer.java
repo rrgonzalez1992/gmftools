@@ -36,18 +36,20 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
 import de.itemis.gmf.tools.FileUtil;
+import de.itemis.gmf.tools.preferences.GmfModel;
 
 public class GmfGenModelTypeRegistryHarmonizer {
 
-	public static boolean harmonizeTypeRegistration(List<URI> gmfGenModelURIs, Set<IFile> changedGmfGenModels, IProgressMonitor monitor) {
+	public static boolean harmonizeTypeRegistration(List<GmfModel> gmfModels, Set<IFile> changedGmfGenModels, IProgressMonitor monitor) {
 		try {
 			monitor.subTask("Harmonize type registrations");
 			ResourceSet resourceSet = new ResourceSetImpl();
 			CrossReferenceAdapter crossReferenceAdapter = new CrossReferenceAdapter();
 			resourceSet.eAdapters().add(crossReferenceAdapter);
 			List<List<MetamodelType>> elementTypes = new ArrayList<List<MetamodelType>>();
-			for (URI resourceURI : gmfGenModelURIs) {
-				Resource resource = resourceSet.getResource(resourceURI, true);
+			for(GmfModel gmfModel: gmfModels) {
+				URI gmfGenModelURI = FileUtil.getURI(gmfModel.getGmfGenModelFile());
+				Resource resource = resourceSet.getResource(gmfGenModelURI, true);
 				elementTypes.add(getMetamodelTypes(resource));
 			}
 			for (int i = 0; i < elementTypes.size(); ++i) {

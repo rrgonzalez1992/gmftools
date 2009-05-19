@@ -7,12 +7,11 @@
  *******************************************************************************/
 package de.itemis.gmf.tools.popup.actions;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.IAction;
 
-import de.itemis.gmf.tools.FileUtil;
 import de.itemis.gmf.tools.contribution.GmfGenModelTransformer;
+import de.itemis.gmf.tools.preferences.GmfModel;
 
 public class TransformGenModelAction extends GMFToolsAction {
 
@@ -21,13 +20,8 @@ public class TransformGenModelAction extends GMFToolsAction {
 	}
 
 	public void run(IAction action) {
-		for (IFile gmfFile : gmfFiles) {
-			IFile gmfGenTrafoFile = FileUtil.getSiblingWithExtension(gmfFile,
-					"ext");
-			IFile transformedGmfGenModelFile = FileUtil
-					.getSiblingWithExtension(gmfFile, "transformed.gmfgen");
-			GmfGenModelTransformer.transformGmfGenModelFile(gmfFile,
-					gmfGenTrafoFile, transformedGmfGenModelFile,
+		for(GmfModel gmfModel : gmfModels) {
+			GmfGenModelTransformer.transformGmfGenModelFile(gmfModel,
 					new NullProgressMonitor());
 		}
 	}

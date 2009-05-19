@@ -8,14 +8,9 @@
 package de.itemis.gmf.tools.preferences;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import de.itemis.gmf.tools.Activator;
@@ -25,7 +20,7 @@ import de.itemis.gmf.tools.Activator;
  */
 public class PreferenceUtil {
 
-	public static final String GMF_GEN_MODELS = "gmfGenModels";
+	public static final String GMF_MODELS = "gmfModels";
 	public static final String GMF_DELETE_GMFGEN = "deleteGmfGenModel";
 	public static final String GMF_TRANSFORM_MAP_2_GMFGEN = "transformMapping2GmfGenModel";
 	public static final String GMF_TRANSFORM_GMFGEN = "transformGmfGenModels";
@@ -33,68 +28,26 @@ public class PreferenceUtil {
 	public static final String GMF_DELETE_GENERATED_PLUGIN = "deletegeGeneratedDiagramPlugin";
 	public static final String GMF_GENERATE_DIAGRAM_PLUGIN = "generateDiagramPlugin";
 
-	public static void addGmfGenModel(IFile gmfGenModelFile) {
+	private static GmfModel.Factory gmfModelFactory = new GmfModel.Factory();
+	
+	public static List<GmfModel> getGmfModels() {
 		IPreferenceStore store = getPreferenceStore();
-		String gmfGenModelUris = getGmfGenModelUris(store);
-		List<String> names = pathElementsAsList(gmfGenModelUris);
-		String path = gmfGenModelFile.getFullPath().toString();
-		if (!names.contains(path)) {
-			String value = ((gmfGenModelUris != "") ? (gmfGenModelUris + ":")
-					: "")
-					+ path;
-			store.putValue(PreferenceUtil.GMF_GEN_MODELS, value);
-		}
-	}
-
-	public static void removeGmfGenModel(IFile gmfGenModelFile) {
-		IPreferenceStore store = getPreferenceStore();
-		String gmfGenModelUris = getGmfGenModelUris(store);
-		List<String> names = pathElementsAsList(gmfGenModelUris);
-		String path = gmfGenModelFile.getFullPath().toString();
-		if (names.remove(path)) {
-			StringBuffer newGmfGenModelUris = new StringBuffer();
-			boolean isFirst = true;
-			for (String name : names) {
-				if (!isFirst) {
-					newGmfGenModelUris.append(":");
-				}
-				newGmfGenModelUris.append(name);
-				isFirst = false;
+		String string = store.getString(GMF_MODELS);
+		if (string == null || "".equals(string))
+			return Collections.emptyList();
+		ArrayList<GmfModel> result = new ArrayList<GmfModel>();
+		String[] paths = string.split(ObjectListEditor.PREFERENCE_ITEM_SEPARATOR);
+		for (String path : paths) {
+			if (!"".equals(path)) {
+				GmfModel gmfModels = (GmfModel) gmfModelFactory.deserialize(path);
+				result.add(gmfModels);
 			}
-			store.putValue(PreferenceUtil.GMF_GEN_MODELS, newGmfGenModelUris
-					.toString());
 		}
-	}
-
-	private static List<String> pathElementsAsList(String pathString) {
-		if (pathString == null || pathString.equals("")) {
-			return new ArrayList<String>();
-		}
-		return Arrays.asList(pathString.split(":"));
-	}
-
-	private static String getGmfGenModelUris(IPreferenceStore store) {
-		return store.getString(PreferenceUtil.GMF_GEN_MODELS);
+		return result;
 	}
 
 	private static IPreferenceStore getPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();
-	}
-
-	public static List<URI> getGmfGenModels() {
-		IPreferenceStore store = getPreferenceStore();
-		String gmfGenModelFiles = getGmfGenModelUris(store);
-		List<String> names = pathElementsAsList(gmfGenModelFiles);
-		List<URI> gmfGenModelURIs = new ArrayList<URI>(names.size());
-		IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-		for (String gmfGenModelFileName : names) {
-			if (workspaceRoot.exists(new Path(gmfGenModelFileName))) {
-				URI uri = URI.createPlatformResourceURI(gmfGenModelFileName,
-						true);
-				gmfGenModelURIs.add(uri);
-			}
-		}
-		return gmfGenModelURIs;
 	}
 
 	public static boolean isDeleteGmfGen() {

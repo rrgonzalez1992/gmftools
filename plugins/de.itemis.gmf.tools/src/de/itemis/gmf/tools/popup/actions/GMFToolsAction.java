@@ -20,10 +20,13 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
+import de.itemis.gmf.tools.preferences.GmfModel;
+import de.itemis.gmf.tools.preferences.PreferenceUtil;
+
 public abstract class GMFToolsAction implements IObjectActionDelegate {
 
 	protected Shell shell;
-	protected List<IFile> gmfFiles;
+	protected List<GmfModel> gmfModels;
 	protected String fileExtension;
 
 	/**
@@ -31,7 +34,7 @@ public abstract class GMFToolsAction implements IObjectActionDelegate {
 	 */
 	public GMFToolsAction(String fileExtension) {
 		super();
-		gmfFiles = new ArrayList<IFile>();
+		gmfModels = new ArrayList<GmfModel>();
 		this.fileExtension = fileExtension;
 	}
 
@@ -49,21 +52,30 @@ public abstract class GMFToolsAction implements IObjectActionDelegate {
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 			if (!structuredSelection.isEmpty()) {
-				gmfFiles.clear();
-				for(Iterator<?> iter = structuredSelection.iterator(); iter.hasNext();) {
+				gmfModels.clear();
+				List<GmfModel> registeredGmfModels = PreferenceUtil
+						.getGmfModels();
+				for (Iterator<?> iter = structuredSelection.iterator(); iter
+						.hasNext();) {
 					Object selectedElement = iter.next();
 					if (selectedElement instanceof IFile) {
 						IFile selectedFile = (IFile) selectedElement;
 						String fileExtension = selectedFile.getFileExtension();
 						if (!this.fileExtension.equals(fileExtension)) {
-							gmfFiles.clear();
+							gmfModels.clear();
 							action.setEnabled(false);
-						} 
-						action.setEnabled(true);
-						gmfFiles.add(selectedFile);
+							return;
+						}
+						for (GmfModel registeredGmfModel : registeredGmfModels) {
+							if (registeredGmfModel.hasFile(selectedFile)) {
+								action.setEnabled(true);
+								gmfModels.add(registeredGmfModel);
+								break;
+							}
+						}
 					}
 				}
-				if(!gmfFiles.isEmpty()) {
+				if (!gmfModels.isEmpty()) {
 					return;
 				}
 			}

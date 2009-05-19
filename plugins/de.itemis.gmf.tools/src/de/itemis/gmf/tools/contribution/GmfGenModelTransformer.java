@@ -8,13 +8,17 @@
 package de.itemis.gmf.tools.contribution;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -22,23 +26,38 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.gmf.codegen.gmfgen.GMFGenPackage;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.m2t.type.emf.EmfRegistryMetaModel;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.xtend.XtendFacade;
-import org.eclipse.xtend.expression.ExecutionContextImpl;
-import org.eclipse.xtend.typesystem.emf.EmfRegistryMetaModel;
+import org.openarchitectureware.OawPlugin;
+import org.openarchitectureware.core.IOawProject;
+import org.openarchitectureware.core.IOawResource;
+import org.openarchitectureware.core.builder.OawNature;
+import org.openarchitectureware.core.internal.OawProject;
+import org.openarchitectureware.expression.ExecutionContextImpl;
+import org.openarchitectureware.expression.ResourceManager;
+import org.openarchitectureware.expression.ResourceManagerDefaultImpl;
+import org.openarchitectureware.expression.ResourceParser;
+import org.openarchitectureware.expression.TypeSystemImpl;
+import org.openarchitectureware.xtend.XtendFacade;
 
 import de.itemis.gmf.tools.FileUtil;
+import de.itemis.gmf.tools.preferences.GmfModel;
 
 public class GmfGenModelTransformer {
 
-	public static IFile createOrGetTransformationFile(IFile gmfGenModel,
+	public static boolean createOrGetTransformationFile(GmfModel gmfModel,
 			IProgressMonitor monitor) {
 		try {
+			IFile gmfGenModel = gmfModel.getGmfGenModelFile();
+			if (gmfGenModel == null)
+				return false;
 			gmfGenModel.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
-			IFile trafoFile = FileUtil.getSiblingWithExtension(gmfGenModel,
-					"ext");
+			IFile trafoFile = gmfModel.getGmfTrafoFile();
 			if (!trafoFile.exists()) {
 				monitor.subTask("Creating Xtend transformation");
 				StringBuffer b = new StringBuffer();
@@ -57,41 +76,51 @@ public class GmfGenModelTransformer {
 						new NullProgressMonitor());
 			}
 			monitor.worked(1);
-			return trafoFile;
+			return true;
 		} catch (Exception exc) {
 			MessageDialog.openError(Display.getDefault().getActiveShell(),
 					"Error accessing transformation file", exc.getMessage());
 		}
-		return null;
-
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static boolean transformGmfGenModelFile(IFile gmfGenModelFile,
-			IFile transformationFile, IFile transformedGmfGenModelFile, IProgressMonitor monitor) {
+	public static boolean transformGmfGenModelFile(GmfModel gmfModel,
+			IProgressMonitor monitor) {
 		try {
+			IFile gmfGenModelFile = gmfModel.getGmfGenModelFile();
+			IFile transformationFile = gmfModel.getGmfTrafoFile();
+			IFile transformedGmfGenModelFile = gmfModel
+					.getTransformedGmfGenModelFile();
+			if (gmfGenModelFile == null || transformationFile == null
+					|| transformedGmfGenModelFile == null) {
+				return false;
+			}
 			gmfGenModelFile.getParent().refreshLocal(IResource.DEPTH_ONE,
 					monitor);
 			monitor.subTask("Transforming GMF generator model");
 			ResourceSet resourceSet = new ResourceSetImpl();
+			final List<EPackage> metaModelPackages = findMetaModelPackages(resourceSet);
 			URI genModelResourceURI = FileUtil.getURI(gmfGenModelFile);
 			Resource genModelResource = resourceSet.getResource(
 					genModelResourceURI, true);
-			EmfRegistryMetaModel emfRegistryMetaModel = new EmfRegistryMetaModel() {
+			TypeSystemImpl ts = new TypeSystemImpl();
+			ts.registerMetaModel(new EmfRegistryMetaModel() {
 				@Override
 				protected EPackage[] allPackages() {
-					return new EPackage[] { GMFGenPackage.eINSTANCE,
-							EcorePackage.eINSTANCE,
-							GenModelPackage.eINSTANCE};
+					return metaModelPackages
+							.toArray(new EPackage[metaModelPackages.size()]);
 				}
-			};
-			ExecutionContextImpl executionContext = new ExecutionContextImpl();
-			executionContext.registerMetaModel(emfRegistryMetaModel);
-			XtendFacade facade = XtendFacade.create(executionContext, FileUtil
+			});
+			ExecutionContextImpl context = new ExecutionContextImpl(
+					new WorkspaceResourceManager(OawPlugin.getOawModelManager()
+							.findProject(gmfGenModelFile.getProject())), ts,
+					null);
+			XtendFacade facade = XtendFacade.create(context, FileUtil
 					.getLocationWithoutExtension(transformationFile));
 			List<EObject> transformedGenModel = (List<EObject>) facade.call(
-					"transform", (Object)genModelResource.getContents());
-			
+					"transform", genModelResource.getContents());
+
 			URI transformedGenModelURI = FileUtil
 					.getURI(transformedGmfGenModelFile);
 			Resource transformedGenModelResource = resourceSet
@@ -108,5 +137,68 @@ public class GmfGenModelTransformer {
 		return false;
 	}
 
+	private static List<EPackage> findMetaModelPackages(ResourceSet resourceSet) {
+		final List<EPackage> metamodels = new ArrayList<EPackage>();
+		EcoreUtil.resolveAll(resourceSet);
+		for (Resource resource : resourceSet.getResources()) {
+			TreeIterator<EObject> allContents = resource.getAllContents();
+			if (allContents.hasNext()) {
+				EObject rootObject = allContents.next();
+				if (rootObject instanceof EPackage)
+					metamodels.add((EPackage) rootObject);
+			}
+		}
+		if (!metamodels.contains(GMFGenPackage.eINSTANCE)) {
+			metamodels.add(GMFGenPackage.eINSTANCE);
+		}
+		if (!metamodels.contains(EcorePackage.eINSTANCE)) {
+			metamodels.add(EcorePackage.eINSTANCE);
+		}
+		if (!metamodels.contains(GenModelPackage.eINSTANCE)) {
+			metamodels.add(GenModelPackage.eINSTANCE);
+		}
+		return metamodels;
+	}
+
+	public static IOawProject createProject(IProject project) {
+		if (project == null)
+			return null;
+		final IJavaProject asJavaProject = JavaCore.create(project);
+		try {
+			if (asJavaProject != null
+					&& project.getProject().isAccessible()
+					&& project.getProject()
+							.isNatureEnabled(OawNature.NATURE_ID))
+				return new OawProject(asJavaProject);
+		} catch (final CoreException e) {
+			MessageDialog
+					.openError(
+							Display.getDefault().getActiveShell(),
+							"Error transforming GMF GenModel: Could not instantiate OawProject",
+							e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * Copied from package org.openarchitectureware.emf.editor.oaw
+	 */
+	private static class WorkspaceResourceManager extends ResourceManagerDefaultImpl {
+		private IOawProject project;
+
+		public WorkspaceResourceManager(IOawProject p) {
+			this.project = p;
+		}
+
+		public org.openarchitectureware.expression.Resource loadResource(
+				String fullyQualifiedName, String extension) {
+			IOawResource oawResource = project.findOawResource(
+					fullyQualifiedName, extension);
+			if (oawResource != null)
+				return oawResource.getOawResource();
+			return super.loadResource(fullyQualifiedName, extension);
+		}
+
+	}
 
 }

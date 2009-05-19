@@ -32,8 +32,8 @@ import de.itemis.gmf.tools.FileUtil;
 
 public class GmfGeneratedPluginRemover {
 
-	private static final Collection<String> EXCLUDE_DIR_NAMES = Arrays
-			.asList(new String[] { "CVS", ".svn" });
+	private static final Collection<String> EXCLUDE_FILE_NAMES = Arrays
+			.asList(new String[] { "CVS", ".svn", ".project" });
 
 	public static boolean deleteGeneratedPlugins(
 			Collection<IFile> gmfGenModels, IProgressMonitor monitor) {
@@ -81,9 +81,9 @@ public class GmfGeneratedPluginRemover {
 		}
 
 		public boolean visit(IResource resource) throws CoreException {
-			if (resource instanceof IContainer) {
-				String name = resource.getName();
-				return !(EXCLUDE_DIR_NAMES.contains(name));
+			String name = resource.getName();
+			if(EXCLUDE_FILE_NAMES.contains(name)) {
+				return false;
 			}
 			resource.delete(true, monitor);
 			return false;

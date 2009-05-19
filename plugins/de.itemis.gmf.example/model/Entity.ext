@@ -19,7 +19,8 @@ internalTransform(GenEditorGenerator this) :
 	setTemplateDirectory("/de.itemis.gmf.runtime.extensions/templates-3.4/sharedEditingDomain");
 	
 internalTransform(GenPlugin this) :
-	setPrintingEnabled(true);
+	setPrintingEnabled(true)->
+	requiredPlugins.add("de.itemis.gmf.runtime.extensions");
 	
 internalTransform(OpenDiagramBehaviour this) :
 	setEditPolicyClassName(((GenCommonBase) eContainer).editPartClassName.trim(8) + "OpenDiagramEditPolicy");

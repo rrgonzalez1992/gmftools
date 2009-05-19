@@ -21,28 +21,36 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
 import de.itemis.gmf.tools.FileUtil;
+import de.itemis.gmf.tools.preferences.GmfModel;
 import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
 public class GmfMappingToGenModelTransformer {
 
 	@SuppressWarnings("restriction")
-	public static IFile transformMapToGmfGenModel(IFile gmfMappingModel,
-			IFile genModel, IFile gmfGenModel, IProgressMonitor monitor) {
+	public static boolean transformMapToGmfGenModel(GmfModel gmfModel,
+			IProgressMonitor monitor) {
 		try {
+			IFile gmfGenModel = gmfModel.getGmfGenModelFile();
+			IFile gmfMapModel = gmfModel.getGmfMapModelFile();
+			IFile emfGenModel = gmfModel.getGenModelFile();
+			if (emfGenModel == null
+					|| gmfMapModel == null
+					|| gmfGenModel == null)
+				return false;
 			monitor
 					.subTask("Creating GMF generator model from GMF mapping model");
-			gmfMappingModel.getParent().refreshLocal(IResource.DEPTH_ONE,
+			gmfMapModel.getParent().refreshLocal(IResource.DEPTH_ONE,
 					monitor);
-			if(PreferenceUtil.isDeleteGmfGen() && gmfGenModel.exists()) {
+			if (PreferenceUtil.isDeleteGmfGen() && gmfGenModel.exists()) {
 				gmfGenModel.delete(true, monitor);
 			}
 			final ResourceSet rs = new ResourceSetImpl();
 			TransformToGenModelOperation op = new TransformToGenModelOperation(
 					rs);
 			configureOptions(op.getOptions());
-			op.loadMappingModel(FileUtil.getURI(gmfMappingModel),
+			op.loadMappingModel(FileUtil.getURI(gmfMapModel),
 					new NullProgressMonitor());
-			op.loadGenModel(FileUtil.getURI(genModel),
+			op.loadGenModel(FileUtil.getURI(emfGenModel),
 					new NullProgressMonitor());
 			op.setGenURI(FileUtil.getURI(gmfGenModel));
 			IStatus status = op
@@ -53,12 +61,12 @@ public class GmfMappingToGenModelTransformer {
 			gmfGenModel.refreshLocal(IResource.DEPTH_ONE,
 					new NullProgressMonitor());
 			monitor.worked(1);
-			return gmfGenModel;
+			return true;
 		} catch (CoreException ce) {
 			MessageDialog.openError(Display.getDefault().getActiveShell(),
 					"Error transforming map model", ce.getMessage());
 		}
-		return null;
+		return false;
 	}
 
 	@SuppressWarnings("restriction")

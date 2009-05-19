@@ -27,13 +27,13 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.itemis.gmf.tools.Activator;
-import de.itemis.gmf.tools.FileUtil;
+import de.itemis.gmf.tools.preferences.GmfModel;
 import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
 public class GMFToolsHandler extends AbstractHandler implements
 		IRunnableWithProgress {
 
-	private IFile lastGmfFile;
+	private GmfModel lastGmfModel;
 
 	private IWorkbenchWindow window;
 
@@ -41,13 +41,15 @@ public class GMFToolsHandler extends AbstractHandler implements
 
 	private Set<IFile> changedGmfGenModels;
 
+	private GmfModel gmfModel;
+
 	public GMFToolsHandler() {
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		IFile baseFile = getBaseFile();
-		if (baseFile != null) {
+		gmfModel = getGmfModels();
+		if (gmfModel != null) {
 			try {
 				new ProgressMonitorDialog(window.getShell()).run(false, true,
 						this);
@@ -71,51 +73,37 @@ public class GMFToolsHandler extends AbstractHandler implements
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 		try {
-			IFile baseFile = getBaseFile();
-			IFile genModel = getGmfFile("genmodel", baseFile);
-			IFile gmfMappingModel = getGmfFile("gmfmap", baseFile);
-			IFile generatedGmfGenModel = getGmfFile("gmfgen", baseFile);
-
 			changedGmfGenModels = new HashSet<IFile>();
 			isOK = false;
 			monitor.beginTask("Creating transformed GMF generator model", 5);
-			if (PreferenceUtil.isTransformMap2GmfGen() && genModel != null
-					&& gmfMappingModel != null && generatedGmfGenModel != null) {
-				generatedGmfGenModel = GmfMappingToGenModelTransformer
-						.transformMapToGmfGenModel(gmfMappingModel, genModel,
-								generatedGmfGenModel, monitor);
-				isOK = generatedGmfGenModel != null;
+			if (PreferenceUtil.isTransformMap2GmfGen()) {
+				isOK = GmfMappingToGenModelTransformer
+						.transformMapToGmfGenModel(gmfModel, monitor);
 				if (!isOK) {
 					return;
 				}
 				if (!PreferenceUtil.isTransformGmfGen()) {
-					changedGmfGenModels.add(generatedGmfGenModel);
+					changedGmfGenModels.add(gmfModel.getGmfGenModelFile());
 				}
 			}
-			if (PreferenceUtil.isTransformGmfGen()
-					&& generatedGmfGenModel != null) {
-				IFile gmfGenTrafoFile = GmfGenModelTransformer
-						.createOrGetTransformationFile(generatedGmfGenModel,
-								monitor);
-				isOK = gmfGenTrafoFile != null;
+			if (PreferenceUtil.isTransformGmfGen()) {
+				isOK = GmfGenModelTransformer.createOrGetTransformationFile(
+						gmfModel, monitor);
 				if (!isOK) {
 					return;
 				}
-				IFile transformedGmfGenModelFile = getGmfFile(
-						"transformed.gmfgen", generatedGmfGenModel);
 				isOK = GmfGenModelTransformer.transformGmfGenModelFile(
-						generatedGmfGenModel, gmfGenTrafoFile,
-						transformedGmfGenModelFile, monitor);
+						gmfModel, monitor);
 				if (!isOK) {
 					return;
 				}
-				PreferenceUtil.addGmfGenModel(transformedGmfGenModelFile);
-				changedGmfGenModels.add(transformedGmfGenModelFile);
+				changedGmfGenModels.add(gmfModel.getTransformedGmfGenModelFile());
 			}
 			if (PreferenceUtil.isFixTypeRegistration()) {
 				isOK = GmfGenModelTypeRegistryHarmonizer
 						.harmonizeTypeRegistration(PreferenceUtil
-								.getGmfGenModels(), changedGmfGenModels, monitor);
+								.getGmfModels(), changedGmfGenModels,
+								monitor);
 				if (!isOK) {
 					return;
 				}
@@ -132,36 +120,28 @@ public class GMFToolsHandler extends AbstractHandler implements
 	}
 
 	private void reportError(Exception e) {
-		MessageDialog.openError(window.getShell(), "Error", e
-				.getMessage());
-		Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error executing GMF action", e));
+		MessageDialog.openError(window.getShell(), "Error", e.getMessage());
+		Activator.getDefault().getLog().log(
+				new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+						"Error executing GMF action", e));
 	}
 
-	private IFile getBaseFile() {
+	private GmfModel getGmfModels() {
 		ISelection selection = window.getSelectionService().getSelection();
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 			if (!structuredSelection.isEmpty()) {
 				Object selectedElement = structuredSelection.getFirstElement();
 				if (selectedElement instanceof IFile) {
-					return (IFile) selectedElement;
+					for (GmfModel gmfModels : PreferenceUtil.getGmfModels()) {
+						if (gmfModels.hasFile((IFile) selectedElement))
+							return gmfModels;
+					}
 				}
 
 			}
 		}
-		return lastGmfFile;
-	}
-
-	private IFile getGmfFile(String extension, IFile baseFile) {
-		if (baseFile != null) {
-			IFile gmfFile = FileUtil.getSiblingWithExtension(baseFile,
-					extension);
-			if (gmfFile.exists()) {
-				lastGmfFile = gmfFile;
-			}
-			return gmfFile;
-		}
-		return null;
+		return lastGmfModel;
 	}
 
 }

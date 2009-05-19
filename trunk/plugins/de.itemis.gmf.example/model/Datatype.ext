@@ -23,7 +23,8 @@ internalTransform(GenEditorGenerator this) :
 	
 internalTransform(GenPlugin this) :
 	setPrintingEnabled(true)->
-	setID("de.itemis.gmf.example.datatype.diagram");
+	setID("de.itemis.gmf.example.datatype.diagram")->
+	requiredPlugins.add("de.itemis.gmf.runtime.extensions");
 	
 internalTransform(OpenDiagramBehaviour this) :
 	setEditPolicyClassName(((GenCommonBase) eContainer).editPartClassName.trim(8) + "OpenDiagramEditPolicy");

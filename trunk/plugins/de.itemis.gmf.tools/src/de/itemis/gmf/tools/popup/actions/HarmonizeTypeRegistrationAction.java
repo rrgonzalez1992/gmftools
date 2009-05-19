@@ -7,16 +7,12 @@
  *******************************************************************************/
 package de.itemis.gmf.tools.popup.actions;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.action.IAction;
 
-import de.itemis.gmf.tools.FileUtil;
 import de.itemis.gmf.tools.contribution.GmfGenModelTypeRegistryHarmonizer;
 
 public class HarmonizeTypeRegistrationAction extends GMFToolsAction {
@@ -26,11 +22,7 @@ public class HarmonizeTypeRegistrationAction extends GMFToolsAction {
 	}
 
 	public void run(IAction action) {
-		List<URI> genModelURIs = new ArrayList<URI>(gmfFiles.size());
-		for(IFile gmfFile : gmfFiles) {
-			genModelURIs.add(FileUtil.getURI(gmfFile));
-		}
-		GmfGenModelTypeRegistryHarmonizer.harmonizeTypeRegistration(genModelURIs, new HashSet<IFile>(), new NullProgressMonitor());
+		GmfGenModelTypeRegistryHarmonizer.harmonizeTypeRegistration(gmfModels, new HashSet<IFile>(), new NullProgressMonitor());
 	}
 
 }

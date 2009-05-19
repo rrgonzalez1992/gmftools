@@ -78,7 +78,6 @@ public class GmfModel implements ObjectListEntry {
 		return gmfMapModelFile.equals(file) || gmfGenModelFile.equals(file) || gmfTrafoFile.equals(file) || transformedGmfGenModelFile.equals(file);
 	}
 
-
 	public static class Factory implements ObjectListEntry.Factory {
 
 		public ObjectListEntry create() {

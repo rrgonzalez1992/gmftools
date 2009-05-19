@@ -51,7 +51,7 @@ public class GMFToolsPreferencePage
 		addField(new BooleanFieldEditor(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN, "Transform mapping model to gmfgen",fieldEditorParent));
 		addField(new BooleanFieldEditor(PreferenceUtil.GMF_TRANSFORM_GMFGEN, "Transform gmfgen model",fieldEditorParent));
 		addField(new BooleanFieldEditor(PreferenceUtil.GMF_FIX_TYPE_REGISTRY, "Fix type registrations in gmfgen models",fieldEditorParent));
-		addField(new MapModelListEditor("name", "GMF models", fieldEditorParent));
+		addField(new MapModelListEditor(PreferenceUtil.GMF_MODELS, "GMF models", fieldEditorParent));
 		addField(new BooleanFieldEditor(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN, "Delete generated diagram plug-in",fieldEditorParent));
 		addField(new BooleanFieldEditor(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN, "Generate diagram plug-in",fieldEditorParent));
 	}

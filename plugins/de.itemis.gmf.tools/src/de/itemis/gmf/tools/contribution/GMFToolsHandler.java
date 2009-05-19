@@ -135,6 +135,7 @@ public class GMFToolsHandler extends AbstractHandler implements
 				if (selectedElement instanceof IFile) {
 					for (GmfModel gmfModels : PreferenceUtil.getGmfModels()) {
 						if (gmfModels.hasFile((IFile) selectedElement))
+							lastGmfModel = gmfModels;
 							return gmfModels;
 					}
 				}

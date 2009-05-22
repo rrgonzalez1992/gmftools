@@ -12,3 +12,4 @@ In version 1.1
 
  * Make sure you register the GMF gen models that share element types in the new preference section.
  * Regenerate your editors to eliminate the contributions to the deleted extension point.
+ * *IMPORTANT:* You must create a GMF-File set in the GMFTools' preferences in order to make the GMF button work!

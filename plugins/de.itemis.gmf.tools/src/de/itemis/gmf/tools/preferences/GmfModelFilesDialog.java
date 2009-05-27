@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -49,10 +49,11 @@ public class GmfModelFilesDialog extends Dialog {
 		nameField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
 				2, 1));
 		nameField.setText((gmfModels.getDisplayName() == null) ? "" : gmfModels.getDisplayName());
-		nameField.addVerifyListener(new VerifyListener() {
-			public void verifyText(VerifyEvent e) {
-				gmfModels.setDisplayName(e.text);
-				e.doit = true;
+		nameField.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				String name = ((Text) e.widget).getText();
+				gmfModels.setDisplayName(name);
+				getButton(OK).setEnabled(name != null && !"".equals(name));
 			}
 		});
 		selectors.add(new GmfModelFileSelector(this, "Mapping Model") {
@@ -162,4 +163,5 @@ public class GmfModelFilesDialog extends Dialog {
 			nameField.setText(newName);
 		}
 	}
+	
 }

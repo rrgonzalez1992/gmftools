@@ -10,7 +10,6 @@ package de.itemis.gmf.tools.contribution;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;

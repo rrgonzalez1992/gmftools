@@ -39,9 +39,7 @@ import org.openarchitectureware.core.IOawResource;
 import org.openarchitectureware.core.builder.OawNature;
 import org.openarchitectureware.core.internal.OawProject;
 import org.openarchitectureware.expression.ExecutionContextImpl;
-import org.openarchitectureware.expression.ResourceManager;
 import org.openarchitectureware.expression.ResourceManagerDefaultImpl;
-import org.openarchitectureware.expression.ResourceParser;
 import org.openarchitectureware.expression.TypeSystemImpl;
 import org.openarchitectureware.xtend.XtendFacade;
 

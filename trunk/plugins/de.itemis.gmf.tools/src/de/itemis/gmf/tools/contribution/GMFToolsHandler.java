@@ -65,7 +65,7 @@ public class GMFToolsHandler extends AbstractHandler implements
 		} else {
 			MessageDialog.openInformation(window.getShell(),
 					"No GMF file set selected",
-					"Go to Prferences -> GMF Tools and create a set of files for the editor first.");
+					"Go to Preferences -> GMF Tools and create a set of files for the editor first.");
 		}
 		return null;
 	}

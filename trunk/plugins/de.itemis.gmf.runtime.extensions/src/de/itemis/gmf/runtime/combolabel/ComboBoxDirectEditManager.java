@@ -164,7 +164,7 @@ public class ComboBoxDirectEditManager extends DirectEditManager {
 	@Override
 	protected CellEditor createCellEditorOn(Composite composite) {
 		List<?> choices = new ArrayList<Object>(
-				((ISemanticRedirectingEditPart) getEditPart()).getChoices());
+				((ISemanticRedirectingEditPart) getEditPart()).getCandidates());
 		choices.add(0, null);
 		ExtendedComboBoxCellEditor cellEditor = new ExtendedComboBoxCellEditor(
 				composite, choices, getLabelProvider(), SWT.SIMPLE);

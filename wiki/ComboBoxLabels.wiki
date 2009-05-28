@@ -31,4 +31,4 @@ Sorry, but this is only a rough sketch of the steps involved. The modifications 
    
 The result can look like this
 
-[http://gmftools.googlecode.com/svn/wiki/images/comboLabel.png][http://gmftools.googlecode.com/svn/wiki/images/comboLabel_expnded.png]
+[http://gmftools.googlecode.com/svn/wiki/images/comboLabel.png][http://gmftools.googlecode.com/svn/wiki/images/comboLabel_expanded.png]

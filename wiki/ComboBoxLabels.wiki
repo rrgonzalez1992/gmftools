@@ -28,3 +28,7 @@ Sorry, but this is only a rough sketch of the steps involved. The modifications 
    * Override 'createDefaultEditPolicies()' and replace install a new 'ComboBoxDirectEditPolicy' with the 'EditPolicy.DIRECT_EDIT_ROLE' role.
    * Override 'getLabelText()' to compose the label's text from the referenced element.
    * Let the edit part implement 'ISemanticRedirectingEditPart'.
+   
+The result can look like this
+
+[http://gmftools.googlecode.com/svn/wiki/images/comboLabel.png][http://gmftools.googlecode.com/svn/wiki/images/comboLabel_expnded.png]

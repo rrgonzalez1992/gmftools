@@ -13,7 +13,7 @@ There are two challenges in implementing that with GMF
 GMFTools provides two classes and an interface to help you in this context
 
   * {{{de.itemis.gmf.runtime.combolabel.ComboBoxDirectEditManager}}} replaces the {{{TextDirectEditManager}}} in the generated label edit part. It uses a {{{ComboBoxCellEditor}}} to let the user choose the value of the reference from a list of candidates.
-  * {{{de.itemis.gmf.runtime.combolabel.ComboBoxDirectEditPolicy}}} replaces the {{{LabelDirectEditPolicy}}} to circumvent the generated parser and directly set the selected value using 'ComboBoxDirectEditManager'
+  * {{{de.itemis.gmf.runtime.combolabel.ComboBoxDirectEditPolicy}}} replaces the {{{LabelDirectEditPolicy}}} to circumvent the generated parser and directly set the selected value using the {{{ISemanticRedirectingEditPart}}} interface.
   * {{{de.itemis.gmf.runtime.combolabel.ISemanticRedirectingEditPart}}} is an additional interface the generated label edit part should implement to provide the list of candidates, a getter and a setter for the reference's value.
 
 

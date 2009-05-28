@@ -12,9 +12,9 @@ There are two challenges in implementing that with GMF
 
 GMFTools provides two classes and an interface to help you in this context
 
-  * 'de.itemis.gmf.runtime.combolabel.ComboBoxDirectEditManager' replaces the 'TextDirectEditManager' in the generated label edit part. It uses a CCombo to let the user choose the value of the reference from a list of candidates.
-  * 'de.itemis.gmf.runtime.combolabel.ComboBoxDirectEditPolicy' replaces the 'LabelDirectEditPolicy' to circumvent the generated parser and directly set the selected value using 'ComboBoxDirectEditManager'
-  * 'de.itemis.gmf.runtime.combolabel.ISemanticRedirectingEditPart' is an additional interface the generated label edit part should implement to provide the list of candidates, a getter and a setter for the reference's value.
+  * {{{de.itemis.gmf.runtime.combolabel.ComboBoxDirectEditManager}}} replaces the {{{TextDirectEditManager}}} in the generated label edit part. It uses a {{{ComboBoxCellEditor}}} to let the user choose the value of the reference from a list of candidates.
+  * {{{de.itemis.gmf.runtime.combolabel.ComboBoxDirectEditPolicy}}} replaces the {{{LabelDirectEditPolicy}}} to circumvent the generated parser and directly set the selected value using 'ComboBoxDirectEditManager'
+  * {{{de.itemis.gmf.runtime.combolabel.ISemanticRedirectingEditPart}}} is an additional interface the generated label edit part should implement to provide the list of candidates, a getter and a setter for the reference's value.
 
 
 = Implementation = 
@@ -23,12 +23,15 @@ Sorry, but this is only a rough sketch of the steps involved. The modifications 
   * Generate your editor with a label mapping to a dummy attribute in your parent class. This is the easiest way to produce the VISUAL_ID and type/view registration for the label edit part. 
   * Create a customized label edit part. The recommended way to do that is via the editPartProvider service of GMF, to keep generated code separate from manual extensions.
   * In that customized edit part
-   * Override 'addSemanticListeners()', 'removeSemanticListeners()', 'handleNotificationEvent(Notification event)' to additionally make the edit part listen to the changes of the reference and the attributes for the referenced object's label.
-   * Override 'getManager()' to return a 'ComboBoxDirectEditManager'.
-   * Override 'createDefaultEditPolicies()' and replace install a new 'ComboBoxDirectEditPolicy' with the 'EditPolicy.DIRECT_EDIT_ROLE' role.
-   * Override 'getLabelText()' to compose the label's text from the referenced element.
-   * Let the edit part implement 'ISemanticRedirectingEditPart'.
+   * Override {{{addSemanticListeners()}}}, {{{removeSemanticListeners()}}}, {{{handleNotificationEvent(Notification event)}}} to additionally make the edit part listen to the changes of the reference and the attributes for the referenced object's label.
+   * Override {{{getManager()}}} to return a {{{ComboBoxDirectEditManager}}}.
+   * Override {{{createDefaultEditPolicies()}}} and replace install a new {{{ComboBoxDirectEditPolicy}}} with the {{{EditPolicy.DIRECT_EDIT_ROLE}}} role.
+   * Override {{{getLabelText()}}} to compose the label's text from the referenced element.
+   * Let the edit part implement {{{ISemanticRedirectingEditPart}}}.
    
 The result can look like this
+Label showing a referenced semantic element instead of attribute value
+[http://gmftools.googlecode.com/svn/wiki/images/comboLabel.png]
 
-[http://gmftools.googlecode.com/svn/wiki/images/comboLabel.png][http://gmftools.googlecode.com/svn/wiki/images/comboLabel_expanded.png]
+ComboBox label editing
+[http://gmftools.googlecode.com/svn/wiki/images/comboLabel_expanded.png]

@@ -30,8 +30,5 @@ Sorry, but this is only a rough sketch of the steps involved. The modifications 
    * Let the edit part implement {{{ISemanticRedirectingEditPart}}}.
    
 The result can look like this
-Label showing a referenced semantic element instead of attribute value
-[http://gmftools.googlecode.com/svn/wiki/images/comboLabel.png]
 
-ComboBox label editing
 [http://gmftools.googlecode.com/svn/wiki/images/comboLabel_expanded.png]

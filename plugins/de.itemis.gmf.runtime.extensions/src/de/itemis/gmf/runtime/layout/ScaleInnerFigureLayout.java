@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
@@ -24,16 +25,24 @@ import org.eclipse.gmf.runtime.draw2d.ui.figures.ConstrainedToolbarLayout;
  * 
  * @author koehnlein
  */
-public class ScaleInnerFigureLayout extends ConstrainedToolbarLayout {
+public class ScaleInnerFigureLayout extends ConstrainedToolbarLayout implements LayoutManager {
 	private double scaleFactor = Math.sqrt(2);
+	private int majorAlignment;
 
 	public ScaleInnerFigureLayout() {
-		setStretchMajorAxis(true);
-		setStretchMinorAxis(true);
+		setVertical(false);
+		setMajorAlignment(ALIGN_CENTER);
+		setMinorAlignment(ALIGN_CENTER);
+		setStretchMajorAxis(false);
+		setStretchMinorAxis(false);
 	}
 
 	public void setScaleFactor(double scaleFactor) {
 		this.scaleFactor = scaleFactor;
+	}
+
+	public void setMajorAlignment(int majorAlignment) {
+		this.majorAlignment = majorAlignment;
 	}
 
 	@Override
@@ -61,27 +70,23 @@ public class ScaleInnerFigureLayout extends ConstrainedToolbarLayout {
 		List children = getChildren(parent);
 		int numChildren = children.size();
 		Rectangle clientArea = transposer.t(parent.getClientArea());
-		int offsetY = (int) (clientArea.height * (scaleFactor - 1) / 3);
+		int offsetX = (int) ((clientArea.width * (1. - 1. / scaleFactor)) / 2.);
+		int offsetY = (int) ((clientArea.height * (1. - 1. / scaleFactor)) / 2.);
 		int x = clientArea.x;
 		int y = clientArea.y + offsetY;
-		int availableHeight = (int) (clientArea.height / scaleFactor);
+		int availableWidth = (int) (clientArea.width / scaleFactor) + 1;
+		int availableHeight = (int) (clientArea.height / scaleFactor) + 1;
 
 		Dimension prefSizes[] = new Dimension[numChildren];
 		Dimension minSizes[] = new Dimension[numChildren];
 		Dimension maxSizes[] = new Dimension[numChildren];
 
-		// Calculate the width and height hints. If it's a vertical
-		// ToolBarLayout,
-		// then ignore the height hint (set it to -1); otherwise, ignore the
-		// width hint. These hints will be passed to the children of the parent
+		// These hints will be passed to the children of the parent
 		// figure when getting their preferred size.
-		int wHint = -1;
-		int hHint = -1;
-		if (isHorizontal()) {
-			hHint = parent.getClientArea(Rectangle.SINGLETON).height;
-		} else {
-			wHint = parent.getClientArea(Rectangle.SINGLETON).width;
-		}
+		int wHint = (isStretchWidth()) ? parent
+				.getClientArea(Rectangle.SINGLETON).width : -1;
+		int hHint = (isStretchHeight()) ? parent
+				.getClientArea(Rectangle.SINGLETON).height : -1;
 
 		/*
 		 * Calculate sum of preferred heights of all children(totalHeight).
@@ -138,18 +143,31 @@ public class ScaleInnerFigureLayout extends ConstrainedToolbarLayout {
 		int amntShrinkHeight = totalHeight
 				- Math.max(availableHeight, totalMinHeight);
 
+		if (!isStretchHeight()) {
+			int adjust = Math.max(availableHeight - totalHeight, 0);
+			switch (getVerticalAlignment()) {
+			case ALIGN_TOPLEFT:
+				break;
+			case ALIGN_BOTTOMRIGHT:
+				y += adjust;
+				break;
+			case ALIGN_CENTER:
+			default:
+				y += adjust / 2;
+			}
+			amntShrinkHeight += adjust;
+		}
 		for (int i = 0; i < numChildren; i++) {
 			int amntShrinkCurrentHeight = 0;
 			int prefHeight = prefSizes[i].height;
 			int minHeight = minSizes[i].height;
 			int maxHeight = maxSizes[i].height;
 			int prefWidth = prefSizes[i].width;
-			int minWidth = minSizes[i].width;
 			int maxWidth = maxSizes[i].width;
 			Rectangle newBounds = new Rectangle(x, y, prefWidth, prefHeight);
 
 			child = (IFigure) children.get(i);
-			if (getStretchMajorAxis()) {
+			if (isStretchHeight()) {
 				if (amntShrinkHeight > 0 && prefMinSumHeight != 0)
 					amntShrinkCurrentHeight = (prefHeight - minHeight)
 							* amntShrinkHeight / (prefMinSumHeight);
@@ -158,14 +176,13 @@ public class ScaleInnerFigureLayout extends ConstrainedToolbarLayout {
 			}
 
 			int width = Math.min(prefWidth, maxWidth);
-			if (matchWidth)
+			if (isStretchWidth())
 				width = maxWidth;
-			width = Math.max(minWidth, Math.min(
-					(int) (clientArea.width / scaleFactor), width));
+			width = Math.min(availableWidth, width);
 			newBounds.width = width;
 
-			int adjust = clientArea.width - width;
-			switch (minorAlignment) {
+			int adjust = availableWidth - width;
+			switch (getHorizontalAlignment()) {
 			case ALIGN_TOPLEFT:
 				adjust = 0;
 				break;
@@ -175,7 +192,7 @@ public class ScaleInnerFigureLayout extends ConstrainedToolbarLayout {
 			case ALIGN_BOTTOMRIGHT:
 				break;
 			}
-			newBounds.x += adjust;
+			newBounds.x += adjust + offsetX;
 			if (newBounds.height - amntShrinkCurrentHeight > maxHeight)
 				amntShrinkCurrentHeight = newBounds.height - maxHeight;
 			newBounds.height -= amntShrinkCurrentHeight;
@@ -209,4 +226,21 @@ public class ScaleInnerFigureLayout extends ConstrainedToolbarLayout {
 		return children;
 	}
 
+	protected boolean isStretchHeight() {
+		return (isHorizontal() && getStretchMinorAxis())
+				|| getStretchMajorAxis();
+	}
+
+	protected boolean isStretchWidth() {
+		return (isHorizontal() && getStretchMajorAxis())
+				|| getStretchMinorAxis();
+	}
+	
+	protected int getHorizontalAlignment() {
+		return isHorizontal() ? majorAlignment : minorAlignment;
+	}
+
+	protected int getVerticalAlignment() {
+		return isHorizontal() ? minorAlignment : majorAlignment;
+	}
 }

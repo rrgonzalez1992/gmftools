@@ -55,6 +55,10 @@ public abstract class GmfModelFileSelector {
 				fileDialog.setFilterPath(workspaceDir);
 				fileDialog
 						.setFilterExtensions(new String[] { "*." + getFileExtension() });
+				if(getFile() != null) {
+					String fileName = getFile().getFullPath().toOSString();
+					fileDialog.setFileName(fileName);
+				}
 				String result = fileDialog.open();
 				if (result != null) {
 					IFile[] files = workspaceRoot

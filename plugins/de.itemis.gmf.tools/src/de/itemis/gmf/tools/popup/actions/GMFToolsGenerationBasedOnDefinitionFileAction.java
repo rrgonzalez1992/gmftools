@@ -19,6 +19,11 @@ import de.itemis.gmf.tools.FileUtil;
 import de.itemis.gmf.tools.contribution.GMFToolsGeneration;
 import de.itemis.gmf.tools.preferences.GmfModel;
 
+/**
+ * 
+ * @author Alexander Ny§en (alexander.nyssen@itemis.de)
+ *
+ */
 public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 		IObjectActionDelegate {
 

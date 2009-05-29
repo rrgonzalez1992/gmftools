@@ -124,6 +124,29 @@
             </groupMarker>
          </menu>
       </objectContribution>
+      <objectContribution
+            adaptable="true"
+            id="de.itemis.gmf.tools.popupContribution"
+            nameFilter="*.def"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="de.itemis.gmf.tools.popup.actions.GMFToolsGenerationBasedOnDefinitionFileAction"
+               enablesFor="1"
+               icon="icons/gmftools.png"
+               id="de.itemis.gmf.tools.generateAll"
+               label="Generate GMF Editor"
+               menubarPath="de.itemis.gmf.tools.popupMenu/group"
+               tooltip="Transform GMF Generator Model">
+         </action>
+         <menu
+               id="de.itemis.gmf.tools.popupMenu"
+               label="GMF Tools"
+               path="additions">
+            <groupMarker
+                  name="group">
+            </groupMarker>
+         </menu>
+      </objectContribution>
    </extension>
 
 </plugin>

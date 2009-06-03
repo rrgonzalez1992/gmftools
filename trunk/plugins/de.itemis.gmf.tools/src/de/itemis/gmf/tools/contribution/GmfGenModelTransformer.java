@@ -110,9 +110,16 @@ public class GmfGenModelTransformer {
 							.toArray(new EPackage[metaModelPackages.size()]);
 				}
 			});
+			IOawProject oawProject = OawPlugin.getOawModelManager()
+					.findProject(gmfGenModelFile.getProject());
+			if(oawProject == null){
+				MessageDialog.openError(Display.getDefault().getActiveShell(),
+						"Project enclosing transformation file does not have an OAW nature.", "Please add the oaw nature to the project containing the .ext transformation file.");
+				return false;
+			}
+						
 			ExecutionContextImpl context = new ExecutionContextImpl(
-					new WorkspaceResourceManager(OawPlugin.getOawModelManager()
-							.findProject(gmfGenModelFile.getProject())), ts,
+					new WorkspaceResourceManager(oawProject), ts,
 					null);
 			XtendFacade facade = XtendFacade.create(context, FileUtil
 					.getLocationWithoutExtension(transformationFile));

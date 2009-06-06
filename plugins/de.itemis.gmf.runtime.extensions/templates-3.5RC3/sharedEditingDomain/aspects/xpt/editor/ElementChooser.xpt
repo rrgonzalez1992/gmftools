@@ -1,0 +1,32 @@
+«IMPORT 'http://www.eclipse.org/gmf/2009/GenModel'»
+«EXTENSION xpt::editor::Utils»
+
+«AROUND attributes FOR gmfgen::GenDiagram-»
+	«EXPAND xpt::Common::generatedMemberComment»
+private org.eclipse.jface.viewers.TreeViewer myTreeViewer;
+
+	«EXPAND xpt::Common::generatedMemberComment»
+private org.eclipse.emf.common.util.URI mySelectedModelElementURI;
+
+	«EXPAND xpt::Common::generatedMemberComment»
+private org.eclipse.gmf.runtime.notation.View myView;
+	
+	«EXPAND xpt::Common::generatedMemberComment»
+// ITEMIS CHANGE: Use the shared editing domain
+private org.eclipse.emf.transaction.TransactionalEditingDomain myEditingDomain = de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain("«editingDomainID»");
+//private org.eclipse.emf.transaction.TransactionalEditingDomain myEditingDomain = org.eclipse.gmf.runtime.emf.core.GMFEditingDomainFactory.INSTANCE.createEditingDomain();
+«ENDAROUND»
+
+«AROUND open FOR gmfgen::GenDiagram-»
+	«EXPAND xpt::Common::generatedMemberComment»
+public int open() {
+	int result = super.open();
+	for (java.util.Iterator it = myEditingDomain.getResourceSet().getResources().iterator(); it.hasNext();) {
+		org.eclipse.emf.ecore.resource.Resource resource = (org.eclipse.emf.ecore.resource.Resource) it.next();
+		resource.unload();
+	}
+	// ITEMIS CHANGE: Don't dispose the singleton editing domain!
+	// myEditingDomain.dispose();
+	return result;
+}
+«ENDAROUND»

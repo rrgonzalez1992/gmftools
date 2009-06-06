@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="ASCII"?>
-<gmfgen:GenEditorGenerator xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gmfgen="http://www.eclipse.org/gmf/2008/GenModel" packageNamePrefix="de.itemis.gmf.example.datatype.diagram" modelID="Datatype" diagramFileExtension="datatype_diagram" dynamicTemplates="true" templateDirectory="/de.itemis.gmf.runtime.extensions/templates-3.4/sharedEditingDomain">
-  <diagram visualID="10000" editPartClassName="NamespaceEditPart" itemSemanticEditPolicyClassName="NamespaceItemSemanticEditPolicy" notationViewFactoryClassName="NamespaceViewFactory" canonicalEditPolicyClassName="NamespaceCanonicalEditPolicy" iconProviderPriority="Low" editingDomainID="de.itemis.gmf.example.sharedEditingDomainID" validationProviderPriority="Low">
+<gmfgen:GenEditorGenerator xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gmfgen="http://www.eclipse.org/gmf/2009/GenModel" packageNamePrefix="de.itemis.gmf.example.datatype.diagram" modelID="Datatype" diagramFileExtension="datatype_diagram" dynamicTemplates="true" templateDirectory="/de.itemis.gmf.runtime.extensions/templates-3.5RC3/sharedEditingDomain">
+  <diagram visualID="10000" editPartClassName="NamespaceEditPart" itemSemanticEditPolicyClassName="NamespaceItemSemanticEditPolicy" canonicalEditPolicyClassName="NamespaceCanonicalEditPolicy" iconProviderPriority="Low" editingDomainID="de.itemis.gmf.example.sharedEditingDomainID" validationProviderPriority="Low">
     <diagramRunTimeClass href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Diagram"/>
     <elementType xsi:type="gmfgen:MetamodelType" editHelperClassName="NamespaceEditHelper"/>
     <viewmap xsi:type="gmfgen:FigureViewmap" figureQualifiedClassName="org.eclipse.draw2d.FreeformLayer"/>
     <domainDiagramElement href="Datatype.genmodel#//entity/Namespace"/>
-    <topLevelNodes visualID="12001" editPartClassName="DatatypeEditPart" itemSemanticEditPolicyClassName="DatatypeItemSemanticEditPolicy" notationViewFactoryClassName="DatatypeViewFactory" canonicalEditPolicyClassName="DatatypeCanonicalEditPolicy" graphicalNodeEditPolicyClassName="DatatypeGraphicalNodeEditPolicy" createCommandClassName="DatatypeCreateCommand">
+    <topLevelNodes visualID="2001" editPartClassName="DatatypeEditPart" itemSemanticEditPolicyClassName="DatatypeItemSemanticEditPolicy" canonicalEditPolicyClassName="DatatypeCanonicalEditPolicy" graphicalNodeEditPolicyClassName="DatatypeGraphicalNodeEditPolicy" createCommandClassName="DatatypeCreateCommand">
       <diagramRunTimeClass href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
       <elementType xsi:type="gmfgen:MetamodelType" editHelperClassName="DatatypeEditHelper"/>
-      <viewmap xsi:type="gmfgen:InnerClassViewmap" className="DatatypeFigure" classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class DatatypeFigure extends org.eclipse.draw2d.RoundedRectangle {&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureDatatypeNameFigure; &#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public DatatypeFigure() {&#xA;&#x9;&#x9;&#xA;&#x9;de.itemis.gmf.runtime.layout.ResizableFlowLayout layoutThis = new de.itemis.gmf.runtime.layout.ResizableFlowLayout();&#xA;&#xA;&#xA;&#x9;this.setLayoutManager(layoutThis);&#xA;&#xA;&#x9;&#x9;this.setCornerDimensions(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(8)&#xA;, getMapMode().DPtoLP(8)&#xA;));&#xA;&#xA;this.setBorder(new org.eclipse.draw2d.MarginBorder(getMapMode().DPtoLP(4)&#xA;, getMapMode().DPtoLP(4)&#xA;, getMapMode().DPtoLP(4)&#xA;, getMapMode().DPtoLP(4)&#xA;));&#xA;&#x9;&#x9;createContents();&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private void createContents(){&#xA;&#xA;&#xA;fFigureDatatypeNameFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureDatatypeNameFigure.setText(&quot;&lt;...>&quot;);&#xA;&#xA;this.add(fFigureDatatypeNameFigure);&#xA;&#xA;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private boolean myUseLocalCoordinates = false;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;protected boolean useLocalCoordinates() {&#xA;&#x9;&#x9;return myUseLocalCoordinates;&#xA;&#x9;}&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;protected void setUseLocalCoordinates(boolean useLocalCoordinates) {&#xA;&#x9;&#x9;myUseLocalCoordinates = useLocalCoordinates;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureDatatypeNameFigure() {&#xA;&#x9;&#x9;return fFigureDatatypeNameFigure;&#xA;&#x9;}&#xA;&#xA;&#xA;}&#xA;&#xA;">
+      <viewmap xsi:type="gmfgen:InnerClassViewmap" className="DatatypeFigure" classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class DatatypeFigure extends org.eclipse.draw2d.RoundedRectangle {&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureDatatypeNameFigure; &#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public DatatypeFigure() {&#xA;&#x9;&#x9;&#xA;&#x9;de.itemis.gmf.runtime.layout.ResizableFlowLayout layoutThis = new de.itemis.gmf.runtime.layout.ResizableFlowLayout();&#xA;&#xA;&#xA;&#x9;this.setLayoutManager(layoutThis);&#xA;&#xA;&#x9;&#x9;this.setCornerDimensions(new org.eclipse.draw2d.geometry.Dimension(getMapMode().DPtoLP(8)&#xA;, getMapMode().DPtoLP(8)&#xA;));&#xA;this.setLineWidth(1);&#xA;&#xA;this.setBorder(new org.eclipse.draw2d.MarginBorder(getMapMode().DPtoLP(4)&#xA;, getMapMode().DPtoLP(4)&#xA;, getMapMode().DPtoLP(4)&#xA;, getMapMode().DPtoLP(4)&#xA;));&#xA;&#x9;&#x9;createContents();&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private void createContents(){&#xA;&#xA;&#xA;fFigureDatatypeNameFigure = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureDatatypeNameFigure.setText(&quot;&lt;...>&quot;);&#xA;&#xA;this.add(fFigureDatatypeNameFigure);&#xA;&#xA;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private boolean myUseLocalCoordinates = false;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;protected boolean useLocalCoordinates() {&#xA;&#x9;&#x9;return myUseLocalCoordinates;&#xA;&#x9;}&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;protected void setUseLocalCoordinates(boolean useLocalCoordinates) {&#xA;&#x9;&#x9;myUseLocalCoordinates = useLocalCoordinates;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureDatatypeNameFigure() {&#xA;&#x9;&#x9;return fFigureDatatypeNameFigure;&#xA;&#x9;}&#xA;&#xA;&#xA;}&#xA;&#xA;">
         <attributes xsi:type="gmfgen:DefaultSizeAttributes" width="0" height="0"/>
-        <requiredPluginIDs>org.eclipse.gmf.runtime.draw2d.ui</requiredPluginIDs>
       </viewmap>
       <modelFacet>
         <metaClass href="Datatype.genmodel#//entity/Datatype"/>
         <containmentMetaFeature href="Datatype.genmodel#//entity/Namespace/types"/>
         <childMetaFeature href="Datatype.genmodel#//entity/Namespace/types"/>
       </modelFacet>
-      <labels visualID="15001" editPartClassName="DatatypeNameEditPart" itemSemanticEditPolicyClassName="DatatypeNameItemSemanticEditPolicy" notationViewFactoryClassName="DatatypeNameViewFactory" elementIcon="true">
+      <labels visualID="5001" editPartClassName="DatatypeNameEditPart" itemSemanticEditPolicyClassName="DatatypeNameItemSemanticEditPolicy" elementIcon="true">
         <diagramRunTimeClass href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap xsi:type="gmfgen:ParentAssignedViewmap" getterName="getFigureDatatypeNameFigure" figureQualifiedClassName="org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel"/>
-        <modelFacet xsi:type="gmfgen:FeatureLabelModelFacet" viewPattern="">
+        <modelFacet xsi:type="gmfgen:FeatureLabelModelFacet" parser="//@labelParsers/@implementations.0" viewPattern="">
           <metaFeatures href="Datatype.genmodel#//entity/NamedElement/name"/>
         </modelFacet>
       </labels>
     </topLevelNodes>
-    <topLevelNodes visualID="15002" editPartClassName="Namespace2EditPart" itemSemanticEditPolicyClassName="Namespace2ItemSemanticEditPolicy" notationViewFactoryClassName="Namespace2ViewFactory" canonicalEditPolicyClassName="Namespace2CanonicalEditPolicy" graphicalNodeEditPolicyClassName="NamespaceGraphicalNodeEditPolicy" createCommandClassName="NamespaceCreateCommand">
+    <topLevelNodes visualID="2002" editPartClassName="Namespace2EditPart" itemSemanticEditPolicyClassName="Namespace2ItemSemanticEditPolicy" canonicalEditPolicyClassName="Namespace2CanonicalEditPolicy" graphicalNodeEditPolicyClassName="NamespaceGraphicalNodeEditPolicy" createCommandClassName="NamespaceCreateCommand">
       <diagramRunTimeClass href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
       <elementType xsi:type="gmfgen:SpecializationType" metamodelType="//@diagram/@elementType"/>
-      <viewmap xsi:type="gmfgen:InnerClassViewmap" className="NamespaceFigure" classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class NamespaceFigure extends org.eclipse.draw2d.Ellipse {&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureNamespaceNameLabel; &#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public NamespaceFigure() {&#xA;&#x9;&#x9;&#xA;&#x9;de.itemis.gmf.runtime.layout.ScaleInnerFigureLayout layoutThis = new de.itemis.gmf.runtime.layout.ScaleInnerFigureLayout();&#xA;&#xA;&#xA;&#xA;&#xA;layoutThis.setScaleFactor(&#xA;1.414213562373095);&#xA;&#xA;&#xA;&#x9;this.setLayoutManager(layoutThis);&#xA;&#xA;&#x9;&#x9;&#x9;&#x9;createContents();&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private void createContents(){&#xA;&#xA;&#xA;fFigureNamespaceNameLabel = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureNamespaceNameLabel.setText(&quot;&lt;..>&quot;);&#xA;&#xA;this.add(fFigureNamespaceNameLabel);&#xA;&#xA;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private boolean myUseLocalCoordinates = false;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;protected boolean useLocalCoordinates() {&#xA;&#x9;&#x9;return myUseLocalCoordinates;&#xA;&#x9;}&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;protected void setUseLocalCoordinates(boolean useLocalCoordinates) {&#xA;&#x9;&#x9;myUseLocalCoordinates = useLocalCoordinates;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureNamespaceNameLabel() {&#xA;&#x9;&#x9;return fFigureNamespaceNameLabel;&#xA;&#x9;}&#xA;&#xA;&#xA;}&#xA;&#xA;">
+      <viewmap xsi:type="gmfgen:InnerClassViewmap" className="NamespaceFigure" classBody="&#xA;/**&#xA; * @generated&#xA; */&#xA;public class NamespaceFigure extends org.eclipse.draw2d.Ellipse {&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel fFigureNamespaceNameLabel; &#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public NamespaceFigure() {&#xA;&#x9;&#x9;&#xA;&#x9;de.itemis.gmf.runtime.layout.ScaleInnerFigureLayout layoutThis = new de.itemis.gmf.runtime.layout.ScaleInnerFigureLayout();&#xA;&#xA;&#xA;&#xA;&#xA;layoutThis.setScaleFactor(&#xA;1.414213562373095);&#xA;&#xA;&#xA;&#x9;this.setLayoutManager(layoutThis);&#xA;&#xA;&#x9;&#x9;this.setLineWidth(1);&#xA;&#x9;&#x9;createContents();&#xA;&#x9;}&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private void createContents(){&#xA;&#xA;&#xA;fFigureNamespaceNameLabel = new org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel();&#xA;fFigureNamespaceNameLabel.setText(&quot;&lt;..>&quot;);&#xA;&#xA;this.add(fFigureNamespaceNameLabel);&#xA;&#xA;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;private boolean myUseLocalCoordinates = false;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;protected boolean useLocalCoordinates() {&#xA;&#x9;&#x9;return myUseLocalCoordinates;&#xA;&#x9;}&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;protected void setUseLocalCoordinates(boolean useLocalCoordinates) {&#xA;&#x9;&#x9;myUseLocalCoordinates = useLocalCoordinates;&#xA;&#x9;}&#xA;&#xA;&#xA;&#xA;&#x9;/**&#xA;&#x9; * @generated&#xA;&#x9; */&#xA;&#x9;public org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel getFigureNamespaceNameLabel() {&#xA;&#x9;&#x9;return fFigureNamespaceNameLabel;&#xA;&#x9;}&#xA;&#xA;&#xA;}&#xA;&#xA;">
         <attributes xsi:type="gmfgen:DefaultSizeAttributes" width="0" height="0"/>
-        <requiredPluginIDs>org.eclipse.gmf.runtime.draw2d.ui</requiredPluginIDs>
       </viewmap>
       <behaviour xsi:type="gmfgen:OpenDiagramBehaviour" editPolicyClassName="Namespace2OpenDiagramEditPolicy"/>
       <modelFacet>
@@ -38,10 +36,10 @@
         <containmentMetaFeature href="Datatype.genmodel#//entity/Namespace/nested"/>
         <childMetaFeature href="Datatype.genmodel#//entity/Namespace/nested"/>
       </modelFacet>
-      <labels visualID="15003" editPartClassName="NamespaceNameEditPart" itemSemanticEditPolicyClassName="NamespaceNameItemSemanticEditPolicy" notationViewFactoryClassName="NamespaceNameViewFactory" elementIcon="true">
+      <labels visualID="5002" editPartClassName="NamespaceNameEditPart" itemSemanticEditPolicyClassName="NamespaceNameItemSemanticEditPolicy" elementIcon="true">
         <diagramRunTimeClass href="../../../plugin/org.eclipse.gmf.runtime.notation/model/notation.genmodel#//notation/Node"/>
         <viewmap xsi:type="gmfgen:ParentAssignedViewmap" getterName="getFigureNamespaceNameLabel" figureQualifiedClassName="org.eclipse.gmf.runtime.draw2d.ui.figures.WrappingLabel"/>
-        <modelFacet xsi:type="gmfgen:FeatureLabelModelFacet">
+        <modelFacet xsi:type="gmfgen:FeatureLabelModelFacet" parser="//@labelParsers/@implementations.0">
           <metaFeatures href="Datatype.genmodel#//entity/NamedElement/name"/>
         </modelFacet>
       </labels>
@@ -57,10 +55,12 @@
       <children xsi:type="gmfgen:GenStandardPreferencePage" iD="de.itemis.gmf.example.entity.diagram.connections" name="Connections" kind="Connections"/>
       <children xsi:type="gmfgen:GenStandardPreferencePage" iD="de.itemis.gmf.example.entity.diagram.printing" name="Printing" kind="Printing"/>
       <children xsi:type="gmfgen:GenStandardPreferencePage" iD="de.itemis.gmf.example.entity.diagram.rulersAndGrid" name="Rulers And Grid" kind="RulersAndGrid"/>
-      <children xsi:type="gmfgen:GenStandardPreferencePage" iD="de.itemis.gmf.example.entity.diagram.pathmaps" name="Pathmaps" kind="Pathmaps"/>
     </preferencePages>
   </diagram>
-  <plugin iD="de.itemis.gmf.example.datatype.diagram" printingEnabled="true"/>
+  <plugin iD="de.itemis.gmf.example.datatype.diagram" printingEnabled="true">
+    <requiredPlugins>org.eclipse.draw2d</requiredPlugins>
+    <requiredPlugins>de.itemis.gmf.runtime.extensions</requiredPlugins>
+  </plugin>
   <editor/>
   <navigator>
     <childReferences child="//@diagram"/>
@@ -80,4 +80,10 @@
     </tabs>
   </propertySheet>
   <domainGenModel href="Datatype.genmodel#/"/>
+  <labelParsers extensibleViaService="true">
+    <implementations xsi:type="gmfgen:PredefinedParser" uses="//@diagram/@topLevelNodes.0/@labels.0/@modelFacet //@diagram/@topLevelNodes.1/@labels.0/@modelFacet"/>
+  </labelParsers>
+  <contextMenus context="//@diagram">
+    <items xsi:type="gmfgen:LoadResourceAction"/>
+  </contextMenus>
 </gmfgen:GenEditorGenerator>

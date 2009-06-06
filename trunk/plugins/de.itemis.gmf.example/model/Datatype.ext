@@ -16,7 +16,7 @@ List[emf::EObject] transform(List[emf::EObject] gmfGenModelContents) :
    
 internalTransform(GenEditorGenerator this) :
 	setDynamicTemplates(true) ->
-	setTemplateDirectory("/de.itemis.gmf.runtime.extensions/templates-3.4/sharedEditingDomain") ->
+	setTemplateDirectory("/de.itemis.gmf.runtime.extensions/templates-3.5RC3/sharedEditingDomain") ->
 	setModelID("Datatype") ->
 	setPackageNamePrefix("de.itemis.gmf.example.datatype.diagram") ->
 	setDiagramFileExtension("datatype_diagram");

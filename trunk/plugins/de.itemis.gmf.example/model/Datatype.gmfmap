@@ -39,7 +39,7 @@
             href="Entity.ecore#//NamedElement/name"/>
       </labelMappings>
       <relatedDiagrams
-          href="Datatype.gmfmap#//@diagram"/>
+          href="#//@diagram"/>
       <tool
           xsi:type="gmftool:CreationTool"
           href="Datatype.gmftool#//@palette/@tools.1"/>

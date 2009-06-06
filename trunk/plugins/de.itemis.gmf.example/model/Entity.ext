@@ -16,7 +16,7 @@ List[emf::EObject] transform(List[emf::EObject] gmfGenModelContents) :
 
 internalTransform(GenEditorGenerator this) :
 	setDynamicTemplates(true) ->
-	setTemplateDirectory("/de.itemis.gmf.runtime.extensions/templates-3.4/sharedEditingDomain");
+	setTemplateDirectory("/de.itemis.gmf.runtime.extensions/templates-3.5RC3/sharedEditingDomain");
 	
 internalTransform(GenPlugin this) :
 	setPrintingEnabled(true)->
@@ -29,8 +29,8 @@ internalTransform(GenCompartment this) :
 	(title=="EntityAttributeCompartment") ? setListLayout(true) : {};
 
 internalTransform(GenDiagram this) :
-	setContainsShortcutsTo({"Entity"}) ->
-	setShortcutsProvidedFor({"Entity"}) ->
+//	setContainsShortcutsTo({"Entity"}) ->
+//	setShortcutsProvidedFor({"Entity"}) ->
 	setEditingDomainID("de.itemis.gmf.example.sharedEditingDomainID");
 	
 internalTransform(emf::EObject o) :

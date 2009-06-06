@@ -9,6 +9,7 @@ package de.itemis.gmf.tools.contribution;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -21,9 +22,33 @@ import de.itemis.gmf.tools.preferences.PreferenceUtil;
 public class GMFToolsGeneration implements IRunnableWithProgress {
 
 	private GmfModel gmfModel;
+	private boolean deleteGmfGenModel = PreferenceUtil.isDeleteGmfGen();
+	private boolean transformMapping2GmfGenModel = PreferenceUtil.isTransformMap2GmfGen();
+	private boolean transformGmfGenModels = PreferenceUtil.isTransformGmfGen();
+	private boolean fixRegisteredTypes = PreferenceUtil.isFixTypeRegistration();
+	private boolean deletegeGeneratedDiagramPlugin = PreferenceUtil.isDeleteDiagramPlugin();
+	private boolean generateDiagramPlugin = PreferenceUtil.isGenerateDiagramPlugin();
 
-	public GMFToolsGeneration(GmfModel gmfModel) {
+	public GMFToolsGeneration(GmfModel gmfModel, Map<String, Boolean> options) {
 		this.gmfModel = gmfModel;
+		if(options.containsKey(PreferenceUtil.GMF_DELETE_GMFGEN)){
+			deleteGmfGenModel = options.get(PreferenceUtil.GMF_DELETE_GMFGEN);
+		}
+		if(options.containsKey(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN)){
+			transformMapping2GmfGenModel = options.get(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN);
+		}
+		if(options.containsKey(PreferenceUtil.GMF_TRANSFORM_GMFGEN)){
+			transformGmfGenModels = options.get(PreferenceUtil.GMF_TRANSFORM_GMFGEN);
+		}
+		if(options.containsKey(PreferenceUtil.GMF_FIX_TYPE_REGISTRY)){
+			fixRegisteredTypes = options.get(PreferenceUtil.GMF_FIX_TYPE_REGISTRY);
+		}
+		if(options.containsKey(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN)){
+			deletegeGeneratedDiagramPlugin = options.get(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN);
+		}
+		if(options.containsKey(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN)){
+			generateDiagramPlugin = options.get(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN);
+		}
 	}
 
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
@@ -32,17 +57,17 @@ public class GMFToolsGeneration implements IRunnableWithProgress {
 			Set<IFile> changedGmfGenModels = new HashSet<IFile>();
 			boolean isOK = false;
 			monitor.beginTask("Creating transformed GMF generator model", 5);
-			if (PreferenceUtil.isTransformMap2GmfGen()) {
+			if (transformMapping2GmfGenModel) {
 				isOK = GmfMappingToGenModelTransformer
-						.transformMapToGmfGenModel(gmfModel, monitor);
+						.transformMapToGmfGenModel(gmfModel, deleteGmfGenModel, monitor);
 				if (!isOK) {
 					return;
 				}
-				if (!PreferenceUtil.isTransformGmfGen()) {
+				if (!transformGmfGenModels) {
 					changedGmfGenModels.add(gmfModel.getGmfGenModelFile());
 				}
 			}
-			if (PreferenceUtil.isTransformGmfGen()) {
+			if (transformGmfGenModels) {
 				isOK = GmfGenModelTransformer.createOrGetTransformationFile(
 						gmfModel, monitor);
 				if (!isOK) {
@@ -56,7 +81,7 @@ public class GMFToolsGeneration implements IRunnableWithProgress {
 				changedGmfGenModels.add(gmfModel
 						.getTransformedGmfGenModelFile());
 			}
-			if (PreferenceUtil.isFixTypeRegistration()) {
+			if (fixRegisteredTypes) {
 				isOK = GmfGenModelTypeRegistryHarmonizer
 						.harmonizeTypeRegistration(PreferenceUtil
 								.getGmfModels(), changedGmfGenModels, monitor);
@@ -64,12 +89,12 @@ public class GMFToolsGeneration implements IRunnableWithProgress {
 					return;
 				}
 			}
-			if (PreferenceUtil.isDeleteDiagramPlugin()
+			if (deletegeGeneratedDiagramPlugin
 					&& !changedGmfGenModels.isEmpty()) {
 				isOK = GmfGeneratedPluginRemover.deleteGeneratedPlugins(
 						changedGmfGenModels, monitor);
 			}
-			if (isOK && PreferenceUtil.isGenerateDiagramPlugin()) {
+			if (isOK && generateDiagramPlugin) {
 				for (IFile gmfGenModel : changedGmfGenModels) {
 					GmfDiagramCodeGenerator.generateDiagramCode(gmfGenModel);
 				}

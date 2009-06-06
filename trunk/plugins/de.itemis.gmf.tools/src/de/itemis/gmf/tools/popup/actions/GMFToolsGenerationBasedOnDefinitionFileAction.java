@@ -2,10 +2,13 @@ package de.itemis.gmf.tools.popup.actions;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.internal.adaptor.PluginParser.Prerequisite;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -18,11 +21,12 @@ import org.eclipse.ui.IWorkbenchPart;
 import de.itemis.gmf.tools.FileUtil;
 import de.itemis.gmf.tools.contribution.GMFToolsGeneration;
 import de.itemis.gmf.tools.preferences.GmfModel;
+import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
 /**
  * 
  * @author Alexander Ny§en (alexander.nyssen@itemis.de)
- *
+ * 
  */
 public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 		IObjectActionDelegate {
@@ -34,6 +38,8 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 	private static final String TRANSFORMED_GMF_GENMODEL_FILE = "transformedgmfgen";
 
 	GmfModel gmfModel = null;
+	Map<String, Boolean> options = null;
+
 	private Shell shell;
 
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
@@ -43,7 +49,7 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 	public void run(IAction action) {
 		try {
 			new ProgressMonitorDialog(shell).run(false, true,
-					new GMFToolsGeneration(gmfModel));
+					new GMFToolsGeneration(gmfModel, options));
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -53,6 +59,7 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 
 	public void selectionChanged(IAction action, ISelection selection) {
 		gmfModel = null;
+		options = null;
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 			if (structuredSelection.size() == 1
@@ -61,7 +68,19 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 							.getFileExtension().equals("def")) {
 				IFile definitionFile = (IFile) structuredSelection
 						.getFirstElement();
-				gmfModel = propertiesToGmfModel(definitionFile);
+				Properties properties = new Properties();
+				try {
+					properties.load(definitionFile.getContents());
+					gmfModel = propertiesToGmfModel(properties);
+					if (gmfModel != null) {
+						gmfModel.setDisplayName(definitionFile.getName());
+					}
+					options = propertiesToOptions(properties);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		// enable this action if we could infer the required information
@@ -72,34 +91,25 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 		}
 	}
 
-	protected GmfModel propertiesToGmfModel(IFile propertiesFile) {
+	protected GmfModel propertiesToGmfModel(Properties properties) {
 		IFile genModelFile = null;
 		IFile gmfMapModelFile = null;
 		IFile gmfTrafoFile = null;
 		IFile gmfGenModelFile = null;
 		IFile transformedGmfGenModelFile = null;
 
-		Properties properties = new Properties();
-		try {
-			properties.load(propertiesFile.getContents());
-			genModelFile = getFile(properties, EMF_GENMODEL_FILE);
-			gmfMapModelFile = getFile(properties, GMF_MAP_MODEL_FILE);
-			gmfTrafoFile = getFile(properties, GMF_TOOLS_EXT_FILE);
-			gmfGenModelFile = getFile(properties, GMF_GEN_MODEL_FILE);
-			transformedGmfGenModelFile = getFile(properties,
-					TRANSFORMED_GMF_GENMODEL_FILE);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
+		genModelFile = getFile(properties, EMF_GENMODEL_FILE);
+		gmfMapModelFile = getFile(properties, GMF_MAP_MODEL_FILE);
+		gmfTrafoFile = getFile(properties, GMF_TOOLS_EXT_FILE);
+		gmfGenModelFile = getFile(properties, GMF_GEN_MODEL_FILE);
+		transformedGmfGenModelFile = getFile(properties,
+				TRANSFORMED_GMF_GENMODEL_FILE);
 
 		// construct a new gmf model with the specified entries
 		if (genModelFile != null && gmfMapModelFile != null
 				&& gmfTrafoFile != null && gmfGenModelFile != null
 				&& transformedGmfGenModelFile != null) {
 			GmfModel model = new GmfModel();
-			model.setDisplayName(propertiesFile.getName());
 			model.setGenModelFile(genModelFile);
 			model.setGmfMapModelFile(gmfMapModelFile);
 			model.setGmfTrafoFile(gmfTrafoFile);
@@ -110,6 +120,18 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 			return null;
 		}
 
+	}
+
+	protected Map<String, Boolean> propertiesToOptions(Properties properties) {
+		// load all known options
+		Map<String, Boolean> options = new HashMap<String, Boolean>();
+		for (String optionKey : PreferenceUtil.getOptions().keySet()) {
+			if (properties.getProperty(optionKey) != null) {
+				options.put(optionKey, new Boolean(properties
+						.getProperty(optionKey)));
+			}
+		}
+		return options;
 	}
 
 	private IFile getFile(Properties properties, String propertyKey) {

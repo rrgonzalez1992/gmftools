@@ -7,6 +7,8 @@
  *******************************************************************************/
 package de.itemis.gmf.tools.contribution;
 
+import java.util.Collections;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -42,7 +44,7 @@ public class GMFToolsHandler extends AbstractHandler {
 		if (gmfModel != null) {
 			try {
 				new ProgressMonitorDialog(window.getShell()).run(false, true,
-						new GMFToolsGeneration(gmfModel));
+						new GMFToolsGeneration(gmfModel, Collections.EMPTY_MAP));
 			} catch (Exception e) {
 				reportError(e);
 			}

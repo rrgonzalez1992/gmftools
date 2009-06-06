@@ -9,7 +9,9 @@ package de.itemis.gmf.tools.preferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -29,17 +31,19 @@ public class PreferenceUtil {
 	public static final String GMF_GENERATE_DIAGRAM_PLUGIN = "generateDiagramPlugin";
 
 	private static GmfModel.Factory gmfModelFactory = new GmfModel.Factory();
-	
+
 	public static List<GmfModel> getGmfModels() {
 		IPreferenceStore store = getPreferenceStore();
 		String string = store.getString(GMF_MODELS);
 		if (string == null || "".equals(string))
 			return Collections.emptyList();
 		ArrayList<GmfModel> result = new ArrayList<GmfModel>();
-		String[] paths = string.split(ObjectListEditor.PREFERENCE_ITEM_SEPARATOR);
+		String[] paths = string
+				.split(ObjectListEditor.PREFERENCE_ITEM_SEPARATOR);
 		for (String path : paths) {
 			if (!"".equals(path)) {
-				GmfModel gmfModels = (GmfModel) gmfModelFactory.deserialize(path);
+				GmfModel gmfModels = (GmfModel) gmfModelFactory
+						.deserialize(path);
 				result.add(gmfModels);
 			}
 		}
@@ -48,6 +52,23 @@ public class PreferenceUtil {
 
 	private static IPreferenceStore getPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();
+	}
+
+	public static Map<String, Boolean> getOptions() {
+		Map<String, Boolean> options = new HashMap<String, Boolean>();
+		options.put(GMF_DELETE_GMFGEN, getPreferenceStore().getBoolean(
+				GMF_DELETE_GMFGEN));
+		options.put(GMF_TRANSFORM_MAP_2_GMFGEN, getPreferenceStore()
+				.getBoolean(GMF_TRANSFORM_MAP_2_GMFGEN));
+		options.put(GMF_TRANSFORM_GMFGEN, getPreferenceStore().getBoolean(
+				GMF_TRANSFORM_MAP_2_GMFGEN));
+		options.put(GMF_FIX_TYPE_REGISTRY, getPreferenceStore().getBoolean(
+				GMF_FIX_TYPE_REGISTRY));
+		options.put(GMF_DELETE_GENERATED_PLUGIN, getPreferenceStore()
+				.getBoolean(GMF_DELETE_GENERATED_PLUGIN));
+		options.put(GMF_GENERATE_DIAGRAM_PLUGIN, getPreferenceStore()
+				.getBoolean(GMF_GENERATE_DIAGRAM_PLUGIN));
+		return options;
 	}
 
 	public static boolean isDeleteGmfGen() {

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.itemis.gmf.tools.transformer">
+      <transformer
+            class="de.itemis.gmf.tools.m2t.M2TTransformer">
+      </transformer>
+   </extension>
+
+</plugin>

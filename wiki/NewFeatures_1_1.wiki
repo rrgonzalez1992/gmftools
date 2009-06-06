@@ -20,7 +20,7 @@
  * The example has been migrated to GMF2.2RC3. It will no longer work with GMF 2.1.
  * You should not put the {{{gmfgen.ecore}}} in the directory where your models reside. This will cause an error with GMF 2.2. Rather than that, add a dependency from your model plug-in to {{{de.itemis.gmf.runtime.extensions}}}.
 
-= New Features in 1.1.2 = 
+= 1.1.2 = 
  * Added context menu action to generate a GMF editor based on the GMF model settings specified in a .def file (and not based on GMF model entries in the preferences). The .def file is a simply property file of the following form:
 {{{
   # Definition file read by GMF Tools Engine
@@ -31,7 +31,7 @@
   transformedgmfgen = /org.vires.diagram.functions.def/model/Vires_Functions.transformed.gmfgen
 }}}
 
-= New Features in Version 1.1.0 =
+= 1.1.0 =
 
 In version 1.1
   * Added templates for sharing an editing domain in GMF 2.2 M5

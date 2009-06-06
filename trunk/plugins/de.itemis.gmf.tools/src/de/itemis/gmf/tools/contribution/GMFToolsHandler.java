@@ -73,7 +73,6 @@ public class GMFToolsHandler extends AbstractHandler {
 					for (GmfModel gmfModels : PreferenceUtil.getGmfModels()) {
 						if (gmfModels.hasFile((IFile) selectedElement))
 							lastGmfModel = gmfModels;
-						return gmfModels;
 					}
 				}
 

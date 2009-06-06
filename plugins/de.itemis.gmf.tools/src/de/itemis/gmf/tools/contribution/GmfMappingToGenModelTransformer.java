@@ -22,26 +22,23 @@ import org.eclipse.swt.widgets.Display;
 
 import de.itemis.gmf.tools.FileUtil;
 import de.itemis.gmf.tools.preferences.GmfModel;
-import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
 @SuppressWarnings("restriction")
 public class GmfMappingToGenModelTransformer {
 
 	public static boolean transformMapToGmfGenModel(GmfModel gmfModel,
-			IProgressMonitor monitor) {
+			boolean deleteGmfGenModel, IProgressMonitor monitor) {
 		try {
 			IFile gmfGenModel = gmfModel.getGmfGenModelFile();
 			IFile gmfMapModel = gmfModel.getGmfMapModelFile();
 			IFile emfGenModel = gmfModel.getGenModelFile();
-			if (emfGenModel == null
-					|| gmfMapModel == null
+			if (emfGenModel == null || gmfMapModel == null
 					|| gmfGenModel == null)
 				return false;
 			monitor
 					.subTask("Creating GMF generator model from GMF mapping model");
-			gmfMapModel.getParent().refreshLocal(IResource.DEPTH_ONE,
-					monitor);
-			if (PreferenceUtil.isDeleteGmfGen() && gmfGenModel.exists()) {
+			gmfMapModel.getParent().refreshLocal(IResource.DEPTH_ONE, monitor);
+			if (deleteGmfGenModel && gmfGenModel.exists()) {
 				gmfGenModel.delete(true, monitor);
 			}
 			final ResourceSet rs = new ResourceSetImpl();

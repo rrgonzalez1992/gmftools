@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="de.itemis.gmf.tools.transformer">
+      <transformer
+            class="de.itemis.gmf.tools.oaw.OawTransformer">
+      </transformer>
+   </extension>
+
+</plugin>

@@ -69,7 +69,7 @@ public class GMFToolsGeneration implements IRunnableWithProgress {
 				isOK = GmfGeneratedPluginRemover.deleteGeneratedPlugins(
 						changedGmfGenModels, monitor);
 			}
-			if (isOK) {
+			if (isOK && PreferenceUtil.isGenerateDiagramPlugin()) {
 				for (IFile gmfGenModel : changedGmfGenModels) {
 					GmfDiagramCodeGenerator.generateDiagramCode(gmfGenModel);
 				}

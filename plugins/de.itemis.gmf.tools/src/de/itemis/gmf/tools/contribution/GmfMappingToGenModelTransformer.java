@@ -24,9 +24,9 @@ import de.itemis.gmf.tools.FileUtil;
 import de.itemis.gmf.tools.preferences.GmfModel;
 import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
+@SuppressWarnings("restriction")
 public class GmfMappingToGenModelTransformer {
 
-	@SuppressWarnings("restriction")
 	public static boolean transformMapToGmfGenModel(GmfModel gmfModel,
 			IProgressMonitor monitor) {
 		try {
@@ -69,7 +69,6 @@ public class GmfMappingToGenModelTransformer {
 		return false;
 	}
 
-	@SuppressWarnings("restriction")
 	protected static void configureOptions(TransformOptions options) {
 		options.setUseRuntimeFigures(true);
 		options.setUseMapMode(true);

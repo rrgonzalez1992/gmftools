@@ -8,42 +8,22 @@
 package de.itemis.gmf.tools.contribution;
 
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.gmf.codegen.gmfgen.GMFGenPackage;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.m2t.type.emf.EmfRegistryMetaModel;
 import org.eclipse.swt.widgets.Display;
-import org.openarchitectureware.OawPlugin;
-import org.openarchitectureware.core.IOawProject;
-import org.openarchitectureware.core.IOawResource;
-import org.openarchitectureware.core.builder.OawNature;
-import org.openarchitectureware.core.internal.OawProject;
-import org.openarchitectureware.expression.ExecutionContextImpl;
-import org.openarchitectureware.expression.ResourceManagerDefaultImpl;
-import org.openarchitectureware.expression.TypeSystemImpl;
-import org.openarchitectureware.xtend.XtendFacade;
 
 import de.itemis.gmf.tools.FileUtil;
+import de.itemis.gmf.tools.IGmfGenModelTransformer;
 import de.itemis.gmf.tools.preferences.GmfModel;
 
 public class GmfGenModelTransformer {
@@ -82,7 +62,6 @@ public class GmfGenModelTransformer {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static boolean transformGmfGenModelFile(GmfModel gmfModel,
 			IProgressMonitor monitor) {
 		try {
@@ -98,33 +77,8 @@ public class GmfGenModelTransformer {
 					monitor);
 			monitor.subTask("Transforming GMF generator model");
 			ResourceSet resourceSet = new ResourceSetImpl();
-			final List<EPackage> metaModelPackages = findMetaModelPackages(resourceSet);
-			URI genModelResourceURI = FileUtil.getURI(gmfGenModelFile);
-			Resource genModelResource = resourceSet.getResource(
-					genModelResourceURI, true);
-			TypeSystemImpl ts = new TypeSystemImpl();
-			ts.registerMetaModel(new EmfRegistryMetaModel() {
-				@Override
-				protected EPackage[] allPackages() {
-					return metaModelPackages
-							.toArray(new EPackage[metaModelPackages.size()]);
-				}
-			});
-			IOawProject oawProject = OawPlugin.getOawModelManager()
-					.findProject(gmfGenModelFile.getProject());
-			if(oawProject == null){
-				MessageDialog.openError(Display.getDefault().getActiveShell(),
-						"Project enclosing transformation file does not have an OAW nature.", "Please add the oaw nature to the project containing the .ext transformation file.");
-				return false;
-			}
-						
-			ExecutionContextImpl context = new ExecutionContextImpl(
-					new WorkspaceResourceManager(oawProject), ts,
-					null);
-			XtendFacade facade = XtendFacade.create(context, FileUtil
-					.getLocationWithoutExtension(transformationFile));
-			List<EObject> transformedGenModel = (List<EObject>) facade.call(
-					"transform", genModelResource.getContents());
+			List<EObject> transformedGenModel = IGmfGenModelTransformer.Registry.create().transformGmfGenModel(
+					gmfGenModelFile, transformationFile, resourceSet);
 
 			URI transformedGenModelURI = FileUtil
 					.getURI(transformedGmfGenModelFile);
@@ -141,69 +95,4 @@ public class GmfGenModelTransformer {
 		}
 		return false;
 	}
-
-	private static List<EPackage> findMetaModelPackages(ResourceSet resourceSet) {
-		final List<EPackage> metamodels = new ArrayList<EPackage>();
-		EcoreUtil.resolveAll(resourceSet);
-		for (Resource resource : resourceSet.getResources()) {
-			TreeIterator<EObject> allContents = resource.getAllContents();
-			if (allContents.hasNext()) {
-				EObject rootObject = allContents.next();
-				if (rootObject instanceof EPackage)
-					metamodels.add((EPackage) rootObject);
-			}
-		}
-		if (!metamodels.contains(GMFGenPackage.eINSTANCE)) {
-			metamodels.add(GMFGenPackage.eINSTANCE);
-		}
-		if (!metamodels.contains(EcorePackage.eINSTANCE)) {
-			metamodels.add(EcorePackage.eINSTANCE);
-		}
-		if (!metamodels.contains(GenModelPackage.eINSTANCE)) {
-			metamodels.add(GenModelPackage.eINSTANCE);
-		}
-		return metamodels;
-	}
-
-	public static IOawProject createProject(IProject project) {
-		if (project == null)
-			return null;
-		final IJavaProject asJavaProject = JavaCore.create(project);
-		try {
-			if (asJavaProject != null
-					&& project.getProject().isAccessible()
-					&& project.getProject()
-							.isNatureEnabled(OawNature.NATURE_ID))
-				return new OawProject(asJavaProject);
-		} catch (final CoreException e) {
-			MessageDialog
-					.openError(
-							Display.getDefault().getActiveShell(),
-							"Error transforming GMF GenModel: Could not instantiate OawProject",
-							e.getMessage());
-		}
-		return null;
-	}
-
-	/**
-	 * Copied from package org.openarchitectureware.emf.editor.oaw
-	 */
-	private static class WorkspaceResourceManager extends ResourceManagerDefaultImpl {
-		private IOawProject project;
-
-		public WorkspaceResourceManager(IOawProject p) {
-			this.project = p;
-		}
-
-		public org.openarchitectureware.expression.Resource loadResource(
-				String fullyQualifiedName, String extension) {
-			IOawResource oawResource = project.findOawResource(
-					fullyQualifiedName, extension);
-			if (oawResource != null)
-				return oawResource.getOawResource();
-			return super.loadResource(fullyQualifiedName, extension);
-		}
-
-	}
-
 }

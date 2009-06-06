@@ -37,19 +37,25 @@ import org.eclipse.swt.widgets.Display;
 
 import de.itemis.gmf.tools.FileUtil;
 import de.itemis.gmf.tools.preferences.GmfModel;
+import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
 public class GmfGenModelTypeRegistryHarmonizer {
 
-	public static boolean harmonizeTypeRegistration(List<GmfModel> gmfModels, Set<IFile> changedGmfGenModels, IProgressMonitor monitor) {
+	public static boolean harmonizeTypeRegistration(List<GmfModel> gmfModels,
+			Set<IFile> changedGmfGenModels, IProgressMonitor monitor) {
 		try {
 			monitor.subTask("Harmonize type registrations");
 			ResourceSet resourceSet = new ResourceSetImpl();
 			CrossReferenceAdapter crossReferenceAdapter = new CrossReferenceAdapter();
 			resourceSet.eAdapters().add(crossReferenceAdapter);
 			List<List<MetamodelType>> elementTypes = new ArrayList<List<MetamodelType>>();
-			for(GmfModel gmfModel: gmfModels) {
-				URI gmfGenModelURI = FileUtil.getURI(gmfModel.getGmfGenModelFile());
-				Resource resource = resourceSet.getResource(gmfGenModelURI, true);
+			for (GmfModel gmfModel : gmfModels) {
+				IFile usedGmfGenModel = (PreferenceUtil.isTransformGmfGen()) ? gmfModel
+						.getTransformedGmfGenModelFile()
+						: gmfModel.getGmfGenModelFile();
+				URI gmfGenModelURI = FileUtil.getURI(usedGmfGenModel);
+				Resource resource = resourceSet.getResource(gmfGenModelURI,
+						true);
 				elementTypes.add(getMetamodelTypes(resource));
 			}
 			for (int i = 0; i < elementTypes.size(); ++i) {
@@ -59,7 +65,8 @@ public class GmfGenModelTypeRegistryHarmonizer {
 					for (MetamodelType currentType : currentElementTypes) {
 						EClass currentEcoreClass = currentType.getMetaClass()
 								.getEcoreClass();
-						for (Iterator<MetamodelType> otherTypeIter= otherElementTypes.iterator(); otherTypeIter.hasNext();) {
+						for (Iterator<MetamodelType> otherTypeIter = otherElementTypes
+								.iterator(); otherTypeIter.hasNext();) {
 							MetamodelType otherType = otherTypeIter.next();
 							EClass otherEcoreClass = otherType.getMetaClass()
 									.getEcoreClass();
@@ -75,7 +82,8 @@ public class GmfGenModelTypeRegistryHarmonizer {
 			for (Resource resource : resourceSet.getResources()) {
 				if (resource.isLoaded() && resource.isModified()) {
 					resource.save(null);
-					changedGmfGenModels.add(FileUtil.getIFile(resource.getURI()));
+					changedGmfGenModels.add(FileUtil
+							.getIFile(resource.getURI()));
 				}
 			}
 			monitor.worked(1);
@@ -94,15 +102,17 @@ public class GmfGenModelTypeRegistryHarmonizer {
 				.createSpecializationType();
 		specializationType.setDisplayName(metamodelTypeToBeReplaced
 				.getDisplayName());
-//		specializationType
-//				.setEditHelperAdviceClassName("org.eclipse.gmf.runtime.emf.type.core.edithelper.AbstractEditHelperAdvice");
+		// specializationType
+		// .setEditHelperAdviceClassName("org.eclipse.gmf.runtime.emf.type.core.edithelper.AbstractEditHelperAdvice");
 		specializationType.setMetamodelType(referencedType);
 		specializationType.setUniqueIdentifier(metamodelTypeToBeReplaced
 				.getUniqueIdentifier());
-		ECrossReferenceAdapter crossReferenceAdapter = ECrossReferenceAdapter.getCrossReferenceAdapter(metamodelTypeToBeReplaced);
-		Collection<Setting> inverseReferences = crossReferenceAdapter.getInverseReferences(metamodelTypeToBeReplaced);
-		for(Setting inverseReference: inverseReferences) {
-			if(inverseReference.getEObject() instanceof SpecializationType) {
+		ECrossReferenceAdapter crossReferenceAdapter = ECrossReferenceAdapter
+				.getCrossReferenceAdapter(metamodelTypeToBeReplaced);
+		Collection<Setting> inverseReferences = crossReferenceAdapter
+				.getInverseReferences(metamodelTypeToBeReplaced);
+		for (Setting inverseReference : inverseReferences) {
+			if (inverseReference.getEObject() instanceof SpecializationType) {
 				inverseReference.set(referencedType);
 			} else {
 				inverseReference.set(specializationType);

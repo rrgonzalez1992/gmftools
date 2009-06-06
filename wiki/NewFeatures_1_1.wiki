@@ -1,6 +1,6 @@
 #summary New and Noteworthy in 1.1
 
-= New Features in 1.1.4 = 
+= 1.1.4 = 
  * Definition file (.def), being used to generate a GMF editor via the context menu entry (see changes for 1.1.2) may now also specify options to override those settings in the preferences store. A sample entry within a .def file may look as follows:
 
 {{{
@@ -12,6 +12,8 @@
   deletegeGeneratedDiagramPlugin = true
   generateDiagramPlugin = true
 }}}
+
+= 1.1.3 =
 
  * You can now either use oAW/Xtend or M2T/Xpand for the transformation (thanks to Earl Waldin from paranor). You have to choose the appropriate plug-in {{{de.itemis.gmf.tools.oaw}}} or {{{de.itemis.gmf.tools.m2t}}}.
  * The templates have been migrated to GMF 2.2RC3. The 2.1 templates are still there and can still be used. Make sure to point your {{{Tempate Directory}}} to the right location.

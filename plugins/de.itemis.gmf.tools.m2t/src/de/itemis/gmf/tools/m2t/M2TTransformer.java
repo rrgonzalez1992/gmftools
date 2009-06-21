@@ -47,7 +47,7 @@ public class M2TTransformer implements IGmfGenModelTransformer {
 				.findProject(gmfGenModelFile.getProject());
 		if (oawProject == null) {
 			throw new IllegalStateException(
-					"Project enclosing transformation file does not have an OAW nature\nPlease add the oaw nature to the project containing the .ext transformation file.");
+					"Project enclosing transformation file does not have an Xpand nature\nPlease add the oaw nature to the project containing the .ext transformation file.");
 		}
 
 		ExecutionContextImpl context = new ExecutionContextImpl(

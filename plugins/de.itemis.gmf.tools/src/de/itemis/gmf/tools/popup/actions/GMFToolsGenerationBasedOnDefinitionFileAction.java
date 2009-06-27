@@ -8,7 +8,6 @@ import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.internal.adaptor.PluginParser.Prerequisite;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -137,7 +136,7 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 	private IFile getFile(Properties properties, String propertyKey) {
 		String genModelFilePath = (String) properties.get(propertyKey);
 		return FileUtil.getIFile(URI
-				.createPlatformResourceURI(genModelFilePath));
+				.createPlatformResourceURI(genModelFilePath, true));
 	}
 
 }

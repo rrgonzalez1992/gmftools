@@ -35,7 +35,7 @@ public class GMFToolsHandler extends AbstractHandler {
 	private GmfModel gmfModel;
 
 	public GMFToolsHandler() {
-	
+
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -44,7 +44,7 @@ public class GMFToolsHandler extends AbstractHandler {
 		if (gmfModel != null) {
 			try {
 				new ProgressMonitorDialog(window.getShell()).run(false, true,
-						new GMFToolsGeneration(gmfModel, Collections.EMPTY_MAP));
+						new GMFToolsGeneration(gmfModel, Collections.<String, Boolean> emptyMap()));
 			} catch (Exception e) {
 				reportError(e);
 			}

@@ -1,0 +1,21 @@
+grammar org.xtext.cg2009.Entities 
+  with org.eclipse.xtext.common.Terminals
+
+generate entities "http://www.xtext.org/cg2009/Entities"
+
+Model :
+	{Model} (entities += Entity)*;
+	
+Entity returns Entity:
+	'entity' name=ID ('extends' superType=[Entity])? '{'
+		(properties+=Property)*
+	'}';
+	
+Property:
+	SimpleProperty | ReferenceProperty;
+	
+SimpleProperty:
+	'property' name=ID ':' type=('String'|'Number'|'Bool');
+	
+ReferenceProperty :
+	name=ID 'refs' ('one' | many?='many')? type=[Entity];

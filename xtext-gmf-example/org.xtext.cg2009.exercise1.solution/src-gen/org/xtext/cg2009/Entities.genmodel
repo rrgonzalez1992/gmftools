@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ASCII"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.xtext.cg2009.exercise1.solution/src-gen" editDirectory="/org.xtext.cg2009.exercise1.solution.edit/src" editorDirectory="/org.xtext.cg2009.exercise1.solution.editor/src" modelPluginID="org.xtext.cg2009.exercise1.solution" forceOverwrite="true" modelName="Entities" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" complianceLevel="5.0" copyrightFields="false" editPluginID="org.xtext.cg2009.exercise1.solution.edit" editorPluginID="org.xtext.cg2009.exercise1.solution.editor">
+  <genPackages prefix="Entities" basePackage="org.xtext.cg2009" disposableProviderFactory="true">
+    <ecorePackage href="Entities.ecore#/"/>
+    <genClasses>
+      <ecoreClass href="Entities.ecore#//Model"/>
+      <genFeatures property="None" children="true" createChild="true">
+        <ecoreFeature xsi:type="ecore:EReference" href="Entities.ecore#//Model/entities"/>
+      </genFeatures>
+    </genClasses>
+    <genClasses>
+      <ecoreClass href="Entities.ecore#//Entity"/>
+      <genFeatures createChild="false">
+        <ecoreFeature xsi:type="ecore:EAttribute" href="Entities.ecore#//Entity/name"/>
+      </genFeatures>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true">
+        <ecoreFeature xsi:type="ecore:EReference" href="Entities.ecore#//Entity/superType"/>
+      </genFeatures>
+      <genFeatures property="None" children="true" createChild="true">
+        <ecoreFeature xsi:type="ecore:EReference" href="Entities.ecore#//Entity/properties"/>
+      </genFeatures>
+    </genClasses>
+    <genClasses>
+      <ecoreClass href="Entities.ecore#//Property"/>
+      <genFeatures createChild="false">
+        <ecoreFeature xsi:type="ecore:EAttribute" href="Entities.ecore#//Property/name"/>
+      </genFeatures>
+    </genClasses>
+    <genClasses>
+      <ecoreClass href="Entities.ecore#//SimpleProperty"/>
+      <genFeatures createChild="false">
+        <ecoreFeature xsi:type="ecore:EAttribute" href="Entities.ecore#//SimpleProperty/type"/>
+      </genFeatures>
+    </genClasses>
+    <genClasses>
+      <ecoreClass href="Entities.ecore#//ReferenceProperty"/>
+      <genFeatures createChild="false">
+        <ecoreFeature xsi:type="ecore:EAttribute" href="Entities.ecore#//ReferenceProperty/many"/>
+      </genFeatures>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true">
+        <ecoreFeature xsi:type="ecore:EReference" href="Entities.ecore#//ReferenceProperty/type"/>
+      </genFeatures>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

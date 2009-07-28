@@ -1,0 +1,24 @@
+import gmfgen;
+import ecore;
+
+// transforms the given GMFGenModel
+List[emf::EObject] transform(List[emf::EObject] gmfGenModelContents) :
+   let contents = gmfGenModelContents.eAllContents.addAll(gmfGenModelContents) :
+   	contents.internalTransform() ->
+   gmfGenModelContents;
+ 
+internalTransform(GenEditorGenerator this) :
+	setDomainGenModel(diagram.domainDiagramElement.genPackage.genModel)->
+	setDomainFileExtension("entity");
+ 
+internalTransform(GenPlugin this) :
+	setPrintingEnabled(true) ->
+	requiredPlugins.addAll({"org.xtext.cg2009.exercise1.solution", "de.itemis.gmf.runtime.extensions"}); 
+
+internalTransform(GenDiagram this) :
+	setValidationDecorators(true) ->
+	setValidationEnabled(true);
+	
+internalTransform(emf::EObject this) :
+	{};
+	

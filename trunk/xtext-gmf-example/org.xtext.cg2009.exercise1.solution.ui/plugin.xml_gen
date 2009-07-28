@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+
+    <extension
+            point="org.eclipse.ui.editors">
+        <editor
+            class="org.xtext.cg2009.EntitiesExecutableExtensionFactory:org.eclipse.xtext.ui.core.editor.XtextEditor"
+            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+            default="true"
+            extensions="entity"
+            id="org.xtext.cg2009.Entities"
+            name="Entities Editor">
+        </editor>
+    </extension>
+    <extension
+        point="org.eclipse.ui.handlers">
+        <handler
+            class="org.xtext.cg2009.EntitiesExecutableExtensionFactory:org.eclipse.xtext.ui.common.editor.hyperlinking.OpenDeclarationHandler"
+            commandId="org.eclipse.xtext.ui.common.editor.hyperlinking.OpenDeclaration">
+            <activeWhen>
+                <reference
+                    definitionId="org.xtext.cg2009.Entities.Editor.opened">
+                </reference>
+            </activeWhen>
+        </handler>
+        <handler
+            class="org.xtext.cg2009.EntitiesExecutableExtensionFactory:org.eclipse.xtext.ui.core.editor.handler.ValidateActionHandler"
+            commandId="org.xtext.cg2009.Entities.validate">
+         <activeWhen>
+            <reference
+                    definitionId="org.xtext.cg2009.Entities.Editor.opened">
+            </reference>
+         </activeWhen>
+      </handler>
+    </extension>
+    <extension point="org.eclipse.core.expressions.definitions">
+        <definition id="org.xtext.cg2009.Entities.Editor.opened">
+            <and>
+                <reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
+                <with variable="activeEditor">
+                    <test property="org.eclipse.xtext.ui.core.editor.XtextEditor.languageName" 
+                        value="org.xtext.cg2009.Entities" 
+                        forcePluginActivation="true"/>
+                </with>        
+            </and>
+        </definition>
+    </extension>
+    <extension
+            point="org.eclipse.ui.preferencePages">
+        <page
+            class="org.xtext.cg2009.EntitiesExecutableExtensionFactory:org.eclipse.xtext.ui.core.editor.preferences.LanguageRootPreferencePage"
+            id="org.xtext.cg2009.Entities"
+            name="Entities"
+            category="org.eclipse.xtext.languages">
+            <keywordReference id="org.xtext.cg2009.ui.keyword_Entities"/>
+        </page>
+        <page
+            category="org.xtext.cg2009.Entities"
+            class="org.xtext.cg2009.EntitiesExecutableExtensionFactory:org.eclipse.xtext.ui.common.editor.syntaxcoloring.SyntaxColoringPreferencePage"
+            id="org.xtext.cg2009.Entities.coloring"
+            name="Syntax Coloring">
+            <keywordReference id="org.xtext.cg2009.ui.keyword_Entities"/>
+        </page>
+        <page
+            category="org.xtext.cg2009.Entities"
+            class="org.xtext.cg2009.EntitiesExecutableExtensionFactory:org.eclipse.xtext.ui.common.editor.templates.XtextTemplatePreferencePage"
+            id="org.xtext.cg2009.Entities.templates"
+            name="Templates">
+            <keywordReference id="org.xtext.cg2009.ui.keyword_Entities"/>
+        </page>
+    </extension>
+    <extension
+        point="org.eclipse.ui.keywords">
+        <keyword
+            id="org.xtext.cg2009.ui.keyword_Entities"
+            label="Entities"/>
+    </extension>
+    <extension
+         point="org.eclipse.ui.commands">
+      <command
+            description="Trigger expensive validation"
+            id="org.xtext.cg2009.Entities.validate"
+            name="Validate">
+      </command>
+    </extension>
+    <extension point="org.eclipse.ui.menus">
+        <menuContribution
+            locationURI="popup:#TextEditorContext?after=group.open">
+             <command
+                 commandId="org.xtext.cg2009.Entities.validate"
+                 style="push"
+                 tooltip="Trigger expensive validation">
+            <visibleWhen checkEnabled="false">
+                <reference
+                    definitionId="org.xtext.cg2009.Entities.Editor.opened">
+                </reference>
+            </visibleWhen>
+         </command>  
+         </menuContribution>
+    </extension>
+
+<!-- adding resource factories -->
+
+	<extension
+		point="org.eclipse.emf.ecore.extension_parser">
+		<parser
+			class="org.xtext.cg2009.EntitiesExecutableExtensionFactory:org.eclipse.xtext.resource.XtextResourceFactory"
+			type="entity">
+		</parser>
+	</extension>
+
+
+
+
+</plugin>

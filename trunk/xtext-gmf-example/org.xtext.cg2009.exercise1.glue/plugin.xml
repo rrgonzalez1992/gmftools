@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="org.xtext.cg2009.exercise1.diagram.ext.objectContribution1"
+            objectClass="org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart">
+         <action
+               class="org.xtext.cg2009.exercise1.glue.actions.GoToDeclaration"
+               id="org.xtext.cg2009.exercise1.diagram.ext.action1"
+               label="Open in text editor">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.xtext.cg2009.exercise1.glue.Initializer">
+      </startup>
+   </extension>
+
+</plugin>

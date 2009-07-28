@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GMF Models
+Bundle-SymbolicName: org.xtext.cg2009.exercise1.gmf
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: itemis AG
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: de.itemis.gmf.runtime.extensions;bundle-version="1.0.0"

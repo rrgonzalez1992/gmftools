@@ -1,0 +1,30 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf460
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww12120\viewh14100\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 Well, here it is, the <a href="http://download.itemis.com/Screencast_Xtext_GMF.mp4">screencast</a> showing a textual TMF/Xtext and a graphical GMF editor synchronized on the same model.\
+<h3><span style="font-style:italic;">XtextResource</span></h3>\
+The main trick is Xtext's <span style="font-style:italic;">Resource</span> implementation, that does not only encapsulate a parser that converts text to an EMF model but also a <span style="font-style:italic;">Serializer</span> working the opposite direction. As a result, an Xtext model just looks like any other EMF model from the outside, e.g. for a GMF editor. That way, you can switch the serialization format of your models to some self-defined DSL by just replacing the resource implementation used by your model editor.\
+<p>\
+One of the cool new features of Xtext is the <span style="font-style:italic;">Serializer</span> component: The necessary code is derived from the grammar and completely auto-generated. You can additionally specify where to put whitespaces (especially line breaks) in a separate internal Java-DSL. In addition, existing whitespaces as well as comments are being preserved when a model is re-serialized. \
+<p>\
+Xtext focusses on DSLs as real languages, so it offers high flexibility in the lexical structure. If you build an Xtext editor on top of an existing Ecore model, it can happen that the syntax does not cover all features of that model. If you build another editor on top of an <span style="font-style:italic;">XtextResource</span>, you have to make sure that all references and properties defined as mandatory in the grammar (cardinality none or +) are set before serializing. In the example, this is enforced by means of GMF's feature initalizers.\
+<h3>Synchronization</h3>\
+When the Xtext parser re-parses a section of the model (yes, we do have partial parsing now, but that's a different story), it replaces a branch of the EMF model tree. \
+<p>\
+That interferes with GMF's canonical principle of keeping the semantic model and the diagram model in sync: If you delete a section in the model GMF will prune all related diagram elements, and if you restore the text, the diagram elements will be created from scratch. So any manually changed diagram information (layout, position, font etc) will be lost. As Xtext continuously parses the text while editing, you can expect the text to be (temporarily) syntactically incorrect to be a common case. \
+<p>\
+That's why I would never recommend to share the same model instance across different editor types. Rather than that, I'd synchronize editors at well defined points, e.g. on save. Xtext as well as GMF register modification listeners on the model files, and re-synchronize their content automatically.\
+<h3><span style="font-style:italic;">IFragmentProvider</span></h3>\
+By default, EMF cross-references are described by means of path expressions. That causes a problem when you delete one element in a containment reference: The following elements in the same containment reference move up, causing their indices, and thereby their path expressions to change. As the GMF diagram model cross-references the semantic model, the mapping from diagram elements to semantic elements changes, causing elements to switch positions. \
+<p>\
+The solution to this problems is to provide the fragments yourself. Xtext offers a service named <span style="font-style:italic;">IFragmentProvider</span>, that allows to define the fragment to EObject mapping. As these fragments are equivalent to local IDs, you have to make sure there are no collisions. This is best done by means of validation.\
+<h3>Validation</h3>\
+Xtext offers a new Java-based API for validation. The checks are registered to EMF's <span style="font-style:italic;">EValidator.Registry</span>, and are thereby transparently picked up and executed by GMF if you select "Validate" from the menu.\
+<h3>Glue Code</h3>\
+If you have two editors with different changes on the same model, what happens on save? In a naive implementation, the last one wins, completely overwriting the changes of the first. To avoid such behavior, we have implemented a class that warns the user of concurrent changes and offers to abandon such changes. \
+<p>\
+Anther easy to implement feature was the "Open in text editor" action shown in the screencast. Xtext attaches a so called <span style="font-style:italic;">NodeAdapter</span> to the semantic model, that allows to find the associated parser node for a semantic model element. That node gives you the offset and length of the textual region, the element has been parsed from. \
+}

@@ -10,6 +10,7 @@ package de.itemis.gmf.tools.preferences;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -50,6 +51,28 @@ public class PreferenceUtil {
 		return result;
 	}
 
+	public static void addGmfModel(GmfModel newModel) {
+		List<GmfModel> gmfModels = getGmfModels();
+		boolean replaced = false;
+		for (int i=0; i<gmfModels.size(); ++i) {
+			if(gmfModels.get(i).getDisplayName().equals(newModel.getDisplayName())) {
+				gmfModels.set(i, newModel);
+				replaced = true;
+				break;
+			}
+		}
+		if(!replaced) {
+			gmfModels.add(newModel);
+		}
+		Iterator<GmfModel> i = gmfModels.iterator();
+		StringBuilder builder = new StringBuilder(gmfModelFactory.serialize(i.next()));
+		while(i.hasNext()) {
+			builder.append(ObjectListEditor.PREFERENCE_ITEM_SEPARATOR);
+			builder.append(gmfModelFactory.serialize(i.next()));
+		}
+		getPreferenceStore().setValue(GMF_MODELS, builder.toString());
+	}
+	
 	private static IPreferenceStore getPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();
 	}
@@ -71,6 +94,7 @@ public class PreferenceUtil {
 		return options;
 	}
 
+	
 	public static boolean isDeleteGmfGen() {
 		return getPreferenceStore().getBoolean(GMF_DELETE_GMFGEN);
 	}

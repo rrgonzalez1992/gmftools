@@ -74,6 +74,7 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 					if (gmfModel != null) {
 						gmfModel.setDisplayName(definitionFile.getName());
 					}
+					PreferenceUtil.addGmfModel(gmfModel);
 					options = propertiesToOptions(properties);
 				} catch (IOException e) {
 					e.printStackTrace();

@@ -39,6 +39,6 @@ public interface IGmfGenModelTransformer {
 	}
 
 	List<EObject> transformGmfGenModel(IFile gmfGenModelFile,
-			IFile transformationFile, ResourceSet resourceSet);
+			IFile transformationFile, ResourceSet resourceSet) throws Exception;
 
 }

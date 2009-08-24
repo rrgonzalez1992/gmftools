@@ -1,5 +1,10 @@
 #summary New and Noteworthy in 1.1
 
+= 1.1.5 =
+ * Configuration set is stored in preferences when starting .def file. You can then use the button afterwards.
+ * Warning instead of empty error message when project containing trafo file does not have oAW/XtendXpand nature.
+ * Removed template aspects for ElementChooser, as it works with proxies anyway.
+
 = 1.1.4 = 
  * Definition file (.def), being used to generate a GMF editor via the context menu entry (see changes for 1.1.2) may now also specify options to override those settings in the preferences store. A sample entry within a .def file may look as follows:
 

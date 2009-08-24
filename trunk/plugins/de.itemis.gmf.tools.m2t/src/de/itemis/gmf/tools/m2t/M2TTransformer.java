@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -21,6 +22,7 @@ import org.eclipse.xtend.expression.TypeSystemImpl;
 import org.eclipse.xtend.shared.ui.Activator;
 import org.eclipse.xtend.shared.ui.core.IXtendXpandProject;
 import org.eclipse.xtend.shared.ui.core.IXtendXpandResource;
+import org.eclipse.xtend.shared.ui.core.builder.XtendXpandNature;
 import org.eclipse.xtend.typesystem.emf.EmfRegistryMetaModel;
 
 import de.itemis.gmf.tools.FileUtil;
@@ -30,7 +32,12 @@ public class M2TTransformer implements IGmfGenModelTransformer {
 	
 	@SuppressWarnings("unchecked")
 	public List<EObject> transformGmfGenModel(IFile gmfGenModelFile,
-			IFile transformationFile, ResourceSet resourceSet) {
+			IFile transformationFile, ResourceSet resourceSet) throws Exception {
+		IProject trafoProject = transformationFile.getProject();
+		if (!trafoProject.hasNature(XtendXpandNature.NATURE_ID)) {
+			throw new IllegalStateException("Project " + trafoProject.getName() + " lacks Xtend/Xpand nature.");
+		}
+
 		final List<EPackage> metaModelPackages = findMetaModelPackages(resourceSet);
 		URI genModelResourceURI = FileUtil.getURI(gmfGenModelFile);
 		Resource genModelResource = resourceSet.getResource(
@@ -44,7 +51,7 @@ public class M2TTransformer implements IGmfGenModelTransformer {
 			}
 		});
 		IXtendXpandProject oawProject = Activator.getExtXptModelManager()
-				.findProject(gmfGenModelFile.getProject());
+				.findProject(trafoProject);
 		if (oawProject == null) {
 			throw new IllegalStateException(
 					"Project enclosing transformation file does not have an Xpand nature\nPlease add the oaw nature to the project containing the .ext transformation file.");

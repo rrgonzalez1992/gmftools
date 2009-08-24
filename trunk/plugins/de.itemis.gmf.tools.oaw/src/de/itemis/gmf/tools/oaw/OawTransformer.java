@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -25,6 +27,7 @@ import org.eclipse.m2t.type.emf.EmfRegistryMetaModel;
 import org.openarchitectureware.OawPlugin;
 import org.openarchitectureware.core.IOawProject;
 import org.openarchitectureware.core.IOawResource;
+import org.openarchitectureware.core.builder.OawNature;
 import org.openarchitectureware.expression.ExecutionContextImpl;
 import org.openarchitectureware.expression.ResourceManagerDefaultImpl;
 import org.openarchitectureware.expression.TypeSystemImpl;
@@ -36,28 +39,26 @@ import de.itemis.gmf.tools.IGmfGenModelTransformer;
 public class OawTransformer implements IGmfGenModelTransformer {
 
 	@SuppressWarnings("unchecked")
-	public List<EObject> transformGmfGenModel(IFile gmfGenModelFile,
-			IFile transformationFile, ResourceSet resourceSet) {
-			final List<EPackage> metaModelPackages = findMetaModelPackages(resourceSet);
-			URI genModelResourceURI = FileUtil.getURI(gmfGenModelFile);
-			Resource genModelResource = resourceSet.getResource(
-					genModelResourceURI, true);
-			TypeSystemImpl ts = new TypeSystemImpl();
-			ts.registerMetaModel(new EmfRegistryMetaModel() {
-				@Override
-				protected EPackage[] allPackages() {
-					return metaModelPackages
-							.toArray(new EPackage[metaModelPackages.size()]);
-				}
-			});
-			ExecutionContextImpl context = new ExecutionContextImpl(
-					new WorkspaceResourceManager(OawPlugin.getOawModelManager()
-							.findProject(gmfGenModelFile.getProject())), ts,
-					null);
-			XtendFacade facade = XtendFacade.create(context, FileUtil
-					.getLocationWithoutExtension(transformationFile));
-			return (List<EObject>) facade.call(
-					"transform", genModelResource.getContents());
+	public List<EObject> transformGmfGenModel(IFile gmfGenModelFile, IFile transformationFile, ResourceSet resourceSet) throws Exception {
+		IProject trafoProject = transformationFile.getProject();
+		if (!trafoProject.hasNature(OawNature.NATURE_ID)) {
+			throw new IllegalStateException("Project " + trafoProject.getName() + " lacks oAW nature.");
+		}
+
+		final List<EPackage> metaModelPackages = findMetaModelPackages(resourceSet);
+		URI genModelResourceURI = FileUtil.getURI(gmfGenModelFile);
+		Resource genModelResource = resourceSet.getResource(genModelResourceURI, true);
+		TypeSystemImpl ts = new TypeSystemImpl();
+		ts.registerMetaModel(new EmfRegistryMetaModel() {
+			@Override
+			protected EPackage[] allPackages() {
+				return metaModelPackages.toArray(new EPackage[metaModelPackages.size()]);
+			}
+		});
+		ExecutionContextImpl context = new ExecutionContextImpl(
+				new WorkspaceResourceManager(OawPlugin.getOawModelManager().findProject(trafoProject)), ts, null);
+		XtendFacade facade = XtendFacade.create(context, FileUtil.getLocationWithoutExtension(transformationFile));
+		return (List<EObject>) facade.call("transform", genModelResource.getContents());
 	}
 
 	private List<EPackage> findMetaModelPackages(ResourceSet resourceSet) {
@@ -93,10 +94,8 @@ public class OawTransformer implements IGmfGenModelTransformer {
 			this.project = p;
 		}
 
-		public org.openarchitectureware.expression.Resource loadResource(
-				String fullyQualifiedName, String extension) {
-			IOawResource oawResource = project.findOawResource(
-					fullyQualifiedName, extension);
+		public org.openarchitectureware.expression.Resource loadResource(String fullyQualifiedName, String extension) {
+			IOawResource oawResource = project.findOawResource(fullyQualifiedName, extension);
 			if (oawResource != null)
 				return oawResource.getOawResource();
 			return super.loadResource(fullyQualifiedName, extension);

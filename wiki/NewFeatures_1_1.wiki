@@ -1,5 +1,8 @@
 #summary New and Noteworthy in 1.1
 
+= 1.1.6 =
+ * Converted GMF button into a pulldown button, accessing all registered GMFTools configurations.
+
 = 1.1.5 =
  * Configuration set is stored in preferences when starting .def file. You can then use the button afterwards.
  * Warning instead of empty error message when project containing trafo file does not have oAW/XtendXpand nature.

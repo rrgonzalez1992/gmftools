@@ -8,8 +8,13 @@
 package de.itemis.gmf.tools;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IStartup;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.menus.IMenuService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import de.itemis.gmf.tools.popup.actions.GMFButtonContributionFactory;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -21,7 +26,9 @@ public class Activator extends AbstractUIPlugin {
 
 	// The shared instance
 	private static Activator plugin;
-	
+
+	private GMFButtonContributionFactory gmfButtonContributionFactory;
+
 	/**
 	 * The constructor
 	 */
@@ -30,25 +37,38 @@ public class Activator extends AbstractUIPlugin {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		IMenuService service = (IMenuService) PlatformUI.getWorkbench()
+				.getService(IMenuService.class);
+		gmfButtonContributionFactory = new GMFButtonContributionFactory();
+		service.addContributionFactory(gmfButtonContributionFactory);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see
+	 * org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext
+	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
+		IMenuService service = (IMenuService) PlatformUI.getWorkbench()
+				.getService(IMenuService.class);
+		service.removeContributionFactory(gmfButtonContributionFactory);
 		plugin = null;
 		super.stop(context);
 	}
 
 	/**
 	 * Returns the shared instance
-	 *
+	 * 
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
@@ -56,13 +76,19 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
-	 *
-	 * @param path the path
+	 * Returns an image descriptor for the image file at the given plug-in
+	 * relative path
+	 * 
+	 * @param path
+	 *            the path
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
+	public static class Startup implements IStartup {
+		public void earlyStartup() {
+		}
 	}
 }

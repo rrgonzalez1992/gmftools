@@ -28,6 +28,14 @@ import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
 public class GMFToolsHandler extends AbstractHandler {
 
+	public static final String GENERATE_LATEST_COMMAND_ID = "de.itemis.gmf.tools.commands.generateLatest";
+	public static final String GENERATE_PREDEFINED_COMMAND_ID = "de.itemis.gmf.tools.commands.generatePredefined";
+
+	public static final String GMF_TOOLS_CONFIG_PARAMETER_TYPE_ID = "de.itemis.gmf.tools.commands.parameter.type.gmfConfig";
+	public static final String GMF_TOOLS_CONFIG_PARAMETER_ID = "de.itemis.gmf.tools.commands.parameter.gmfConfig";
+
+	public static final String GMF_TOOLS_CONFIG_PARAMETER_NAME = "de.itemis.gmf.tools.commands.parameter.gmfConfig";
+
 	private GmfModel lastGmfModel;
 
 	private IWorkbenchWindow window;
@@ -35,25 +43,25 @@ public class GMFToolsHandler extends AbstractHandler {
 	private GmfModel gmfModel;
 
 	public GMFToolsHandler() {
-
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		gmfModel = getGmfModels();
-		if (gmfModel != null) {
-			try {
+		try {
+			gmfModel = getGmfModel(event);
+			if (gmfModel != null) {
 				new ProgressMonitorDialog(window.getShell()).run(false, true,
-						new GMFToolsGeneration(gmfModel, Collections.<String, Boolean> emptyMap()));
-			} catch (Exception e) {
-				reportError(e);
+						new GMFToolsGeneration(gmfModel, Collections
+								.<String, Boolean> emptyMap()));
+			} else {
+				MessageDialog
+						.openInformation(
+								window.getShell(),
+								"No GMF file set selected",
+								"Go to Preferences -> GMF Tools and create a set of files for the editor first.");
 			}
-		} else {
-			MessageDialog
-					.openInformation(
-							window.getShell(),
-							"No GMF file set selected",
-							"Go to Preferences -> GMF Tools and create a set of files for the editor first.");
+		} catch (Exception e) {
+			reportError(e);
 		}
 		return null;
 	}
@@ -65,7 +73,15 @@ public class GMFToolsHandler extends AbstractHandler {
 						"Error executing GMF action", e));
 	}
 
-	private GmfModel getGmfModels() {
+	private GmfModel getGmfModel(ExecutionEvent event)
+			throws ExecutionException {
+		if (event != null) {
+			String parameter = event
+					.getParameter(GMF_TOOLS_CONFIG_PARAMETER_NAME);
+			if (parameter != null) {
+				return (GmfModel) new GmfModel.Factory().deserialize(parameter);
+			}
+		}
 		ISelection selection = window.getSelectionService().getSelection();
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = (IStructuredSelection) selection;

@@ -15,6 +15,8 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -35,6 +37,7 @@ import org.eclipse.gmf.runtime.emf.core.util.CrossReferenceAdapter;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
+import de.itemis.gmf.tools.Activator;
 import de.itemis.gmf.tools.FileUtil;
 import de.itemis.gmf.tools.preferences.GmfModel;
 import de.itemis.gmf.tools.preferences.PreferenceUtil;
@@ -90,7 +93,10 @@ public class GmfGenModelTypeRegistryHarmonizer {
 			return true;
 		} catch (Exception exc) {
 			MessageDialog.openError(Display.getDefault().getActiveShell(),
-					"Error transforming map model", exc.getMessage());
+					"Error harmonizing type registry", exc.getMessage());
+			Activator.getDefault().getLog().log(
+					new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+							"Error harmonizing type registry", exc));
 		}
 		return false;
 	}

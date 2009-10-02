@@ -177,7 +177,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="de.itemis.gmf.tools.Activator.Startup">
+            class="de.itemis.gmf.tools.Startup">
       </startup>
    </extension>
 

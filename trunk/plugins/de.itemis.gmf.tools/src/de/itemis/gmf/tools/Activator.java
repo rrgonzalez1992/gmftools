@@ -8,7 +8,6 @@
 package de.itemis.gmf.tools;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IStartup;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.menus.IMenuService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -85,10 +84,5 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
-	}
-
-	public static class Startup implements IStartup {
-		public void earlyStartup() {
-		}
 	}
 }

@@ -8,7 +8,6 @@
 package de.itemis.gmf.tools.preferences;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -36,16 +35,16 @@ public class PreferenceUtil {
 	public static List<GmfModel> getGmfModels() {
 		IPreferenceStore store = getPreferenceStore();
 		String string = store.getString(GMF_MODELS);
-		if (string == null || "".equals(string))
-			return Collections.emptyList();
 		ArrayList<GmfModel> result = new ArrayList<GmfModel>();
-		String[] paths = string
-				.split(ObjectListEditor.PREFERENCE_ITEM_SEPARATOR);
-		for (String path : paths) {
-			if (!"".equals(path)) {
-				GmfModel gmfModels = (GmfModel) gmfModelFactory
-						.deserialize(path);
-				result.add(gmfModels);
+		if (string != null && !"".equals(string)) {
+			String[] paths = string
+					.split(ObjectListEditor.PREFERENCE_ITEM_SEPARATOR);
+			for (String path : paths) {
+				if (!"".equals(path)) {
+					GmfModel gmfModels = (GmfModel) gmfModelFactory
+							.deserialize(path);
+					result.add(gmfModels);
+				}
 			}
 		}
 		return result;
@@ -54,25 +53,27 @@ public class PreferenceUtil {
 	public static void addGmfModel(GmfModel newModel) {
 		List<GmfModel> gmfModels = getGmfModels();
 		boolean replaced = false;
-		for (int i=0; i<gmfModels.size(); ++i) {
-			if(gmfModels.get(i).getDisplayName().equals(newModel.getDisplayName())) {
+		for (int i = 0; i < gmfModels.size(); ++i) {
+			if (gmfModels.get(i).getDisplayName().equals(
+					newModel.getDisplayName())) {
 				gmfModels.set(i, newModel);
 				replaced = true;
 				break;
 			}
 		}
-		if(!replaced) {
+		if (!replaced) {
 			gmfModels.add(newModel);
 		}
 		Iterator<GmfModel> i = gmfModels.iterator();
-		StringBuilder builder = new StringBuilder(gmfModelFactory.serialize(i.next()));
-		while(i.hasNext()) {
+		StringBuilder builder = new StringBuilder(gmfModelFactory.serialize(i
+				.next()));
+		while (i.hasNext()) {
 			builder.append(ObjectListEditor.PREFERENCE_ITEM_SEPARATOR);
 			builder.append(gmfModelFactory.serialize(i.next()));
 		}
 		getPreferenceStore().setValue(GMF_MODELS, builder.toString());
 	}
-	
+
 	private static IPreferenceStore getPreferenceStore() {
 		return Activator.getDefault().getPreferenceStore();
 	}
@@ -94,7 +95,6 @@ public class PreferenceUtil {
 		return options;
 	}
 
-	
 	public static boolean isDeleteGmfGen() {
 		return getPreferenceStore().getBoolean(GMF_DELETE_GMFGEN);
 	}

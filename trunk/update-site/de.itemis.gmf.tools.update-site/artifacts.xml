@@ -3,18 +3,24 @@
 <repository name='${p2.artifact.repo.name}' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1247645865697'/>
+    <property name='p2.timestamp' value='1254485088386'/>
   </properties>
   <mappings size='3'>
     <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
     <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
     <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
   </mappings>
-  <artifacts size='7'>
-    <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.4.200907151017'>
+  <artifacts size='13'>
+    <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.6.200910021404'>
       <properties size='2'>
         <property name='artifact.size' value='578'/>
-        <property name='download.size' value='70285'/>
+        <property name='download.size' value='73941'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='de.itemis.gmf.tools' version='1.1.4.200910021402'>
+      <properties size='2'>
+        <property name='download.contentType' value='application/zip'/>
+        <property name='download.size' value='416'/>
       </properties>
     </artifact>
     <artifact classifier='org.eclipse.update.feature' id='de.itemis.gmf.tools' version='1.1.2.200906031020'>
@@ -23,16 +29,22 @@
         <property name='download.size' value='682'/>
       </properties>
     </artifact>
+    <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools.m2t' version='1.1.5.200910021402'>
+      <properties size='2'>
+        <property name='artifact.size' value='442'/>
+        <property name='download.size' value='6390'/>
+      </properties>
+    </artifact>
     <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools.m2t' version='1.1.3.200907151017'>
       <properties size='2'>
         <property name='artifact.size' value='442'/>
         <property name='download.size' value='6121'/>
       </properties>
     </artifact>
-    <artifact classifier='org.eclipse.update.feature' id='de.itemis.gmf.tools' version='1.1.1.200906030909'>
+    <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.6.200910021402'>
       <properties size='2'>
-        <property name='artifact.size' value='682'/>
-        <property name='download.size' value='682'/>
+        <property name='artifact.size' value='578'/>
+        <property name='download.size' value='73939'/>
       </properties>
     </artifact>
     <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.1.200906030909'>
@@ -42,17 +54,41 @@
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
+    <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.2.200906031020'>
+      <properties size='3'>
+        <property name='artifact.size' value='101065'/>
+        <property name='download.size' value='101065'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
     <artifact classifier='org.eclipse.update.feature' id='de.itemis.gmf.tools' version='1.1.4.200907151017'>
       <properties size='2'>
         <property name='download.contentType' value='application/zip'/>
         <property name='download.size' value='605'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.2.200906031020'>
-      <properties size='3'>
-        <property name='artifact.size' value='101065'/>
-        <property name='download.size' value='101065'/>
+    <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.4.200907151017'>
+      <properties size='2'>
+        <property name='artifact.size' value='578'/>
+        <property name='download.size' value='70285'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools.m2t' version='1.1.5.200910021404'>
+      <properties size='2'>
+        <property name='artifact.size' value='442'/>
+        <property name='download.size' value='6390'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='de.itemis.gmf.tools' version='1.1.6.200910021404'>
+      <properties size='2'>
         <property name='download.contentType' value='application/zip'/>
+        <property name='download.size' value='412'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='de.itemis.gmf.tools' version='1.1.1.200906030909'>
+      <properties size='2'>
+        <property name='artifact.size' value='682'/>
+        <property name='download.size' value='682'/>
       </properties>
     </artifact>
   </artifacts>

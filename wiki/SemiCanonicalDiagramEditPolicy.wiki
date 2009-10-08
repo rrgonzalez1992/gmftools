@@ -29,7 +29,7 @@ ElementViewFilter.filterElementsWithoutViewInParent(result, viewObject);
 
  * Comment out the last line in {{{refreshConnections()}}} and return an empty list instead, to avoid automatically adding of links. This makes the second half of the loop body above obsolete.
 
- *Implement the missing abstract methods 
+ * Implement the missing abstract methods. This step is necessary, as the generated XXXLinkDescriptors don't have a generic superclass. So you must cast the {{{linkDescriptor}}} to the generated class and investigate the conditions yourself.
 
 == Enable Dropping of Semantic Elements onto the Diagram ==
 

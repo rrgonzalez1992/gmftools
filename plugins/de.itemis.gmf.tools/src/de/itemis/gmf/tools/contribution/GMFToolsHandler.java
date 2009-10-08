@@ -36,7 +36,7 @@ public class GMFToolsHandler extends AbstractHandler {
 
 	public static final String GMF_TOOLS_CONFIG_PARAMETER_NAME = "de.itemis.gmf.tools.commands.parameter.gmfConfig";
 
-	private GmfModel lastGmfModel;
+	private static GmfModel lastGmfModel;
 
 	private IWorkbenchWindow window;
 
@@ -49,6 +49,7 @@ public class GMFToolsHandler extends AbstractHandler {
 		window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		try {
 			gmfModel = getGmfModel(event);
+			lastGmfModel = gmfModel;
 			if (gmfModel != null) {
 				new ProgressMonitorDialog(window.getShell()).run(false, true,
 						new GMFToolsGeneration(gmfModel, Collections

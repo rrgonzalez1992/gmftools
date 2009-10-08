@@ -44,7 +44,8 @@ private org.eclipse.emf.transaction.TransactionalEditingDomain createEditingDoma
 «AROUND handleElementChanged FOR gmfgen::GenDiagram-»
 	«EXPAND xpt::Common::generatedMemberComment»
 protected void handleElementChanged(ResourceSetInfo info, org.eclipse.emf.ecore.resource.Resource changedResource, org.eclipse.core.runtime.IProgressMonitor monitor) {
-	// ITEMIS CHANGE : Using the shared editing domain, we do not listen to document file changes any longer to avoid deadlocks
+	// ITEMIS CHANGE : Using the shared editing domain, we reload externally
+	// changed resources centrally
 	/*
 	«IF null = editorGen.application-»
 	org.eclipse.core.resources.IFile file = org.eclipse.emf.workspace.util.WorkspaceSynchronizer.getFile(changedResource);
@@ -58,7 +59,7 @@ protected void handleElementChanged(ResourceSetInfo info, org.eclipse.emf.ecore.
 	}
 	«ENDIF-»
 	changedResource.unload();
-	
+	*/
 	fireElementContentAboutToBeReplaced(info.getEditorInput());
 	removeUnchangedElementListeners(info.getEditorInput(), info);
 	info.fStatus = null;
@@ -73,6 +74,5 @@ protected void handleElementChanged(ResourceSetInfo info, org.eclipse.emf.ecore.
 	}
 	addUnchangedElementListeners(info.getEditorInput(), info);
 	fireElementContentReplaced(info.getEditorInput());
-    */
 }
 «ENDAROUND»

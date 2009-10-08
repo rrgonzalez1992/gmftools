@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/de.itemis.gmf.tools_1.1.6.200910021646.jar" id="de.itemis.gmf.tools" version="1.1.6.200910021646">
-      <category name="GMF Tools"/>
-   </feature>
+   <feature url="features/de.itemis.gmf.tools_1.1.7.200910081953.jar" id="de.itemis.gmf.tools" version="1.1.7.200910081953"/>
    <category-def name="GMF Tools" label="GMF Tools"/>
 </site>

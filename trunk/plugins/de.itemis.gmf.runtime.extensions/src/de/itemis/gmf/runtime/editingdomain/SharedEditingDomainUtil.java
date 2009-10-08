@@ -25,6 +25,7 @@ public class SharedEditingDomainUtil {
 		TransactionalEditingDomain editingDomain = TransactionalEditingDomain.Registry.INSTANCE
 				.getEditingDomain(id);
 		addResourceTrackingModificationAdapter(editingDomain);
+		SharedResourceSetInfoDelegate.adapt(editingDomain);
 		return editingDomain;
 	}
 
@@ -78,4 +79,5 @@ public class SharedEditingDomainUtil {
 					diagramResourceModifiedFilter));
 		}
 	}
+	
 }

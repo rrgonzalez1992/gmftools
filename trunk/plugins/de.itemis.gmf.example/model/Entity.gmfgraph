@@ -13,13 +13,19 @@
         <layout
             xsi:type="gmfgraph:CustomLayout"
             qualifiedClassName="de.itemis.gmf.runtime.layout.ResizableFlowLayout"/>
+        <insets
+            top="5"
+            left="5"
+            bottom="5"
+            right="5"/>
         <children
             xsi:type="gmfgraph:Label"
             name="EntityNameFigure"
             text="&lt;...>"/>
         <children
             xsi:type="gmfgraph:Rectangle"
-            name="EntityAttributeCompartmentFigure"/>
+            name="EntityAttributeCompartmentFigure"
+            outline="false"/>
       </actualFigure>
       <accessors
           figure="//@figures.0/@descriptors.0/@actualFigure/@children.0"/>
@@ -51,11 +57,14 @@
         name="ReferenceFigure">
       <actualFigure
           xsi:type="gmfgraph:PolylineConnection"
-          name="ReferenceFigure">
+          name="ReferenceFigure"
+          targetDecoration="//@figures.0/@descriptors.2/@actualFigure/@children.1">
         <children
             xsi:type="gmfgraph:Label"
             name="ReferenceNameFigure"
             text="&lt;...>"/>
+        <children
+            xsi:type="gmfgraph:PolylineDecoration"/>
       </actualFigure>
       <accessors
           figure="//@figures.0/@descriptors.2/@actualFigure/@children.0"/>

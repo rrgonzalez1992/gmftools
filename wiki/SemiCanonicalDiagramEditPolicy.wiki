@@ -25,6 +25,8 @@ ElementViewFilter.filterElementsWithoutViewInParent(result, viewObject);
 
  * Make {{{collectAllLinks()}}} and {{{createConnections()}}} protected.
 
+ * In {{{createConnections()}}}, change the boolean parameter in the constructor call to the {{{ConnectionViewDescriptor}}} from {{{false}}} to {{{true}}} to automatically make created edges persistent.
+
  * Comment out the last line in {{{refreshConnections()}}} and return an empty list instead, to avoid automatically adding of links. This makes the second half of the loop body above obsolete.
 
  *Implement the missing abstract methods 

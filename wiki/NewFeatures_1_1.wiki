@@ -1,5 +1,9 @@
 #summary New and Noteworthy in 1.1
 
+= 1.1.7 =
+ * Tools: Button now runs last build
+ * Runtime: Complete redesign of shared editing domain. Restored {{{WorkspaceSynchronizer}}} as in original generated code but share it among {{{ResourceSetInfo}}}s of the same editing domain. Should now work with multiple diagams sharing editing domain and other editors, e.g. Xtext, that are synchronizing on file changes only.
+
 = 1.1.6 =
  * Converted GMF button into a pulldown button, accessing all registered GMFTools configurations.
 

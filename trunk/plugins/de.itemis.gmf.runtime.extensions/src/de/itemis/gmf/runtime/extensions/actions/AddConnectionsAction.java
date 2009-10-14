@@ -85,9 +85,9 @@ public class AddConnectionsAction implements IObjectActionDelegate {
 		action.setEnabled(false);
 		if (selection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+            selectedEditParts = new ArrayList<IGraphicalEditPart>();
 			for (Iterator<?> i = structuredSelection.iterator(); i.hasNext();) {
 				Object selectedElement = i.next();
-				selectedEditParts = new ArrayList<IGraphicalEditPart>();
 				if (selectedElement instanceof IGraphicalEditPart) {
 					IGraphicalEditPart graphicalEditPart = (IGraphicalEditPart) selectedElement;
 					selectedEditParts.add(graphicalEditPart);

@@ -16,8 +16,8 @@ Sharing an editing domain between several editors has a number of consequences:
 
  * Editors also share their command stack. Undo/Redo might affect other editors than the active one.
  * Editors sharing the same EditingDomain are either all dirty or all clean.
- * When disabling the WorkspaceSynchronizer, diagrams are no longer updated when the model files are changed from the outside.
  * You no longer dispose the EditingDomain when you close an editor, so you need an unloading strategy to get rid of unneded resources to avoid a memory leak.
+ * You might still have references to unloaded models on the command stack. We haven't developed an cleanup strategy yet. Help is welcome.
 
 == Helpful Resources ==
 
@@ -85,8 +85,7 @@ The following list describes the changes to the templates, applied using Xpand a
  * Added a dependency to the plug-in {{{de.itemis.gmf.runtime.extensions}}}
  * All relevant instantiations of an editing domain refer to {{{de.itemis.gmf.runtime.editingdomain.SharedEditingDomainUtil.getSharedEditingDomain(sharedEditingDomainID)}}}.
  * All calls to {{{EditingDomain.dispose()}}} have been eliminated.
- * {{{DocumentProvider.handleElementChange()}}} method body is commented out.
- * The {{{WorkspaceSynchronizer}}} no longer reacts on file changes.
+ * {{{ResourceSetInfo}}} has been refactored. Common things, e.g. the {{{WorkspaceSynchronizer}}} has been extracted to {{{SharedResourceSetInfoDelegate}}} which is connected to the editing domain by means of a {{{SharedResourceSetInfoAdapter}}}
  * The {{{ResourceInfo.dispose()}}} calls {{{de.itemis.gmf.runtime.editingdomain.ResourceUnloadingTool}}} to selectively unload unneeded resources.
  * The {{{ResourceInfo}}} is set dirty on creation if the resource set is dirty.
  * All occurrences of {{{Resource.unload()}}} have been revised.

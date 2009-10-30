@@ -34,9 +34,16 @@ public class ResourceUnloadingTool {
 			IEditorInput editorInput) {
 		EList<Resource> resources = resourceSet.getResources();
 		List<Resource> resourcesToUnload = new ArrayList<Resource>(resources);
-		IEditorReference[] editorReferences = PlatformUI.getWorkbench()
+		IEditorReference[] editorReferences;
+		try {
+			editorReferences = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage()
 				.getEditorReferences();
+		} catch(NullPointerException exc) {
+			// Workbench is not yet created or being disposed, so do nothing
+			// see bug http://code.google.com/p/gmftools/issues/detail?id=9
+			return;
+		}
 		for (IEditorReference openEditorReference : editorReferences) {
 			try {
 				IEditorInput openEditorInput = openEditorReference

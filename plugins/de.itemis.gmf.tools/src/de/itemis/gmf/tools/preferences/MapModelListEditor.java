@@ -24,9 +24,10 @@ public class MapModelListEditor extends ObjectListEditor {
 		if (entry instanceof GmfModel) {
 			GmfModelFilesDialog dialog = new GmfModelFilesDialog(getShell());
 			dialog.setBlockOnOpen(true);
-			dialog.setGmfModelFiles((GmfModel) entry);
+			GmfModel gmfModel = (GmfModel) entry;
+			dialog.setGmfModelFiles(gmfModel);
 			int result = dialog.open();
-			if (result == Dialog.OK) {
+			if (result == Dialog.OK && gmfModel.getDisplayName() != null) {
 				return entry;
 			}
 		}

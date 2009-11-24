@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GMF Runtime Extensions Plug-in
 Bundle-SymbolicName: de.itemis.gmf.runtime.extensions;singleton:=true
-Bundle-Version: 1.1.8.qualifier
+Bundle-Version: 1.1.9.qualifier
 Bundle-Activator: de.itemis.gmf.runtime.extensions.Activator
 Bundle-Vendor: itemis AG
 Require-Bundle: org.eclipse.ui,
@@ -18,7 +18,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.gmf.runtime.diagram.ui.resources.editor;bundle-version="1.1.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Export-Package: de.itemis.gmf.runtime.edit.policy,
+Export-Package: de.itemis.gmf.runtime.combolabel,
+ de.itemis.gmf.runtime.constrainthook,
+ de.itemis.gmf.runtime.edit.policy,
  de.itemis.gmf.runtime.editingdomain,
  de.itemis.gmf.runtime.extensions,
  de.itemis.gmf.runtime.layout

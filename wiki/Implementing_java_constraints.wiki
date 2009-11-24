@@ -1,4 +1,4 @@
-#How to implement Java-constraints in a easy way without touching the generated code.
+#summary How to implement Java-constraints in a easy way without touching the generated code.
 
 = Introduction =
 

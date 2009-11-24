@@ -4,8 +4,8 @@
 
 The GMFTools can be run in two configurations:
 
- * Eclipse Galileo 3.5RC3 http://www.eclipse.org/downloads/
- * GMF 2.2RC3 http://www.eclipse.org/modeling/gmf/
+ * Eclipse Galileo 3.5 http://www.eclipse.org/downloads/
+ * GMF 2.2 http://www.eclipse.org/modeling/gmf/
  * M2T/Xpand 0.7 http://wiki.eclipse.org/Xpand
  * make sure to install {{{de.itemis.gmf.tools.m2t}}}
 

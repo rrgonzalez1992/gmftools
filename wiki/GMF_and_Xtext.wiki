@@ -9,7 +9,7 @@
 
   * Checkout the source code (four plug-ins) from
 {{{
-https://gmftools.googlecode.com/svn/trunk/xtext-gmf-example
+http://gmftools.googlecode.com/svn/trunk/xtext-gmf-example
 }}}
   * (Re-)generate the Xtext code by running the workflow
 {{{

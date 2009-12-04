@@ -296,8 +296,8 @@
             xsi:type="gmfgen:ToolEntry"
             title="SuperType"
             description="Create new SuperType"
-            largeIconPath="/org.xtext.cg2009.exercise1.solution.edit/icons/full/obj16/Generalization.gif"
-            smallIconPath="/org.xtext.cg2009.exercise1.solution.edit/icons/full/obj16/Generalization.gif"
+            largeIconPath="/org.xtext.example.entities.edit/icons/full/obj16/Generalization.gif"
+            smallIconPath="/org.xtext.example.entities.edit/icons/full/obj16/Generalization.gif"
             genLinks="//@diagram/@links.1"/>
         <entries
             xsi:type="gmfgen:ToolEntry"

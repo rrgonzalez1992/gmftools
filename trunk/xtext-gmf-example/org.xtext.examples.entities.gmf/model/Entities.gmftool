@@ -33,11 +33,11 @@
         <smallIcon
             xsi:type="gmftool:BundleImage"
             path="icons/full/obj16/Generalization.gif"
-            bundle="org.xtext.cg2009.exercise1.solution.edit"/>
+            bundle="org.xtext.example.entities.edit"/>
         <largeIcon
             xsi:type="gmftool:BundleImage"
             path="icons/full/obj16/Generalization.gif"
-            bundle="org.xtext.cg2009.exercise1.solution.edit"/>
+            bundle="org.xtext.example.entities.edit"/>
       </tools>
       <tools
           xsi:type="gmftool:CreationTool"

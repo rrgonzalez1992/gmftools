@@ -209,7 +209,6 @@ public class InDiagramXtextEditorHelper {
 		boolean success = xtextEditor.getDocument().modify(
 				new IUnitOfWork<Boolean, XtextResource>() {
 
-					@Override
 					public Boolean exec(XtextResource state) throws Exception {
 						EObject semanticElementInDocument = state
 								.getEObject(semanticElementFragment);

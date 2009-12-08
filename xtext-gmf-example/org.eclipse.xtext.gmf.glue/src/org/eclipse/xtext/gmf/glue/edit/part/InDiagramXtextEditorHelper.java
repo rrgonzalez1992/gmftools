@@ -137,12 +137,12 @@ public class InDiagramXtextEditorHelper {
 			// editor.
 			// They are restored on reactivation of the diagram editor.
 			// TODO: find out why keybindings are lost and find better solution
-			final IEditorPart diagramEditorPart = getDiagramEditorPart(diagramViewer);
-			final IWorkbenchPage activePage = PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage();
-			activePage.activate(activePage.getViewReferences()[0]
-					.getView(false));
-			activePage.activate(diagramEditorPart);
+//			final IEditorPart diagramEditorPart = getDiagramEditorPart(diagramViewer);
+//			final IWorkbenchPage activePage = PlatformUI.getWorkbench()
+//					.getActiveWorkbenchWindow().getActivePage();
+//			activePage.activate(activePage.getViewReferences()[0]
+//					.getView(false));
+//			activePage.activate(diagramEditorPart);
 		}
 	}
 

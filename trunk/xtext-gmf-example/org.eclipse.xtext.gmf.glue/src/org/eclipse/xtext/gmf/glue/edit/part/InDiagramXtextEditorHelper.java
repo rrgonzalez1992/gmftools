@@ -12,9 +12,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramRootEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
-import org.eclipse.gmf.runtime.diagram.ui.parts.DiagramEditDomain;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.VerifyKeyListener;
@@ -26,10 +26,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.xtext.gmf.glue.Activator;
 import org.eclipse.xtext.gmf.glue.editingdomain.UpdateXtextResourceTextCommand;
 import org.eclipse.xtext.parsetree.CompositeNode;
@@ -43,6 +40,15 @@ import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
 import com.google.inject.Injector;
 
+/**
+ * Base class to handle a small in-diagram XtextEditor.
+ * 
+ * Override the generated <code>performDirectEdit</code> methods in the EditPart
+ * of the label to be directly edited, and call {@link #showEditor()} instead of
+ * opening the default {@link TextCellEditor}.
+ * 
+ * @author koehnlein
+ */
 public class InDiagramXtextEditorHelper {
 
 	private static int MIN_EDITOR_WIDTH = 100;
@@ -133,16 +139,6 @@ public class InDiagramXtextEditorHelper {
 			xtextEditorComposite.setVisible(false);
 			xtextEditorComposite.dispose();
 			xtextEditor = null;
-			// Hack: somehow the keybindings are lost when closing the xtext
-			// editor.
-			// They are restored on reactivation of the diagram editor.
-			// TODO: find out why keybindings are lost and find better solution
-//			final IEditorPart diagramEditorPart = getDiagramEditorPart(diagramViewer);
-//			final IWorkbenchPage activePage = PlatformUI.getWorkbench()
-//					.getActiveWorkbenchWindow().getActivePage();
-//			activePage.activate(activePage.getViewReferences()[0]
-//					.getView(false));
-//			activePage.activate(diagramEditorPart);
 		}
 	}
 
@@ -150,21 +146,12 @@ public class InDiagramXtextEditorHelper {
 			throws CoreException {
 		diagramViewer = hostEditPart.getRoot().getViewer();
 		Composite diagramComposite = (Composite) diagramViewer.getControl();
-		DiagramEditDomain diagramEditDomain = (DiagramEditDomain) diagramViewer
-				.getEditDomain();
-		IEditorSite diagramEditorSite = diagramEditDomain.getEditorPart()
-				.getEditorSite();
-
 		xtextEditor = xtextInjector.getInstance(XtextEditor.class);
-		IEditorSite xtextEditorSite = diagramEditorSite;
+		IEditorSite xtextEditorSite = EditorSiteFactory.createEditorSite(
+				xtextEditor, editorInput, xtextEditor.getLanguageName());
 		xtextEditor.init(xtextEditorSite, editorInput);
 		createEditorPartControl(diagramComposite);
-		addKeyListener();
-	}
-
-	private IEditorPart getDiagramEditorPart(EditPartViewer diagramViewer) {
-		return ((DiagramEditDomain) diagramViewer.getEditDomain())
-				.getEditorPart();
+		addKeyVerifyListener();
 	}
 
 	private void createEditorPartControl(Composite diagramComposite) {
@@ -179,7 +166,7 @@ public class InDiagramXtextEditorHelper {
 		xtextEditorComposite = (Composite) controlSiblings.get(0);
 	}
 
-	private void addKeyListener() {
+	private void addKeyVerifyListener() {
 		ISourceViewer sourceViewer = xtextEditor.getInternalSourceViewer();
 		final StyledText xtextTextWidget = sourceViewer.getTextWidget();
 		xtextTextWidget.addVerifyKeyListener(new VerifyKeyListener() {

@@ -8,6 +8,7 @@
 package de.itemis.gmf.tools;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.menus.IMenuService;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -58,9 +59,14 @@ public class Activator extends AbstractUIPlugin {
 	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
-		IMenuService service = (IMenuService) PlatformUI.getWorkbench()
-				.getService(IMenuService.class);
-		service.removeContributionFactory(gmfButtonContributionFactory);
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		if (workbench != null) {
+			IMenuService service = (IMenuService) workbench
+					.getService(IMenuService.class);
+			if (service != null) {
+				service.removeContributionFactory(gmfButtonContributionFactory);
+			}
+		}
 		plugin = null;
 		super.stop(context);
 	}

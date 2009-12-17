@@ -3,9 +3,9 @@
 <repository name='${p2.metadata.repo.name}' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1261041814471'/>
+    <property name='p2.timestamp' value='1261041938346'/>
   </properties>
-  <units size='51'>
+  <units size='56'>
     <unit id='GMF Tools' version='0.0.0.20091217102333'>
       <properties size='2'>
         <property name='org.eclipse.equinox.p2.name' value='GMF Tools'/>
@@ -181,6 +181,19 @@
       <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
         [Enter Copyright Description here.]
       </copyright>
+    </unit>
+    <unit id='GMF Tools' version='0.0.0.20091217102537'>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='GMF Tools'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='GMF Tools' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.group' range='[1.1.8.200912171025,1.1.8.200912171025]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
     </unit>
     <unit id='tooling.source.default' version='1.0.0' singleton='false'>
       <hostRequirements size='1'>
@@ -441,6 +454,40 @@
         [Enter Copyright Description here.]
       </copyright>
     </unit>
+    <unit id='de.itemis.gmf.tools.m2t' version='1.1.5.200912171025'>
+      <update id='de.itemis.gmf.tools.m2t' range='[0.0.0,1.1.5.200912171025)' severity='0'/>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='M2T Transformation Plug-in'/>
+        <property name='org.eclipse.equinox.p2.provider' value='itemis AG'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.m2t' version='1.1.5.200912171025'/>
+        <provided namespace='osgi.bundle' name='de.itemis.gmf.tools.m2t' version='1.1.5.200912171025'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='9'>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.xtend' range='0.7.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.xtend.shared.ui' range='0.7.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.xtend.typesystem.emf' range='0.7.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.jdt.core' range='3.5.0'/>
+        <required namespace='osgi.bundle' name='de.itemis.gmf.tools' range='1.1.2'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='3.5.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.codegen' range='2.2.0'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools.m2t' version='1.1.5.200912171025'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-ManifestVersion: 2&#xA;Bundle-RequiredExecutionEnvironment: J2SE-1.5&#xA;Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.xtend;bundle-version=&quot;0.7.0&quot;,org.eclipse.xtend.shared.ui;bundle-version=&quot;0.7.0&quot;,org.eclipse.xtend.typesystem.emf;bundle-version=&quot;0.7.0&quot;,org.eclipse.jdt.core;bundle-version=&quot;3.5.0&quot;,de.itemis.gmf.tools;bundle-version=&quot;1.1.2&quot;,org.eclipse.core.resources;bundle-version=&quot;3.5.0&quot;,org.eclipse.gmf.codegen;bundle-version=&quot;2.2.0&quot;&#xA;Bundle-Activator: de.itemis.gmf.tools.m2t.Activator&#xA;Manifest-Version: 1.0&#xA;Bundle-Version: 1.1.5.200912171025&#xA;Bundle-SymbolicName: de.itemis.gmf.tools.m2t;singleton:=true&#xA;Bundle-ActivationPolicy: lazy&#xA;Bundle-Name: M2T Transformation Plug-in&#xA;Bundle-Vendor: itemis AG
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
     <unit id='de.itemis.gmf.tools.feature.group' version='1.1.1.200906030909' singleton='false'>
       <update id='de.itemis.gmf.tools.feature.group' range='[0.0.0,1.1.1.200906030909)' severity='0'/>
       <properties size='4'>
@@ -505,41 +552,6 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='de.itemis.gmf.tools.feature.jar' version='1.1.1.200906030909'>
-      <update id='de.itemis.gmf.tools.feature.jar' range='[0.0.0,1.1.1.200906030909)' severity='0'/>
-      <properties size='3'>
-        <property name='org.eclipse.equinox.p2.name' value='de.itemis.gmf.tools'/>
-        <property name='org.eclipse.equinox.p2.description' value='[Enter Feature Description here.]'/>
-        <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
-      </properties>
-      <provides size='3'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.jar' version='1.1.1.200906030909'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
-        <provided namespace='org.eclipse.update.feature' name='de.itemis.gmf.tools' version='1.1.1.200906030909'/>
-      </provides>
-      <filter>
-        (org.eclipse.update.install.features=true)
-      </filter>
-      <artifacts size='1'>
-        <artifact classifier='org.eclipse.update.feature' id='de.itemis.gmf.tools' version='1.1.1.200906030909'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='zipped'>
-            true
-          </instruction>
-        </instructions>
-      </touchpointData>
-      <licenses size='1'>
-        <license uri='http://www.example.com/license' url='http://www.example.com/license'>
-          [Enter License Description here.]
-        </license>
-      </licenses>
-      <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
-        [Enter Copyright Description here.]
-      </copyright>
-    </unit>
     <unit id='de.itemis.gmf.tools' version='1.1.8.200912171023'>
       <update id='de.itemis.gmf.tools' range='[0.0.0,1.1.8.200912171023)' severity='0'/>
       <properties size='1'>
@@ -575,6 +587,41 @@
         </instructions>
       </touchpointData>
     </unit>
+    <unit id='de.itemis.gmf.tools.feature.jar' version='1.1.1.200906030909'>
+      <update id='de.itemis.gmf.tools.feature.jar' range='[0.0.0,1.1.1.200906030909)' severity='0'/>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='de.itemis.gmf.tools'/>
+        <property name='org.eclipse.equinox.p2.description' value='[Enter Feature Description here.]'/>
+        <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.jar' version='1.1.1.200906030909'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
+        <provided namespace='org.eclipse.update.feature' name='de.itemis.gmf.tools' version='1.1.1.200906030909'/>
+      </provides>
+      <filter>
+        (org.eclipse.update.install.features=true)
+      </filter>
+      <artifacts size='1'>
+        <artifact classifier='org.eclipse.update.feature' id='de.itemis.gmf.tools' version='1.1.1.200906030909'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='zipped'>
+            true
+          </instruction>
+        </instructions>
+      </touchpointData>
+      <licenses size='1'>
+        <license uri='http://www.example.com/license' url='http://www.example.com/license'>
+          [Enter License Description here.]
+        </license>
+      </licenses>
+      <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
+        [Enter Copyright Description here.]
+      </copyright>
+    </unit>
     <unit id='de.itemis.gmf.tools.feature.group' version='1.1.2.200906031020' singleton='false'>
       <update id='de.itemis.gmf.tools.feature.group' range='[0.0.0,1.1.2.200906031020)' severity='0'/>
       <properties size='4'>
@@ -589,6 +636,36 @@
       <requires size='2'>
         <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools' range='[1.1.2.200906031020,1.1.2.200906031020]'/>
         <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.jar' range='[1.1.2.200906031020,1.1.2.200906031020]'>
+          <filter>
+            (org.eclipse.update.install.features=true)
+          </filter>
+        </required>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+      <licenses size='1'>
+        <license uri='http://www.example.com/license' url='http://www.example.com/license'>
+          [Enter License Description here.]
+        </license>
+      </licenses>
+      <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
+        [Enter Copyright Description here.]
+      </copyright>
+    </unit>
+    <unit id='de.itemis.gmf.tools.feature.group' version='1.1.8.200912171023' singleton='false'>
+      <update id='de.itemis.gmf.tools.feature.group' range='[0.0.0,1.1.8.200912171023)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='de.itemis.gmf.tools'/>
+        <property name='org.eclipse.equinox.p2.description' value='[Enter Feature Description here.]'/>
+        <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
+        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.group' version='1.1.8.200912171023'/>
+      </provides>
+      <requires size='3'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools' range='[1.1.8.200912171023,1.1.8.200912171023]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.m2t' range='[1.1.5.200912171023,1.1.5.200912171023]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.jar' range='[1.1.8.200912171023,1.1.8.200912171023]'>
           <filter>
             (org.eclipse.update.install.features=true)
           </filter>
@@ -635,36 +712,6 @@
           </instruction>
         </instructions>
       </touchpointData>
-    </unit>
-    <unit id='de.itemis.gmf.tools.feature.group' version='1.1.8.200912171023' singleton='false'>
-      <update id='de.itemis.gmf.tools.feature.group' range='[0.0.0,1.1.8.200912171023)' severity='0'/>
-      <properties size='4'>
-        <property name='org.eclipse.equinox.p2.name' value='de.itemis.gmf.tools'/>
-        <property name='org.eclipse.equinox.p2.description' value='[Enter Feature Description here.]'/>
-        <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
-        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
-      </properties>
-      <provides size='1'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.group' version='1.1.8.200912171023'/>
-      </provides>
-      <requires size='3'>
-        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools' range='[1.1.8.200912171023,1.1.8.200912171023]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.m2t' range='[1.1.5.200912171023,1.1.5.200912171023]'/>
-        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.jar' range='[1.1.8.200912171023,1.1.8.200912171023]'>
-          <filter>
-            (org.eclipse.update.install.features=true)
-          </filter>
-        </required>
-      </requires>
-      <touchpoint id='null' version='0.0.0'/>
-      <licenses size='1'>
-        <license uri='http://www.example.com/license' url='http://www.example.com/license'>
-          [Enter License Description here.]
-        </license>
-      </licenses>
-      <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
-        [Enter Copyright Description here.]
-      </copyright>
     </unit>
     <unit id='de.itemis.gmf.tools.m2t' version='1.1.5.200910021443'>
       <update id='de.itemis.gmf.tools.m2t' range='[0.0.0,1.1.5.200910021443)' severity='0'/>
@@ -909,6 +956,70 @@
       </requires>
       <touchpoint id='null' version='0.0.0'/>
     </unit>
+    <unit id='de.itemis.gmf.tools.feature.jar' version='1.1.8.200912171025'>
+      <properties size='3'>
+        <property name='org.eclipse.equinox.p2.name' value='de.itemis.gmf.tools'/>
+        <property name='org.eclipse.equinox.p2.description' value='[Enter Feature Description here.]'/>
+        <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
+      </properties>
+      <provides size='3'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.jar' version='1.1.8.200912171025'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='feature' version='1.0.0'/>
+        <provided namespace='org.eclipse.update.feature' name='de.itemis.gmf.tools' version='1.1.8.200912171025'/>
+      </provides>
+      <filter>
+        (org.eclipse.update.install.features=true)
+      </filter>
+      <artifacts size='1'>
+        <artifact classifier='org.eclipse.update.feature' id='de.itemis.gmf.tools' version='1.1.8.200912171025'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='zipped'>
+            true
+          </instruction>
+        </instructions>
+      </touchpointData>
+      <licenses size='1'>
+        <license uri='http://www.example.com/license' url='http://www.example.com/license'>
+          [Enter License Description here.]
+        </license>
+      </licenses>
+      <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
+        [Enter Copyright Description here.]
+      </copyright>
+    </unit>
+    <unit id='de.itemis.gmf.tools.feature.group' version='1.1.8.200912171025' singleton='false'>
+      <update id='de.itemis.gmf.tools.feature.group' range='[0.0.0,1.1.8.200912171025)' severity='0'/>
+      <properties size='4'>
+        <property name='org.eclipse.equinox.p2.name' value='de.itemis.gmf.tools'/>
+        <property name='org.eclipse.equinox.p2.description' value='[Enter Feature Description here.]'/>
+        <property name='org.eclipse.equinox.p2.description.url' value='http://www.example.com/description'/>
+        <property name='org.eclipse.equinox.p2.type.group' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.group' version='1.1.8.200912171025'/>
+      </provides>
+      <requires size='3'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools' range='[1.1.8.200912171025,1.1.8.200912171025]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.m2t' range='[1.1.5.200912171025,1.1.5.200912171025]'/>
+        <required namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools.feature.jar' range='[1.1.8.200912171025,1.1.8.200912171025]'>
+          <filter>
+            (org.eclipse.update.install.features=true)
+          </filter>
+        </required>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+      <licenses size='1'>
+        <license uri='http://www.example.com/license' url='http://www.example.com/license'>
+          [Enter License Description here.]
+        </license>
+      </licenses>
+      <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
+        [Enter Copyright Description here.]
+      </copyright>
+    </unit>
     <unit id='de.itemis.gmf.tools.feature.jar' version='1.1.2.200906031020'>
       <update id='de.itemis.gmf.tools.feature.jar' range='[0.0.0,1.1.2.200906031020)' severity='0'/>
       <properties size='3'>
@@ -943,6 +1054,41 @@
       <copyright uri='http://www.example.com/copyright' url='http://www.example.com/copyright'>
         [Enter Copyright Description here.]
       </copyright>
+    </unit>
+    <unit id='de.itemis.gmf.tools' version='1.1.8.200912171025'>
+      <update id='de.itemis.gmf.tools' range='[0.0.0,1.1.8.200912171025)' severity='0'/>
+      <properties size='1'>
+        <property name='org.eclipse.equinox.p2.name' value='GMF Tools Plug-in'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools' version='1.1.8.200912171025'/>
+        <provided namespace='osgi.bundle' name='de.itemis.gmf.tools' version='1.1.8.200912171025'/>
+        <provided namespace='java.package' name='de.itemis.gmf.tools' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='10'>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.codegen' range='2.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.codegen.ui' range='1.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.xpand' range='1.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.bridge.ui' range='1.1.100'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.map' range='2.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.runtime.emf.core' range='1.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.expressions' range='3.4.100'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.8.200912171025'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-ManifestVersion: 2&#xA;Bundle-RequiredExecutionEnvironment: J2SE-1.5&#xA;Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.gmf.codegen;bundle-version=&quot;2.1.0&quot;,org.eclipse.gmf.codegen.ui;bundle-version=&quot;1.1.0&quot;,org.eclipse.gmf.xpand;bundle-version=&quot;1.1.0&quot;,org.eclipse.gmf.bridge.ui;bundle-version=&quot;1.1.100&quot;,org.eclipse.gmf.map;bundle-version=&quot;2.1.0&quot;,org.eclipse.gmf.runtime.emf.core;bundle-version=&quot;1.1.0&quot;,org.eclipse.core.expressions;bundle-version=&quot;3.4.100&quot;&#xA;Bundle-Activator: de.itemis.gmf.tools.Activator&#xA;Manifest-Version: 1.0&#xA;Bundle-Version: 1.1.8.200912171025&#xA;Export-Package: de.itemis.gmf.tools&#xA;Bundle-SymbolicName: de.itemis.gmf.tools; singleton:=true&#xA;Bundle-ActivationPolicy: lazy&#xA;Bundle-Name: GMF Tools Plug-in
+          </instruction>
+        </instructions>
+      </touchpointData>
     </unit>
     <unit id='de.itemis.gmf.tools.m2t' version='1.1.5.200912171023'>
       <update id='de.itemis.gmf.tools.m2t' range='[0.0.0,1.1.5.200912171023)' severity='0'/>
@@ -1596,41 +1742,6 @@
         </instructions>
       </touchpointData>
     </unit>
-    <unit id='de.itemis.gmf.tools' version='1.1.6.200910021404'>
-      <update id='de.itemis.gmf.tools' range='[0.0.0,1.1.6.200910021404)' severity='0'/>
-      <properties size='1'>
-        <property name='org.eclipse.equinox.p2.name' value='Tools Plug-in'/>
-      </properties>
-      <provides size='4'>
-        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools' version='1.1.6.200910021404'/>
-        <provided namespace='osgi.bundle' name='de.itemis.gmf.tools' version='1.1.6.200910021404'/>
-        <provided namespace='java.package' name='de.itemis.gmf.tools' version='0.0.0'/>
-        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
-      </provides>
-      <requires size='10'>
-        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='0.0.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.gmf.codegen' range='2.1.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.gmf.codegen.ui' range='1.1.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.gmf.xpand' range='1.1.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.gmf.bridge.ui' range='1.1.100'/>
-        <required namespace='osgi.bundle' name='org.eclipse.gmf.map' range='2.1.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.gmf.runtime.emf.core' range='1.1.0'/>
-        <required namespace='osgi.bundle' name='org.eclipse.core.expressions' range='3.4.100'/>
-      </requires>
-      <artifacts size='1'>
-        <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.6.200910021404'/>
-      </artifacts>
-      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
-      <touchpointData size='1'>
-        <instructions size='1'>
-          <instruction key='manifest'>
-            Bundle-ManifestVersion: 2&#xA;Bundle-RequiredExecutionEnvironment: J2SE-1.5&#xA;Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.gmf.codegen;bundle-version=&quot;2.1.0&quot;,org.eclipse.gmf.codegen.ui;bundle-version=&quot;1.1.0&quot;,org.eclipse.gmf.xpand;bundle-version=&quot;1.1.0&quot;,org.eclipse.gmf.bridge.ui;bundle-version=&quot;1.1.100&quot;,org.eclipse.gmf.map;bundle-version=&quot;2.1.0&quot;,org.eclipse.gmf.runtime.emf.core;bundle-version=&quot;1.1.0&quot;,org.eclipse.core.expressions;bundle-version=&quot;3.4.100&quot;&#xA;Manifest-Version: 1.0&#xA;Bundle-Activator: de.itemis.gmf.tools.Activator&#xA;Bundle-Version: 1.1.6.200910021404&#xA;Export-Package: de.itemis.gmf.tools&#xA;Bundle-SymbolicName: de.itemis.gmf.tools; singleton:=true&#xA;Bundle-ActivationPolicy: lazy&#xA;Bundle-Name: Tools Plug-in
-          </instruction>
-        </instructions>
-      </touchpointData>
-    </unit>
     <unit id='de.itemis.gmf.tools' version='1.1.6.200910021402'>
       <update id='de.itemis.gmf.tools' range='[0.0.0,1.1.6.200910021402)' severity='0'/>
       <properties size='1'>
@@ -1662,6 +1773,41 @@
         <instructions size='1'>
           <instruction key='manifest'>
             Bundle-ManifestVersion: 2&#xA;Bundle-RequiredExecutionEnvironment: J2SE-1.5&#xA;Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.gmf.codegen;bundle-version=&quot;2.1.0&quot;,org.eclipse.gmf.codegen.ui;bundle-version=&quot;1.1.0&quot;,org.eclipse.gmf.xpand;bundle-version=&quot;1.1.0&quot;,org.eclipse.gmf.bridge.ui;bundle-version=&quot;1.1.100&quot;,org.eclipse.gmf.map;bundle-version=&quot;2.1.0&quot;,org.eclipse.gmf.runtime.emf.core;bundle-version=&quot;1.1.0&quot;,org.eclipse.core.expressions;bundle-version=&quot;3.4.100&quot;&#xA;Manifest-Version: 1.0&#xA;Bundle-Activator: de.itemis.gmf.tools.Activator&#xA;Bundle-Version: 1.1.6.200910021402&#xA;Export-Package: de.itemis.gmf.tools&#xA;Bundle-SymbolicName: de.itemis.gmf.tools; singleton:=true&#xA;Bundle-ActivationPolicy: lazy&#xA;Bundle-Name: Tools Plug-in
+          </instruction>
+        </instructions>
+      </touchpointData>
+    </unit>
+    <unit id='de.itemis.gmf.tools' version='1.1.6.200910021404'>
+      <update id='de.itemis.gmf.tools' range='[0.0.0,1.1.6.200910021404)' severity='0'/>
+      <properties size='1'>
+        <property name='org.eclipse.equinox.p2.name' value='Tools Plug-in'/>
+      </properties>
+      <provides size='4'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='de.itemis.gmf.tools' version='1.1.6.200910021404'/>
+        <provided namespace='osgi.bundle' name='de.itemis.gmf.tools' version='1.1.6.200910021404'/>
+        <provided namespace='java.package' name='de.itemis.gmf.tools' version='0.0.0'/>
+        <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
+      </provides>
+      <requires size='10'>
+        <required namespace='osgi.bundle' name='org.eclipse.ui' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.runtime' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.resources' range='0.0.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.codegen' range='2.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.codegen.ui' range='1.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.xpand' range='1.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.bridge.ui' range='1.1.100'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.map' range='2.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.gmf.runtime.emf.core' range='1.1.0'/>
+        <required namespace='osgi.bundle' name='org.eclipse.core.expressions' range='3.4.100'/>
+      </requires>
+      <artifacts size='1'>
+        <artifact classifier='osgi.bundle' id='de.itemis.gmf.tools' version='1.1.6.200910021404'/>
+      </artifacts>
+      <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
+      <touchpointData size='1'>
+        <instructions size='1'>
+          <instruction key='manifest'>
+            Bundle-ManifestVersion: 2&#xA;Bundle-RequiredExecutionEnvironment: J2SE-1.5&#xA;Require-Bundle: org.eclipse.ui,org.eclipse.core.runtime,org.eclipse.core.resources,org.eclipse.gmf.codegen;bundle-version=&quot;2.1.0&quot;,org.eclipse.gmf.codegen.ui;bundle-version=&quot;1.1.0&quot;,org.eclipse.gmf.xpand;bundle-version=&quot;1.1.0&quot;,org.eclipse.gmf.bridge.ui;bundle-version=&quot;1.1.100&quot;,org.eclipse.gmf.map;bundle-version=&quot;2.1.0&quot;,org.eclipse.gmf.runtime.emf.core;bundle-version=&quot;1.1.0&quot;,org.eclipse.core.expressions;bundle-version=&quot;3.4.100&quot;&#xA;Manifest-Version: 1.0&#xA;Bundle-Activator: de.itemis.gmf.tools.Activator&#xA;Bundle-Version: 1.1.6.200910021404&#xA;Export-Package: de.itemis.gmf.tools&#xA;Bundle-SymbolicName: de.itemis.gmf.tools; singleton:=true&#xA;Bundle-ActivationPolicy: lazy&#xA;Bundle-Name: Tools Plug-in
           </instruction>
         </instructions>
       </touchpointData>

@@ -36,10 +36,9 @@ public class SharedResourceSetInfoDelegate {
 
 	private final TransactionalEditingDomain editingDomain;
 
-	private List<WorkspaceSynchronizer.Delegate> delegates;
+	private final List<WorkspaceSynchronizer.Delegate> delegates;
 
-	public SharedResourceSetInfoDelegate(
-			TransactionalEditingDomain editingDomain) {
+	public SharedResourceSetInfoDelegate(TransactionalEditingDomain editingDomain) {
 		this.editingDomain = editingDomain;
 		this.delegates = new ArrayList<WorkspaceSynchronizer.Delegate>();
 		startResourceListening();
@@ -62,29 +61,27 @@ public class SharedResourceSetInfoDelegate {
 	}
 
 	public final void stopResourceListening() {
-		mySynchronizer.dispose();
+		if (mySynchronizer != null) {
+			mySynchronizer.dispose();
+		}
 		mySynchronizer = null;
 	}
 
 	public final void startResourceListening() {
 		if (mySynchronizer == null) {
-			mySynchronizer = new WorkspaceSynchronizer(getEditingDomain(),
-					new CompositeSynchronizerDelegate());
+			mySynchronizer = new WorkspaceSynchronizer(getEditingDomain(), new CompositeSynchronizerDelegate());
 		}
 	}
 
-	public boolean addWorkspaceSynchronizerDelegate(
-			WorkspaceSynchronizer.Delegate delegate) {
+	public boolean addWorkspaceSynchronizerDelegate(WorkspaceSynchronizer.Delegate delegate) {
 		return delegates.add(delegate);
 	}
 
-	public boolean removeWorkspaceSynchronizerDelegate(
-			WorkspaceSynchronizer.Delegate delegate) {
+	public boolean removeWorkspaceSynchronizerDelegate(WorkspaceSynchronizer.Delegate delegate) {
 		return delegates.remove(delegate);
 	}
 
-	private class CompositeSynchronizerDelegate implements
-			WorkspaceSynchronizer.Delegate {
+	private class CompositeSynchronizerDelegate implements WorkspaceSynchronizer.Delegate {
 
 		public void dispose() {
 		}
@@ -95,10 +92,7 @@ public class SharedResourceSetInfoDelegate {
 					.getFile(resource);
 			if (file != null) {
 				try {
-					file
-							.refreshLocal(
-									org.eclipse.core.resources.IResource.DEPTH_INFINITE,
-									new NullProgressMonitor());
+					file.refreshLocal(org.eclipse.core.resources.IResource.DEPTH_INFINITE, new NullProgressMonitor());
 				} catch (org.eclipse.core.runtime.CoreException ex) {
 					Activator.logError("Error in refreshing changed file", ex);
 				}
@@ -122,8 +116,7 @@ public class SharedResourceSetInfoDelegate {
 			return true;
 		}
 
-		public boolean handleResourceMoved(final Resource resource,
-				final URI newURI) {
+		public boolean handleResourceMoved(final Resource resource, final URI newURI) {
 			synchronized (SharedResourceSetInfoDelegate.this) {
 				for (WorkspaceSynchronizer.Delegate delegate : delegates) {
 					delegate.handleResourceMoved(resource, newURI);
@@ -135,21 +128,17 @@ public class SharedResourceSetInfoDelegate {
 
 	public boolean resourceSetIsDirty() {
 		for (Resource resource : getEditingDomain().getResourceSet().getResources()) {
-			if (resource.isLoaded() && !getEditingDomain().isReadOnly(resource)
-					&& resource.isModified()) {
+			if (resource.isLoaded() && !getEditingDomain().isReadOnly(resource) && resource.isModified()) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static SharedResourceSetInfoDelegate adapt(
-			TransactionalEditingDomain editingDomain) {
+	public static SharedResourceSetInfoDelegate adapt(TransactionalEditingDomain editingDomain) {
 		SharedResourceSetInfoAdapter.Factory factory = new SharedResourceSetInfoAdapter.Factory();
-		SharedResourceSetInfoAdapter adapter = (SharedResourceSetInfoAdapter) factory
-				.adapt(editingDomain.getResourceSet(),
-						SharedResourceSetInfoDelegate.class);
-		return (adapter != null) ? adapter.getSharedResourceSetInfoDelegate()
-				: null;
+		SharedResourceSetInfoAdapter adapter = (SharedResourceSetInfoAdapter) factory.adapt(editingDomain
+				.getResourceSet(), SharedResourceSetInfoDelegate.class);
+		return (adapter != null) ? adapter.getSharedResourceSetInfoDelegate() : null;
 	}
 }

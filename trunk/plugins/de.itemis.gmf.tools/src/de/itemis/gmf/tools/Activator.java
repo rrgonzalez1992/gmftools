@@ -45,10 +45,15 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		IMenuService service = (IMenuService) PlatformUI.getWorkbench()
-				.getService(IMenuService.class);
-		gmfButtonContributionFactory = new GMFButtonContributionFactory();
-		service.addContributionFactory(gmfButtonContributionFactory);
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		if (workbench != null) {
+			IMenuService service = (IMenuService) workbench
+					.getService(IMenuService.class);
+			if (service != null) {
+				gmfButtonContributionFactory = new GMFButtonContributionFactory();
+				service.addContributionFactory(gmfButtonContributionFactory);
+			}
+		}
 	}
 
 	/*

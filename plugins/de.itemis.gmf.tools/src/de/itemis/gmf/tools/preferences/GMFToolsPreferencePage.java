@@ -53,7 +53,7 @@ public class GMFToolsPreferencePage
 		addField(new BooleanFieldEditor(PreferenceUtil.GMF_FIX_TYPE_REGISTRY, "Fix type registrations in gmfgen models",fieldEditorParent));
 		addField(new MapModelListEditor(PreferenceUtil.GMF_MODELS, "GMF models", fieldEditorParent));
 		addField(new BooleanFieldEditor(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN, "Delete generated diagram plug-in",fieldEditorParent));
-		addField(new BooleanFieldEditor(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN, "Generate diagram plug-in",fieldEditorParent));
+		addField(new BooleanFieldEditor(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN, "Generate diagram plug-in/RCP",fieldEditorParent));
 	}
 
 	/* (non-Javadoc)

@@ -42,28 +42,28 @@ public class GmfMappingToGenModelTransformer {
 				gmfGenModel.delete(true, monitor);
 			}
 			final ResourceSet rs = new ResourceSetImpl();
-			TransformToGenModelOperation op = new TransformToGenModelOperation(
-					rs);
-			configureOptions(op.getOptions());
-			op.loadMappingModel(FileUtil.getURI(gmfMapModel),
-					new NullProgressMonitor());
-			op.loadGenModel(FileUtil.getURI(emfGenModel),
-					new NullProgressMonitor());
+			TransformToGenModelOperation op = new TransformToGenModelOperation(rs);
+			configureOptions(op.getOptions(), gmfModel);
+			op.loadMappingModel(FileUtil.getURI(gmfMapModel), new NullProgressMonitor());
+			op.loadGenModel(FileUtil.getURI(emfGenModel), new NullProgressMonitor());
 			op.setGenURI(FileUtil.getURI(gmfGenModel));
-			IStatus status = op
-					.executeTransformation(new NullProgressMonitor());
+			IStatus status = op.executeTransformation(new NullProgressMonitor());
 			if (!status.isOK()) {
 				throw new CoreException(status);
 			}
-			gmfGenModel.refreshLocal(IResource.DEPTH_ONE,
-					new NullProgressMonitor());
+			gmfGenModel.refreshLocal(IResource.DEPTH_ONE, new NullProgressMonitor());
 			monitor.worked(1);
 			return true;
 		} catch (CoreException ce) {
-			MessageDialog.openError(Display.getDefault().getActiveShell(),
-					"Error transforming map model", ce.getMessage());
+			MessageDialog.openError(Display.getDefault().getActiveShell(), "Error transforming map model", ce
+					.getMessage());
 		}
 		return false;
+	}
+
+	protected static void configureOptions(TransformOptions options, GmfModel gmfModel) {
+		configureOptions(options);
+		options.setGenerateRCP(gmfModel.isGenerateRCP());
 	}
 
 	protected static void configureOptions(TransformOptions options) {

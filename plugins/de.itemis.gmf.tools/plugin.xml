@@ -33,6 +33,11 @@
                name="de.itemis.gmf.tools.commands.parameter.gmfConfig"
                optional="true">
          </commandParameter>
+         <commandParameter
+               id="de.itemis.gmf.tools.commands.parameter.gmfConfigSet"
+               name="de.itemis.gmf.tools.commands.parameter.gmfConfigSet"
+               optional="true">
+         </commandParameter>
       </command>
    </extension>
    <extension

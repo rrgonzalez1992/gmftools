@@ -14,8 +14,11 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -31,7 +34,9 @@ public class GmfModelFilesDialog extends Dialog {
 
 	private GmfModel gmfModels;
 	private Text nameField;
-	private java.util.List<GmfModelFileSelector> selectors = new ArrayList<GmfModelFileSelector>();
+	private Button addToSetOperationField;
+	private Button generateRCPField;
+	private final java.util.List<GmfModelFileSelector> selectors = new ArrayList<GmfModelFileSelector>();
 
 	public GmfModelFilesDialog(Shell parentShell) {
 		super(parentShell);
@@ -41,13 +46,12 @@ public class GmfModelFilesDialog extends Dialog {
 	protected Control createDialogArea(Composite parent) {
 		dialogArea = super.createDialogArea(parent);
 		GridLayout layout = new GridLayout(3, false);
-		((Composite)dialogArea).setLayout(layout);
+		((Composite) dialogArea).setLayout(layout);
 		Label title = new Label((Composite) dialogArea, SWT.NONE);
 		title.setText("Name");
 		title.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
 		nameField = new Text((Composite) dialogArea, SWT.BORDER);
-		nameField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
-				2, 1));
+		nameField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		nameField.setText((gmfModels.getDisplayName() == null) ? "" : gmfModels.getDisplayName());
 		nameField.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -136,15 +140,41 @@ public class GmfModelFilesDialog extends Dialog {
 				return "transformed.gmfgen";
 			}
 		});
-		getShell().setText("Choose the set of GMF files for one editor");
+		title = new Label((Composite) dialogArea, SWT.NONE);
+		title.setText("Run in set command together with other transformations?");
+		title.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
+		addToSetOperationField = new Button((Composite) dialogArea, SWT.CHECK);
+		addToSetOperationField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		addToSetOperationField.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean isSelected = addToSetOperationField.getSelection();
+				gmfModels.setAddToSetOperation(isSelected);
+			}
+		});
+		addToSetOperationField.setSelection(gmfModels.isAddToSetOperation());
+		title = new Label((Composite) dialogArea, SWT.NONE);
+		title.setText("Generate RCP instead of plug-in code?");
+		title.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
+		generateRCPField = new Button((Composite) dialogArea, SWT.CHECK);
+		generateRCPField.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		generateRCPField.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean isSelected = generateRCPField.getSelection();
+				gmfModels.setGenerateRCP(isSelected);
+			}
+		});
+		generateRCPField.setSelection(gmfModels.isGenerateRCP());
+		getShell().setText("Choose the set of GMF files and options for one editor");
 		return dialogArea;
 	}
 
-	@Override 
+	@Override
 	public Control getDialogArea() {
 		return super.getDialogArea();
 	}
-	
+
 	public void setGmfModelFiles(GmfModel gmfModelFiles) {
 		this.gmfModels = gmfModelFiles;
 	}
@@ -157,11 +187,13 @@ public class GmfModelFilesDialog extends Dialog {
 		for (GmfModelFileSelector selector : selectors) {
 			selector.setDefault(file);
 		}
-		if(gmfModels.getDisplayName() == null) {
+		if (gmfModels.getDisplayName() == null) {
 			String newName = FileUtil.getNameWithoutExtension(file.getName());
 			gmfModels.setDisplayName(newName);
 			nameField.setText(newName);
+			addToSetOperationField.setSelection(gmfModels.isAddToSetOperation());
+			generateRCPField.setSelection(gmfModels.isGenerateRCP());
 		}
 	}
-	
+
 }

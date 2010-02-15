@@ -7,7 +7,9 @@
  *******************************************************************************/
 package de.itemis.gmf.tools.contribution;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -23,6 +25,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import de.itemis.gmf.tools.Activator;
+import de.itemis.gmf.tools.popup.actions.GMFButtonContributionFactory;
 import de.itemis.gmf.tools.preferences.GmfModel;
 import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
@@ -35,12 +38,13 @@ public class GMFToolsHandler extends AbstractHandler {
 	public static final String GMF_TOOLS_CONFIG_PARAMETER_ID = "de.itemis.gmf.tools.commands.parameter.gmfConfig";
 
 	public static final String GMF_TOOLS_CONFIG_PARAMETER_NAME = "de.itemis.gmf.tools.commands.parameter.gmfConfig";
+	public static final String GMF_TOOLS_CONFIG_SET_PARAMETER_NAME = "de.itemis.gmf.tools.commands.parameter.gmfConfigSet";
 
-	private static GmfModel lastGmfModel;
+	private static List<GmfModel> lastGmfModel;
 
 	private IWorkbenchWindow window;
 
-	private GmfModel gmfModel;
+	private List<GmfModel> gmfModel;
 
 	public GMFToolsHandler() {
 	}
@@ -51,15 +55,13 @@ public class GMFToolsHandler extends AbstractHandler {
 			gmfModel = getGmfModel(event);
 			lastGmfModel = gmfModel;
 			if (gmfModel != null) {
-				new ProgressMonitorDialog(window.getShell()).run(false, true,
-						new GMFToolsGeneration(gmfModel, Collections
-								.<String, Boolean> emptyMap()));
+				for (GmfModel model : gmfModel) {
+					new ProgressMonitorDialog(window.getShell()).run(false, true, new GMFToolsGeneration(model, Collections
+							.<String, Boolean> emptyMap()));
+				}
 			} else {
-				MessageDialog
-						.openInformation(
-								window.getShell(),
-								"No GMF file set selected",
-								"Go to Preferences -> GMF Tools and create a set of files for the editor first.");
+				MessageDialog.openInformation(window.getShell(), "No GMF file set selected",
+						"Go to Preferences -> GMF Tools and create a set of files for the editor first.");
 			}
 		} catch (Exception e) {
 			reportError(e);
@@ -69,18 +71,24 @@ public class GMFToolsHandler extends AbstractHandler {
 
 	private void reportError(Exception e) {
 		MessageDialog.openError(window.getShell(), "Error", e.getMessage());
-		Activator.getDefault().getLog().log(
-				new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-						"Error executing GMF action", e));
+		Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error executing GMF action", e));
 	}
 
-	private GmfModel getGmfModel(ExecutionEvent event)
-			throws ExecutionException {
+	private List<GmfModel> getGmfModel(ExecutionEvent event) throws ExecutionException {
+		List<GmfModel> result = new ArrayList<GmfModel>();
 		if (event != null) {
-			String parameter = event
-					.getParameter(GMF_TOOLS_CONFIG_PARAMETER_NAME);
+			String parameter = event.getParameter(GMF_TOOLS_CONFIG_PARAMETER_NAME);
 			if (parameter != null) {
-				return (GmfModel) new GmfModel.Factory().deserialize(parameter);
+				result.add((GmfModel) new GmfModel.Factory().deserialize(parameter));
+				return result;
+			}
+			parameter = event.getParameter(GMF_TOOLS_CONFIG_SET_PARAMETER_NAME);
+			if (parameter != null) {
+				String[] models = parameter.split(GMFButtonContributionFactory.GMF_MODELS_SEPARATOR);
+				for (String model : models) {
+					result.add((GmfModel) new GmfModel.Factory().deserialize(model));
+				}
+				return result;
 			}
 		}
 		ISelection selection = window.getSelectionService().getSelection();
@@ -90,8 +98,14 @@ public class GMFToolsHandler extends AbstractHandler {
 				Object selectedElement = structuredSelection.getFirstElement();
 				if (selectedElement instanceof IFile) {
 					for (GmfModel gmfModels : PreferenceUtil.getGmfModels()) {
-						if (gmfModels.hasFile((IFile) selectedElement))
-							lastGmfModel = gmfModels;
+						if (gmfModels.hasFile((IFile) selectedElement)) {
+							if (lastGmfModel == null) {
+								lastGmfModel = result;
+							} else {
+								lastGmfModel.clear();
+							}
+							lastGmfModel.add(gmfModels);
+						}
 					}
 				}
 

@@ -21,7 +21,7 @@ import de.itemis.gmf.tools.preferences.PreferenceUtil;
 
 public class GMFToolsGeneration implements IRunnableWithProgress {
 
-	private GmfModel gmfModel;
+	private final GmfModel gmfModel;
 	private boolean deleteGmfGenModel = PreferenceUtil.isDeleteGmfGen();
 	private boolean transformMapping2GmfGenModel = PreferenceUtil.isTransformMap2GmfGen();
 	private boolean transformGmfGenModels = PreferenceUtil.isTransformGmfGen();
@@ -31,35 +31,33 @@ public class GMFToolsGeneration implements IRunnableWithProgress {
 
 	public GMFToolsGeneration(GmfModel gmfModel, Map<String, Boolean> options) {
 		this.gmfModel = gmfModel;
-		if(options.containsKey(PreferenceUtil.GMF_DELETE_GMFGEN)){
+		if (options.containsKey(PreferenceUtil.GMF_DELETE_GMFGEN)) {
 			deleteGmfGenModel = options.get(PreferenceUtil.GMF_DELETE_GMFGEN);
 		}
-		if(options.containsKey(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN)){
+		if (options.containsKey(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN)) {
 			transformMapping2GmfGenModel = options.get(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN);
 		}
-		if(options.containsKey(PreferenceUtil.GMF_TRANSFORM_GMFGEN)){
+		if (options.containsKey(PreferenceUtil.GMF_TRANSFORM_GMFGEN)) {
 			transformGmfGenModels = options.get(PreferenceUtil.GMF_TRANSFORM_GMFGEN);
 		}
-		if(options.containsKey(PreferenceUtil.GMF_FIX_TYPE_REGISTRY)){
+		if (options.containsKey(PreferenceUtil.GMF_FIX_TYPE_REGISTRY)) {
 			fixRegisteredTypes = options.get(PreferenceUtil.GMF_FIX_TYPE_REGISTRY);
 		}
-		if(options.containsKey(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN)){
+		if (options.containsKey(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN)) {
 			deletegeGeneratedDiagramPlugin = options.get(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN);
 		}
-		if(options.containsKey(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN)){
+		if (options.containsKey(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN)) {
 			generateDiagramPlugin = options.get(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN);
 		}
 	}
 
-	public void run(IProgressMonitor monitor) throws InvocationTargetException,
-			InterruptedException {
+	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 		try {
 			Set<IFile> changedGmfGenModels = new HashSet<IFile>();
 			boolean isOK = false;
 			monitor.beginTask("Creating transformed GMF generator model", 5);
 			if (transformMapping2GmfGenModel) {
-				isOK = GmfMappingToGenModelTransformer
-						.transformMapToGmfGenModel(gmfModel, deleteGmfGenModel, monitor);
+				isOK = GmfMappingToGenModelTransformer.transformMapToGmfGenModel(gmfModel, deleteGmfGenModel, monitor);
 				if (!isOK) {
 					return;
 				}
@@ -68,31 +66,25 @@ public class GMFToolsGeneration implements IRunnableWithProgress {
 				}
 			}
 			if (transformGmfGenModels) {
-				isOK = GmfGenModelTransformer.createOrGetTransformationFile(
-						gmfModel, monitor);
+				isOK = GmfGenModelTransformer.createOrGetTransformationFile(gmfModel, monitor);
 				if (!isOK) {
 					return;
 				}
-				isOK = GmfGenModelTransformer.transformGmfGenModelFile(
-						gmfModel, monitor);
+				isOK = GmfGenModelTransformer.transformGmfGenModelFile(gmfModel, monitor);
 				if (!isOK) {
 					return;
 				}
-				changedGmfGenModels.add(gmfModel
-						.getTransformedGmfGenModelFile());
+				changedGmfGenModels.add(gmfModel.getTransformedGmfGenModelFile());
 			}
 			if (fixRegisteredTypes) {
-				isOK = GmfGenModelTypeRegistryHarmonizer
-						.harmonizeTypeRegistration(PreferenceUtil
-								.getGmfModels(), changedGmfGenModels, monitor);
+				isOK = GmfGenModelTypeRegistryHarmonizer.harmonizeTypeRegistration(PreferenceUtil.getGmfModels(), changedGmfGenModels,
+						monitor);
 				if (!isOK) {
 					return;
 				}
 			}
-			if (deletegeGeneratedDiagramPlugin
-					&& !changedGmfGenModels.isEmpty()) {
-				isOK = GmfGeneratedPluginRemover.deleteGeneratedPlugins(
-						changedGmfGenModels, monitor);
+			if (deletegeGeneratedDiagramPlugin && !changedGmfGenModels.isEmpty()) {
+				isOK = GmfGeneratedPluginRemover.deleteGeneratedPlugins(changedGmfGenModels, monitor);
 			}
 			if (isOK && generateDiagramPlugin) {
 				for (IFile gmfGenModel : changedGmfGenModels) {

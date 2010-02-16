@@ -1,6 +1,5 @@
-#summary One-sentence summary of this page.
+#summary This page shows how to fix the element selection via keyboard in GMF tabbed properties views.
 #labels Phase-Implementation
-This page shows how to fix the element selection via keyboard in GMF tabbed properties views.
 
 = Introduction =
 Selecting references in properties views can be done using the mouse or by an incremental search using your keyboard. The keyboard selection usually works for a small list of choices. With bigger models the list quickly becomes large and the key selection mechanism will break the !ExtendedComboBoxCellEditor in GMF properties view until you restart Eclipse. Since browsing through large combobox lists with your mouse is no option, this [https://bugs.eclipse.org/bugs/show_bug.cgi?id=193757 bug] needs to be fixed. As long as it's not fixed in the GMF code base you need to do it yourself.

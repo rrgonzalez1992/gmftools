@@ -7,7 +7,7 @@ Selecting references in properties views can be done using the mouse or by an in
 = Details =
 
 To fix the issue:
- # import the plugin *org.eclipse.gmf.runtime.emf.ui.properties*
+ # import the plugin *org.eclipse.gmf.runtime.emf.ui.properties* as source project into your workspace
  # open the class *!UndoableModelPropertySheetEntry*
  # navigate to the method *applyEditorValue()*
  # replace the first *if*-block with:

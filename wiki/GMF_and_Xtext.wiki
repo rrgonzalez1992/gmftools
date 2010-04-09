@@ -40,7 +40,7 @@ org.xtext.cg2009.exercise1.gmf/model/Entities.transformed.gmfgen
    * Right-click on the file in the navigator and choose "Initialize new Entities diagram..." 
    * Have fun
 
-== Known limitations ==
+== Known Limitations ==
   * Due to GMF bug 
 {{{ 
 http://bugs.eclipse.org/bugs/show_bug.cgi?id=281014
@@ -51,3 +51,33 @@ http://bugs.eclipse.org/bugs/show_bug.cgi?id=281014
 https://bugs.eclipse.org/bugs/show_bug.cgi?id=284850
 }}}
   you cannot start from an empty diagram. This is partly fixed in the CVS HEAD version.
+
+== Known Pitfalls ==
+  * Confusing XtextSerializationExceptions: When serializing a model with Xtext (this happens when you save a GMF diagram) all constraints that are implied by the grammar must be fulfilled. For example, if an assignment in the grammar is mandatory, the model can only be serialized when the corresponding value in the model is actually set. Xtext's ParseTreeConstructur may throw SerializationExceptions with confusing messages. It doesn't so so because it hates you, it just doesn't know any better due to its backtracking algorithm. In this case, Xtext's ConcreteSyntaxValidator is your friend. This is an EValidator that can be run from within GMF or configured to always run before a resource is serialized. The ConcrteSyntaxValidator produces understandable error messages.
+
+  * Performance problems during loading due to GMF's CrossReferenceAdapter. GMF uses the CrossReferenceAdapter to maintain target-to-origin maps for all cross references. However, per default the CrossReferenceAdapter is configured to resolve all cross references in an eager way. This practically disables Xtext's lazy linking. The CrossReferenceAdapter can be configured not to resolve cross references on its own: 
+{{{
+public class CustomDiagramEditingDomainFactory extends DiagramEditingDomainFactory {
+
+	private static CustomDiagramEditingDomainFactory instance = new CustomDiagramEditingDomainFactory();
+
+	public static WorkspaceEditingDomainFactory getInstance() {
+		return instance;
+	}
+
+	protected void configure(TransactionalEditingDomain domain) {
+		final ResourceSet rset = domain.getResourceSet();
+		// Create a CrossReferenceAdapter with resolve == false.
+		// This ensures that cross references are resolved lazy (on demand) 
+		// and not by the CrossReferenceAdapter itself. Resolving them
+		// eagerly can be fatal for Xtext's performance.
+		// Usually, super.configure() sets the Adapter. 
+		// However if we do it before super.() does it, it won't be set again.
+		if (CrossReferenceAdapter.getExistingCrossReferenceAdapter(rset) == null) {
+			rset.eAdapters().add(new CrossReferenceAdapter(false));
+		}
+		super.configure(domain);
+	}
+
+}
+}}} 

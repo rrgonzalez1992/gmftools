@@ -57,7 +57,7 @@ public class GMFToolsHandler extends AbstractHandler {
 			if (gmfModel != null) {
 				for (GmfModel model : gmfModel) {
 					new ProgressMonitorDialog(window.getShell()).run(false, true, new GMFToolsGeneration(model, Collections
-							.<String, Boolean> emptyMap()));
+							.<String, String> emptyMap()));
 				}
 			} else {
 				MessageDialog.openInformation(window.getShell(), "No GMF file set selected",

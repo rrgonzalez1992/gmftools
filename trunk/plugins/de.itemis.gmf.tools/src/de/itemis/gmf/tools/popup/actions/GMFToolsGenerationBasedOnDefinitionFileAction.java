@@ -37,7 +37,7 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 	private static final String TRANSFORMED_GMF_GENMODEL_FILE = "transformedgmfgen";
 
 	GmfModel gmfModel = null;
-	Map<String, Boolean> options = null;
+	Map<String, String> options = null;
 
 	private Shell shell;
 
@@ -122,13 +122,12 @@ public class GMFToolsGenerationBasedOnDefinitionFileAction implements
 
 	}
 
-	protected Map<String, Boolean> propertiesToOptions(Properties properties) {
+	protected Map<String, String> propertiesToOptions(Properties properties) {
 		// load all known options
-		Map<String, Boolean> options = new HashMap<String, Boolean>();
+		Map<String, String> options = new HashMap<String, String>();
 		for (String optionKey : PreferenceUtil.getOptions().keySet()) {
 			if (properties.getProperty(optionKey) != null) {
-				options.put(optionKey, new Boolean(properties
-						.getProperty(optionKey)));
+				options.put(optionKey, properties.getProperty(optionKey));
 			}
 		}
 		return options;

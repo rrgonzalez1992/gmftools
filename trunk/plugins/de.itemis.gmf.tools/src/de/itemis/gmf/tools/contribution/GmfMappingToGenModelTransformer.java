@@ -7,8 +7,13 @@
  *******************************************************************************/
 package de.itemis.gmf.tools.contribution;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -27,7 +32,7 @@ import de.itemis.gmf.tools.preferences.GmfModel;
 public class GmfMappingToGenModelTransformer {
 
 	public static boolean transformMapToGmfGenModel(GmfModel gmfModel,
-			boolean deleteGmfGenModel, IProgressMonitor monitor) {
+			boolean deleteGmfGenModel, String figureTemplatePath, IProgressMonitor monitor) {
 		try {
 			IFile gmfGenModel = gmfModel.getGmfGenModelFile();
 			IFile gmfMapModel = gmfModel.getGmfMapModelFile();
@@ -44,6 +49,12 @@ public class GmfMappingToGenModelTransformer {
 			final ResourceSet rs = new ResourceSetImpl();
 			TransformToGenModelOperation op = new TransformToGenModelOperation(rs);
 			configureOptions(op.getOptions(), gmfModel);
+			if (figureTemplatePath != null) {
+				IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(figureTemplatePath);
+				if (res == null)
+					throw new IOException("Folder " + figureTemplatePath + " not found");
+				op.getOptions().setFigureTemplatesPath(res.getLocationURI().toURL());
+			}
 			op.loadMappingModel(FileUtil.getURI(gmfMapModel), new NullProgressMonitor());
 			op.loadGenModel(FileUtil.getURI(emfGenModel), new NullProgressMonitor());
 			op.setGenURI(FileUtil.getURI(gmfGenModel));
@@ -55,8 +66,14 @@ public class GmfMappingToGenModelTransformer {
 			monitor.worked(1);
 			return true;
 		} catch (CoreException ce) {
-			MessageDialog.openError(Display.getDefault().getActiveShell(), "Error transforming map model", ce
-					.getMessage());
+			MessageDialog.openError(Display.getDefault().getActiveShell(),
+					"Error transforming map model", ce.getMessage());
+		} catch (MalformedURLException e) {
+			MessageDialog.openError(Display.getDefault().getActiveShell(),
+					"Error transforming map model", e.getMessage());
+		} catch (IOException e) {
+			MessageDialog.openError(Display.getDefault().getActiveShell(),
+					"Error transforming map model", e.getMessage());
 		}
 		return false;
 	}

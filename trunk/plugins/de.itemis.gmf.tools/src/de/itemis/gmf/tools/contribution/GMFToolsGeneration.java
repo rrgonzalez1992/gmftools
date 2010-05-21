@@ -28,26 +28,30 @@ public class GMFToolsGeneration implements IRunnableWithProgress {
 	private boolean fixRegisteredTypes = PreferenceUtil.isFixTypeRegistration();
 	private boolean deletegeGeneratedDiagramPlugin = PreferenceUtil.isDeleteDiagramPlugin();
 	private boolean generateDiagramPlugin = PreferenceUtil.isGenerateDiagramPlugin();
+	private String figureTemplatePath = PreferenceUtil.getFigureTemplatePath();
 
-	public GMFToolsGeneration(GmfModel gmfModel, Map<String, Boolean> options) {
+	public GMFToolsGeneration(GmfModel gmfModel, Map<String, String> options) {
 		this.gmfModel = gmfModel;
 		if (options.containsKey(PreferenceUtil.GMF_DELETE_GMFGEN)) {
-			deleteGmfGenModel = options.get(PreferenceUtil.GMF_DELETE_GMFGEN);
+			deleteGmfGenModel = new Boolean(options.get(PreferenceUtil.GMF_DELETE_GMFGEN));
 		}
 		if (options.containsKey(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN)) {
-			transformMapping2GmfGenModel = options.get(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN);
+			transformMapping2GmfGenModel = new Boolean(options.get(PreferenceUtil.GMF_TRANSFORM_MAP_2_GMFGEN));
 		}
 		if (options.containsKey(PreferenceUtil.GMF_TRANSFORM_GMFGEN)) {
-			transformGmfGenModels = options.get(PreferenceUtil.GMF_TRANSFORM_GMFGEN);
+			transformGmfGenModels = new Boolean(options.get(PreferenceUtil.GMF_TRANSFORM_GMFGEN));
 		}
 		if (options.containsKey(PreferenceUtil.GMF_FIX_TYPE_REGISTRY)) {
-			fixRegisteredTypes = options.get(PreferenceUtil.GMF_FIX_TYPE_REGISTRY);
+			fixRegisteredTypes = new Boolean(options.get(PreferenceUtil.GMF_FIX_TYPE_REGISTRY));
 		}
 		if (options.containsKey(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN)) {
-			deletegeGeneratedDiagramPlugin = options.get(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN);
+			deletegeGeneratedDiagramPlugin = new Boolean(options.get(PreferenceUtil.GMF_DELETE_GENERATED_PLUGIN));
 		}
 		if (options.containsKey(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN)) {
-			generateDiagramPlugin = options.get(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN);
+			generateDiagramPlugin = new Boolean(options.get(PreferenceUtil.GMF_GENERATE_DIAGRAM_PLUGIN));
+		}
+		if(options.containsKey(PreferenceUtil.GMF_FIGURE_TEMPLATE_PATH)) {
+			figureTemplatePath = options.get(PreferenceUtil.GMF_FIGURE_TEMPLATE_PATH);
 		}
 	}
 
@@ -57,7 +61,9 @@ public class GMFToolsGeneration implements IRunnableWithProgress {
 			boolean isOK = false;
 			monitor.beginTask("Creating transformed GMF generator model", 5);
 			if (transformMapping2GmfGenModel) {
-				isOK = GmfMappingToGenModelTransformer.transformMapToGmfGenModel(gmfModel, deleteGmfGenModel, monitor);
+				isOK = GmfMappingToGenModelTransformer
+						.transformMapToGmfGenModel(gmfModel, deleteGmfGenModel,
+								figureTemplatePath, monitor);
 				if (!isOK) {
 					return;
 				}

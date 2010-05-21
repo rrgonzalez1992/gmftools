@@ -29,6 +29,7 @@ public class PreferenceUtil {
 	public static final String GMF_FIX_TYPE_REGISTRY = "fixRegisteredTypes";
 	public static final String GMF_DELETE_GENERATED_PLUGIN = "deletegeGeneratedDiagramPlugin";
 	public static final String GMF_GENERATE_DIAGRAM_PLUGIN = "generateDiagramPlugin";
+	public static final String GMF_FIGURE_TEMPLATE_PATH = "figureTemplatePath";
 
 	private static GmfModel.Factory gmfModelFactory = new GmfModel.Factory();
 
@@ -92,6 +93,8 @@ public class PreferenceUtil {
 				.getBoolean(GMF_DELETE_GENERATED_PLUGIN));
 		options.put(GMF_GENERATE_DIAGRAM_PLUGIN, getPreferenceStore()
 				.getBoolean(GMF_GENERATE_DIAGRAM_PLUGIN));
+		options.put(GMF_FIGURE_TEMPLATE_PATH, getPreferenceStore()
+				.getBoolean(GMF_FIGURE_TEMPLATE_PATH));
 		return options;
 	}
 
@@ -117,6 +120,10 @@ public class PreferenceUtil {
 
 	public static boolean isGenerateDiagramPlugin() {
 		return getPreferenceStore().getBoolean(GMF_GENERATE_DIAGRAM_PLUGIN);
+	}
+	
+	public static String getFigureTemplatePath() {
+		return null; // no UI support for this yet, sry.
 	}
 
 }

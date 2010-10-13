@@ -12,11 +12,23 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.operations.OperationHistoryFactory;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.transaction.util.TransactionUtil;
+import org.eclipse.emf.workspace.util.WorkspaceSynchronizer;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gmf.runtime.common.core.command.CommandResult;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.DiagramEditPart;
 import org.eclipse.gmf.runtime.diagram.ui.editparts.IGraphicalEditPart;
+import org.eclipse.gmf.runtime.emf.commands.core.command.AbstractTransactionalCommand;
 import org.eclipse.gmf.runtime.notation.Node;
+import org.eclipse.gmf.runtime.notation.View;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -25,6 +37,7 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 import de.itemis.gmf.runtime.edit.policy.SemiCanonicalDiagramEditPolicy;
+import de.itemis.gmf.runtime.extensions.Activator;
 
 public class AddConnectionsAction implements IObjectActionDelegate {
 
@@ -48,7 +61,7 @@ public class AddConnectionsAction implements IObjectActionDelegate {
 	 */
 	public void run(IAction action) {
 		// TODO: node edit part
-		Set<EObject> selectedSemanticElements = new HashSet<EObject>();
+		final Set<EObject> selectedSemanticElements = new HashSet<EObject>();
 		Set<DiagramEditPart> selectedDiagramEditParts = new HashSet<DiagramEditPart>();
 		for (IGraphicalEditPart selectedEditPart : selectedEditParts) {
 			Object view = selectedEditPart.getModel();
@@ -60,12 +73,36 @@ public class AddConnectionsAction implements IObjectActionDelegate {
 			}
 		}
 		for (DiagramEditPart diagramEditPart : selectedDiagramEditParts) {
-			SemiCanonicalDiagramEditPolicy semiCanonicalEditPolicy = (SemiCanonicalDiagramEditPolicy) diagramEditPart
+			final SemiCanonicalDiagramEditPolicy semiCanonicalEditPolicy = (SemiCanonicalDiagramEditPolicy) diagramEditPart
 					.getEditPolicy(SemiCanonicalDiagramEditPolicy.SEMI_CANONICAL_ROLE);
-			semiCanonicalEditPolicy.addConnections(selectedSemanticElements);
+			ArrayList<IFile> affectedFiles = new ArrayList<IFile>();
+			Resource resource = ((View) diagramEditPart.getModel()).eResource();
+			affectedFiles.add(WorkspaceSynchronizer.getFile(resource));
+			AbstractTransactionalCommand command = new AbstractTransactionalCommand(
+					TransactionUtil
+							.getEditingDomain(diagramEditPart.getModel()),
+					"Add Connections", affectedFiles) {
+
+				@Override
+				protected CommandResult doExecuteWithResult(
+						IProgressMonitor monitor, IAdaptable info)
+						throws ExecutionException {
+					semiCanonicalEditPolicy
+							.addConnections(selectedSemanticElements);
+					return CommandResult.newOKCommandResult();
+				}
+			};
+			try {
+				OperationHistoryFactory.getOperationHistory().execute(command,
+						new NullProgressMonitor(), null);
+			} catch (ExecutionException e) {
+				Activator
+						.logError("error executing Add Connections command", e);
+			}
+			TransactionUtil.getEditingDomain(diagramEditPart.getModel())
+					.getCommandStack().execute(null);
 		}
 	}
-
 
 	private DiagramEditPart getDiagramEditPart(EditPart editPart) {
 		if (editPart instanceof DiagramEditPart) {

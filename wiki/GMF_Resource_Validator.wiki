@@ -2,7 +2,7 @@
 
 = Introduction =
 
-Some version control tools like Clearsase set checked in artefakts to read only. This  could cause problems, because GMF internaly validates if all loaded resources are writeable. If there is at least one that is read only, the whole editor would be read only.
+Some version control tools like Clearcase sets checked in artefakts to read only. This  could cause problems, because GMF internaly validates if all loaded resources are writeable. If there is at least one that is read only, the whole editor would be read only.
 Normally you could say that this behaviour is correct, but when you use library-model-elements (e.g. Xtext-models) in your model and you do not want to modify them, you would have a need to leave the editor writeable even when there are read-only resources referenced.
 
 This page discribes where the validators of GMF are and how you could deal with this problem.
